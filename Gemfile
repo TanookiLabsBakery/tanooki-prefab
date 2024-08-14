@@ -30,6 +30,8 @@ group :development, :test do
   gem "brakeman", require: false
   gem "dotenv-rails"
   gem "standard"
+  gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
 group :development do
