@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## dev setup
 
-Things you may want to cover:
+### prerequisites
 
-* Ruby version
+- [pnpm](https://pnpm.io/installation)
+- [postgres](https://www.postgresql.org/download/)
 
-* System dependencies
+### setup
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+bin/setup
+bin/dev
+```
