@@ -35,10 +35,12 @@ group :development, :test do
   gem "standard"
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "ruby-lsp-rubyfmt", git: "https://github.com/aaronlifton/ruby-lsp-rubyfmt.git", branch: "main"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
 gem "graphiql-rails", group: :development
