@@ -1,0 +1,8 @@
+/app/frontend/__generated__
+/app/frontend/**/__generated__/**
+/app/frontend/images/**/*.ts
+/public
+/components.json
+/schema.graphql
+/.aider.*
+/pnpm-lock.yaml

@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   scan-rb:
@@ -19,7 +19,8 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
+      - name:
+          Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
   lint-rb:
@@ -47,9 +48,7 @@ jobs:
           POSTGRES_PASSWORD: password
         ports: ["5432:5432"]
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
           --health-retries 5
 
       # chrome:
@@ -90,7 +89,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version-file: ".node-version"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -103,4 +102,24 @@ jobs:
       - name: Run lint-files
         run: pnpm lint-files
 
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".node-version"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run format-check
+        run: pnpm format-check
