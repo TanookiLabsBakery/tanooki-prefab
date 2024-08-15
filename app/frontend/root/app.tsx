@@ -8,6 +8,7 @@ import {
   ApolloProvider,
   HttpLink,
   InMemoryCache,
+  Operation,
 } from "@apollo/client"
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
 import { createConsumer } from "@rails/actioncable"
@@ -23,9 +24,11 @@ if (import.meta.env.DEV) {
 
 const cable = createConsumer()
 
-const hasSubscriptionOperation = ({ query: { definitions } }: any) => {
+// https://graphql-ruby.org/javascript_client/apollo_subscriptions#apollo-link--actioncable
+const hasSubscriptionOperation = ({ query: { definitions } }: Operation) => {
   return definitions.some(
-    ({ kind, operation }: any) =>
+    // @ts-expect-error TODO see if this needs to be fixed
+    ({ kind, operation }) =>
       kind === "OperationDefinition" && operation === "subscription",
   )
 }
@@ -33,7 +36,6 @@ const hasSubscriptionOperation = ({ query: { definitions } }: any) => {
 const csrfToken = getMetaContent("csrf-token")
 
 if (csrfToken == null) {
-  // eslint-disable-next-line no-console
   console.warn("missing csrf token")
 }
 

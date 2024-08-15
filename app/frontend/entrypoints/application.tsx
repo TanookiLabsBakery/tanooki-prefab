@@ -6,6 +6,5 @@ if (rootEl) {
   const root = createRoot(rootEl)
   root.render(<App />)
 } else {
-  // eslint-disable-next-line no-console
   console.error("no react-root")
 }
