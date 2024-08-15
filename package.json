@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
+    "@ls-lint/ls-lint": "^2.2.3",
     "@tanooki/prettier-config": "^1.0.3",
     "@tsconfig/vite-react": "^3.0.2",
     "@types/rails__actioncable": "^6.1.11",
@@ -26,5 +27,8 @@
   "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
   "prettier": "@tanooki/prettier-config",
   "private": true,
+  "scripts": {
+    "lint-files": "ls-lint"
+  },
   "type": "module"
 }

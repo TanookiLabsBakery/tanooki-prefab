@@ -33,6 +33,9 @@ importers:
       '@graphql-codegen/cli':
         specifier: ^5.0.2
         version: 5.0.2(@types/node@22.3.0)(graphql@16.9.0)(typescript@5.5.4)
+      '@ls-lint/ls-lint':
+        specifier: ^2.2.3
+        version: 2.2.3
       '@tanooki/prettier-config':
         specifier: ^1.0.3
         version: 1.0.3
@@ -756,6 +759,12 @@ packages:
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
+
+  '@ls-lint/ls-lint@2.2.3':
+    resolution: {integrity: sha512-ekM12jNm/7O2I/hsRv9HvYkRdfrHpiV1epVuI2NP+eTIcEgdIdKkKCs9KgQydu/8R5YXTov9aHdOgplmCHLupw==}
+    cpu: [x64, arm64, s390x]
+    os: [darwin, linux, win32]
+    hasBin: true
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3143,6 +3152,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@kamilkisiela/fast-url-parser@1.1.4': {}
+
+  '@ls-lint/ls-lint@2.2.3': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

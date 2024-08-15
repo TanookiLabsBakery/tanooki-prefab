@@ -1,0 +1,14 @@
+ls:
+  app/frontend:
+    .dir: kebab-case
+    .js: kebab-case
+    .ts: kebab-case
+    .tsx: kebab-case
+    .d.ts: kebab-case
+
+ignore:
+  - .git
+  - node_modules
+  - public
+  - app/frontend/__generated__
+  - app/frontend/images/

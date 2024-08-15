@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 
 jobs:
-  scan_ruby:
+  scan-rb:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
-  lint:
+  lint-rb:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -80,4 +80,27 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: "postgres://postgres:password@localhost:5432/test"
         run: bundle exec rspec
+
+  lint-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run lint-files
+        run: pnpm lint-files
+
 
