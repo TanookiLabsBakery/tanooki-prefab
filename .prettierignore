@@ -6,3 +6,4 @@
 /schema.graphql
 /.aider.*
 /pnpm-lock.yaml
+/config/database.yml
