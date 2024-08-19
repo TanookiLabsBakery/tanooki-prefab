@@ -28,8 +28,7 @@ const cable = createConsumer()
 const hasSubscriptionOperation = ({ query: { definitions } }: Operation) => {
   return definitions.some(
     // @ts-expect-error TODO see if this needs to be fixed
-    ({ kind, operation }) =>
-      kind === "OperationDefinition" && operation === "subscription",
+    ({ kind, operation }) => kind === "OperationDefinition" && operation === "subscription"
   )
 }
 
@@ -46,11 +45,7 @@ const httpLink = new HttpLink({
   },
 })
 
-const link = ApolloLink.split(
-  hasSubscriptionOperation,
-  new ActionCableLink({ cable }),
-  httpLink,
-)
+const link = ApolloLink.split(hasSubscriptionOperation, new ActionCableLink({ cable }), httpLink)
 
 // const excludePaginationArgs: KeyArgsFunction = (args) => {
 //   if (!args) return false

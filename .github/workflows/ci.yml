@@ -19,8 +19,7 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name:
-          Scan for common Rails security vulnerabilities using static analysis
+      - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
   lint-rb:
@@ -48,8 +47,7 @@ jobs:
           POSTGRES_PASSWORD: password
         ports: ["5432:5432"]
         options: >-
-          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
-          --health-retries 5
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
       # chrome:
       #   image: selenium/standalone-chrome:latest
