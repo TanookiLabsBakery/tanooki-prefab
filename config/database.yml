@@ -13,4 +13,3 @@ development:
 test:
   <<: *default
   database: tanooki_prefab_test
-

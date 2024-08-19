@@ -26,6 +26,7 @@ gem "bootsnap", require: false
 
 gem "graphql"
 gem "vite_rails"
+gem "mjml-rails"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -41,6 +42,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
+  gem "letter_opener_web"
+  gem "graphiql-rails"
 end
-
-gem "graphiql-rails", group: :development

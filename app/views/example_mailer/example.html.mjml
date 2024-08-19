@@ -1,0 +1,35 @@
+<mj-section background-color="#ffffff" padding="20px">
+  <mj-column>
+    <mj-text align="left" font-size="28px" font-weight="bold"> Welcome to Template </mj-text>
+  </mj-column>
+</mj-section>
+
+<!-- Full-Width Logo Section -->
+<mj-section padding="0">
+  <mj-column>
+    <!-- Full width logo image -->
+    <mj-image
+      src="<%= attachments.inline['example_logo.png'].url %>"
+      alt="Company Logo"
+      width="600px"
+      padding="0 20px"
+    />
+  </mj-column>
+</mj-section>
+
+<mj-section>
+  <mj-column>
+    <mj-text font-size="16px" color="#000000" line-height="1.5"> Hi Eric, </mj-text>
+
+    <mj-text font-size="16px" color="#000000" line-height="1.5">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at ipsum porta, imperdiet
+      turpis at, facilisis arcu. Donec id nunc massa. Nulla non lobortis arcu. Donec quis mi ex.
+      Aenean sed sapien urna. Donec sed magna eget velit ullamcorper eleifend sit amet at neque.
+      Fusce sit amet vulputate enim. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+    </mj-text>
+
+    <mj-text font-size="16px" color="#000000" line-height="1.5"> Best regards, </mj-text>
+
+    <mj-text font-size="16px" color="#000000" line-height="1.5"> Your Company </mj-text>
+  </mj-column>
+</mj-section>
