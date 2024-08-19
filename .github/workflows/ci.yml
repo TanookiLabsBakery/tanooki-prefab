@@ -146,3 +146,10 @@ jobs:
 
       - name: Run lint-check
         run: pnpm lint-check
+
+      - name: Check for @apply in CSS files
+        run: |
+          if grep -r --include="*.css" "@apply" .; then
+            echo "Error: do not use tailwind's @apply syntax, use theme instead: https://tailwindcss.com/docs/functions-and-directives#theme"
+            exit 1
+          fi

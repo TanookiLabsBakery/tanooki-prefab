@@ -1,3 +1,4 @@
+import path from "path"
 import { defineConfig } from "vite"
 
 import ReactPlugin from "@vitejs/plugin-react"
@@ -6,4 +7,9 @@ import RubyPlugin from "vite-plugin-ruby"
 
 export default defineConfig({
   plugins: [RubyPlugin(), ReactPlugin(), CodegenPlugin()],
+  resolve: {
+    alias: {
+      "~": path.resolve(__dirname, path.join("app", "frontend")),
+    },
+  },
 })
