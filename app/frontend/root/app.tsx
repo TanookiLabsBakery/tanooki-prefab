@@ -92,22 +92,6 @@ if (!userData.data) {
   })
 }
 
-// const metaTag = document.querySelector("meta[name=viewer-cache]")
-// invariant(metaTag, "missing viewer-cache meta tag")
-// const viewerDataContent = metaTag.getAttribute("content")
-// invariant(viewerDataContent)
-// const userData = JSON.parse(viewerDataContent)
-// if (!userData.data) {
-//   // eslint-disable-next-line no-console
-//   console.warn("Error preloading viewer")
-// } else {
-//   apolloClient.writeQuery({
-//     query: viewerQuery,
-//     data: userData.data,
-//     variables: {},
-//   })
-// }
-
 export default function App() {
   return (
     <React.StrictMode>
