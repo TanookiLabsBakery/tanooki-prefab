@@ -2,10 +2,10 @@ import { useMutation, useQuery } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate, Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import { gql } from "~/__generated__"
-import { rootPath, emailLoginPath } from "~/common/paths"
+import { emailLoginPath, rootPath } from "~/common/paths"
 import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
@@ -31,7 +31,7 @@ const LOGIN_MUTATION = gql(/* GraphQL */ `
 `)
 
 const VIEWER_QUERY = gql(`
-  query Viewer {
+  query CredentialsLoginScreenViewer {
     viewer {
       id
     }

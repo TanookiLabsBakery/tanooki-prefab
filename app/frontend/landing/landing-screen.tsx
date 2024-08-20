@@ -1,20 +1,11 @@
+import { useMutation } from "@apollo/client"
 import React from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { gql } from "~/__generated__"
-import { useQuery, useMutation } from "@apollo/client"
+import { useViewerMaybe } from "~/auth/viewer-context"
+import { loginPath } from "~/common/paths"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
-import { useNavigate, Link } from "react-router-dom"
-import { loginPath } from "~/common/paths"
-
-const GET_VIEWER = gql(`
-  query GetViewer {
-    viewer {
-      id
-      firstName
-      lastName
-    }
-  }
-`)
 
 const LOGOUT_MUTATION = gql(`
   mutation Logout($input: LogoutInput!) {
@@ -25,15 +16,13 @@ const LOGOUT_MUTATION = gql(`
 `)
 
 export const LandingScreen: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_VIEWER)
+  const { viewer, result } = useViewerMaybe()
   const [logout] = useMutation(LOGOUT_MUTATION)
   const { toast } = useToast()
   const navigate = useNavigate()
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-
-  const viewer = data?.viewer
+  if (result.loading) return <div>Loading...</div>
+  if (result.error) return <div>Error: {result.error.message}</div>
 
   const handleLogout = async () => {
     try {

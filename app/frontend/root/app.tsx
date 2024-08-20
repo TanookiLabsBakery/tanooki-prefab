@@ -13,6 +13,8 @@ import {
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
 import { createConsumer } from "@rails/actioncable"
 import ActionCableLink from "graphql-ruby-client/subscriptions/ActionCableLink"
+import invariant from "tiny-invariant"
+import { ViewerProvider, viewerQuery } from "~/auth/viewer-context"
 import { Toaster } from "~/ui/toaster"
 import { getMetaContent } from "../common/get-meta-content"
 
@@ -72,6 +74,24 @@ const apolloClient = new ApolloClient({
   },
 })
 
+const metaTag = document.querySelector("meta[name=viewer-cache]")
+invariant(metaTag, "missing viewer-cache meta tag")
+
+const viewerDataContent = metaTag.getAttribute("content")
+invariant(viewerDataContent, "missing viewer-cache meta tag content")
+
+const userData = JSON.parse(viewerDataContent)
+
+if (!userData.data) {
+  throw new Error("Error preloading viewer")
+} else {
+  apolloClient.writeQuery({
+    query: viewerQuery,
+    data: userData.data,
+    variables: {},
+  })
+}
+
 // const metaTag = document.querySelector("meta[name=viewer-cache]")
 // invariant(metaTag, "missing viewer-cache meta tag")
 // const viewerDataContent = metaTag.getAttribute("content")
@@ -92,9 +112,9 @@ export default function App() {
   return (
     <React.StrictMode>
       <ApolloProvider client={apolloClient}>
-        {/* <ViewerProvider> */}
-        <RouterProvider router={router} />
-        {/* </ViewerProvider> */}
+        <ViewerProvider>
+          <RouterProvider router={router} />
+        </ViewerProvider>
       </ApolloProvider>
       <Toaster />
     </React.StrictMode>

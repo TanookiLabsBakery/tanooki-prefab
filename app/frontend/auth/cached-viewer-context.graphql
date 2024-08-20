@@ -1,0 +1,5 @@
+fragment CachedViewerContext on User {
+  id
+  firstName
+  lastName
+}
