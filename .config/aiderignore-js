@@ -1,0 +1,5 @@
+/*
+!/app/frontend
+/app/frontend/__generated__
+/app/frontend/images/icons
+!package.json

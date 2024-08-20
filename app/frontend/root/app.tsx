@@ -13,6 +13,7 @@ import {
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
 import { createConsumer } from "@rails/actioncable"
 import ActionCableLink from "graphql-ruby-client/subscriptions/ActionCableLink"
+import { Toaster } from "~/ui/toaster"
 import { getMetaContent } from "../common/get-meta-content"
 
 // @ts-expect-error this is a vite-only feature
@@ -95,6 +96,7 @@ export default function App() {
         <RouterProvider router={router} />
         {/* </ViewerProvider> */}
       </ApolloProvider>
+      <Toaster />
     </React.StrictMode>
   )
 }

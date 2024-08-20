@@ -1,0 +1,10 @@
+# https://aider.chat/docs/config/aider_conf.html#sample-yaml-config-file
+
+lint-cmd: pnpm codegen-graphql && .config/aider-lint-js.sh
+auto-lint: true
+
+test-cmd: pnpm tsc --noEmit
+auto-test: true
+
+read: [.config/CONVENTIONS.js.md, schema.graphql]
+aiderignore: .config/aiderignore-js

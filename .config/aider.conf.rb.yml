@@ -1,0 +1,10 @@
+# https://aider.chat/docs/config/aider_conf.html#sample-yaml-config-file
+
+lint-cmd: bundle exec standardrb --fix
+auto-lint: true
+
+test-cmd: bin/rspec --format progress --no-profile --no-color --fail-fast --tag ~type:system
+auto-test: true
+
+aiderignore: .config/aiderignore-rb
+read: .config/CONVENTIONS.rb.md

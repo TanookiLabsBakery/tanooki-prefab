@@ -7,3 +7,4 @@
 import { path } from "static-path"
 
 export const rootPath = path("/")
+export const loginPath = path("/login")

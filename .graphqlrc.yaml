@@ -1,0 +1,3 @@
+# vscode extension: GraphQL.vscode-graphql
+schema: "schema.graphql"
+documents: "app/frontend/**/*.{ts,tsx}"

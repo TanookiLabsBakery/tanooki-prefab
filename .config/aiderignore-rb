@@ -1,0 +1,6 @@
+/*
+!/app
+!/spec
+/app/frontend
+/spec/mailers/previews
+!Gemfile

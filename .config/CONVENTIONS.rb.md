@@ -1,0 +1,3 @@
+- use the Action Policy gem for authorization
+- ensure all mutations and queries are authorized
+- graphql mutations should raise a GraphQL::ExecutionError instead of returning error data as fields

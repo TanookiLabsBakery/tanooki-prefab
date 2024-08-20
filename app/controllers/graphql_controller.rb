@@ -11,11 +11,14 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      session: session,
+      current_user: current_user,
+      cookies: cookies,
+      login: ->(email, password, remember_me) { login(email, password, remember_me) },
+      logout: -> { logout }
     }
     result = AppSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render json: result
+    render(json: result)
   rescue => e
     raise e unless Rails.env.development?
     handle_error_in_development(e)
@@ -32,10 +35,12 @@ class GraphqlController < ApplicationController
       else
         {}
       end
+
     when Hash
       variables_param
     when ActionController::Parameters
-      variables_param.to_unsafe_hash # GraphQL-Ruby will validate name and type of incoming variables.
+      # GraphQL-Ruby will validate name and type of incoming variables.
+      variables_param.to_unsafe_hash
     when nil
       {}
     else
@@ -44,9 +49,9 @@ class GraphqlController < ApplicationController
   end
 
   def handle_error_in_development(e)
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
+    logger.error(e.message)
+    logger.error(e.backtrace.join("\n"))
 
-    render json: {errors: [{message: e.message, backtrace: e.backtrace}], data: {}}, status: 500
+    render(json: {errors: [{message: e.message, backtrace: e.backtrace}], data: {}}, status: 500)
   end
 end

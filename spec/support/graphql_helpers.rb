@@ -1,11 +1,12 @@
 # https://graphql-ruby.org/testing/integration_tests.html
 module GraphqlHelpers
-  def graphql_execute(query, current_user:, variables: nil, allow_errors: false)
+  def graphql_execute(query, current_user:, session: nil, variables: nil, allow_errors: false, context: {})
     result = AppSchema.execute(
       query,
       context: {
-        current_user:
-      },
+        current_user: current_user,
+        session: session
+      }.merge(context),
       variables: variables
     )
 

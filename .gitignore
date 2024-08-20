@@ -44,3 +44,4 @@ node_modules
 *.local
 
 /app/frontend/__generated__
+.aider.chat.history.md
