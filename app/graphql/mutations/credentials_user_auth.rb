@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  class LoginWithCredentials < BaseMutation
+  class CredentialsUserAuth < BaseMutation
     argument :email, String, required: true
     argument :password, String, required: true
     argument :remember_me, Boolean, required: true

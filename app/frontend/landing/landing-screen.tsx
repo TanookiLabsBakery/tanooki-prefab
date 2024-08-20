@@ -3,7 +3,7 @@ import { gql } from "~/__generated__"
 import { useQuery, useMutation } from "@apollo/client"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { loginPath } from "~/common/paths"
 
 const GET_VIEWER = gql(`
@@ -70,7 +70,12 @@ export const LandingScreen: React.FC = () => {
           <Button onClick={handleLogout}>Logout</Button>
         </div>
       ) : (
-        <p>No viewer data available.</p>
+        <div>
+          <p>You are not logged in.</p>
+          <Link to={loginPath({})}>
+            <Button>Login</Button>
+          </Link>
+        </div>
       )}
     </div>
   )

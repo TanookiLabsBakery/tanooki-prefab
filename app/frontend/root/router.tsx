@@ -1,7 +1,15 @@
 import { createBrowserRouter } from "react-router-dom"
-import { rootPath, loginPath } from "~/common/paths"
+import {
+  credentialsLoginPath,
+  emailAuthPath,
+  emailLoginPath,
+  loginPath,
+  rootPath,
+} from "~/common/paths"
 import { LandingScreen } from "~/landing/landing-screen"
-import { LoginScreen } from "~/login/login-screen"
+import { CredentialsLoginScreen } from "~/login/credentials-login-screen"
+import { EmailAuthScreen } from "~/login/email-auth-screen"
+import { EmailLoginScreen } from "~/login/email-login-screen"
 import { RootLayout } from "./root-layout"
 
 export const router = createBrowserRouter([
@@ -11,12 +19,24 @@ export const router = createBrowserRouter([
     // errorElement: <ErrorBoundary />, TODO
     children: [
       {
-        path: rootPath({}),
+        path: rootPath.pattern,
         element: <LandingScreen />,
       },
       {
-        path: loginPath({}),
-        element: <LoginScreen />,
+        path: loginPath.pattern,
+        element: <EmailLoginScreen />,
+      },
+      {
+        path: emailLoginPath.pattern,
+        element: <EmailLoginScreen />,
+      },
+      {
+        path: credentialsLoginPath.pattern,
+        element: <CredentialsLoginScreen />,
+      },
+      {
+        path: emailAuthPath.pattern,
+        element: <EmailAuthScreen />,
       },
     ],
   },

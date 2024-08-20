@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
+  has_many :user_auth_challenges
   cool_id(prefix: "usr")
 
   validates :first_name, presence: true

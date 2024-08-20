@@ -1,6 +1,7 @@
 /*
 !/app
 !/spec
+!/config
 /app/frontend
 /spec/mailers/previews
 !Gemfile

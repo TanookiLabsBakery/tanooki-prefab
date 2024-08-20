@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe "LoginWithCredentials Mutation", type: :request do
+RSpec.describe Mutations::CredentialsUserAuth, type: :request do
   let(:user) { create(:user, email: "user@example.com", password: "password") }
   let(:query) do
     <<~GQL
       mutation($email: String!, $password: String!, $rememberMe: Boolean!) {
-        loginWithCredentials(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
+        credentialsUserAuth(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
           user {
             id
             firstName
@@ -24,7 +24,7 @@ RSpec.describe "LoginWithCredentials Mutation", type: :request do
         json_response = JSON.parse(response.body)
         expect(json_response["errors"]).to be_nil
 
-        data = json_response["data"]["loginWithCredentials"]
+        data = json_response["data"]["credentialsUserAuth"]
         expect(data["user"]["firstName"]).to eq(user.first_name)
         expect(data["user"]["lastName"]).to eq(user.last_name)
         expect(session[:user_id]).to eq(user.id)
@@ -36,7 +36,7 @@ RSpec.describe "LoginWithCredentials Mutation", type: :request do
         json_response = JSON.parse(response.body)
         expect(response).to have_http_status(:ok)
         expect(json_response["errors"]).to be_nil
-        data = json_response["data"]["loginWithCredentials"]
+        data = json_response["data"]["credentialsUserAuth"]
 
         expect(response).to have_http_status(:ok)
         expect(data["user"]["firstName"]).to eq(user.first_name)

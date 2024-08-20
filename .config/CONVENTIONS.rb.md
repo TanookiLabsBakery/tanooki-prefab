@@ -1,3 +1,5 @@
 - use the Action Policy gem for authorization
 - ensure all mutations and queries are authorized
 - graphql mutations should raise a GraphQL::ExecutionError instead of returning error data as fields
+- emails templates are written with MJML
+- graphql tests should use graphql_execute instead of making requests

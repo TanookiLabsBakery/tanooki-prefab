@@ -14,7 +14,14 @@ class GraphqlController < ApplicationController
       session: session,
       current_user: current_user,
       cookies: cookies,
-      login: ->(email, password, remember_me) { login(email, password, remember_me) },
+      login: ->(email, password, remember_me) {
+        login(email, password, remember_me)
+      },
+      auto_login: ->(email) {
+        user = User.find_by(email: email)
+        auto_login(user, true) if user
+        user
+      },
       logout: -> { logout }
     }
     result = AppSchema.execute(query, variables: variables, context: context, operation_name: operation_name)

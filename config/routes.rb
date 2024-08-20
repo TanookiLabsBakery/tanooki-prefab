@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get("manifest" => "rails/pwa#manifest", :as => :pwa_manifest)
 
   root("spa#index")
+  get("auth/email/:email/:token/:client_auth_code", to: "spa#index", as: :auth_email)
   get(
     "*path",
     to: "spa#index",

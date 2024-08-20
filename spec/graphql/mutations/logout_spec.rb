@@ -26,7 +26,7 @@ RSpec.describe "Logout Mutation", type: :request do
         # Log in the user
         login_mutation = <<~GQL
           mutation($email: String!, $password: String!, $rememberMe: Boolean!) {
-            login: loginWithCredentials(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
+            login: credentialsUserAuth(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
               user { id }
             }
           }
