@@ -51,3 +51,7 @@ group :development do
   gem "letter_opener_web"
   gem "graphiql-rails"
 end
+
+group :test do
+  gem "cuprite"
+end

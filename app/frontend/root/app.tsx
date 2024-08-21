@@ -16,7 +16,7 @@ import ActionCableLink from "graphql-ruby-client/subscriptions/ActionCableLink"
 import invariant from "tiny-invariant"
 import { ViewerProvider, viewerQuery } from "~/auth/viewer-context"
 import { Toaster } from "~/ui/toaster"
-import { getMetaContent } from "../common/get-meta-content"
+import { getMetaContentMaybe } from "../common/get-meta-content"
 
 // @ts-expect-error this is a vite-only feature
 if (import.meta.env.DEV) {
@@ -35,17 +35,18 @@ const hasSubscriptionOperation = ({ query: { definitions } }: Operation) => {
   )
 }
 
-const csrfToken = getMetaContent("csrf-token")
+const headers: Record<string, string> = {}
+const csrfToken = getMetaContentMaybe("csrf-token")
 
 if (csrfToken == null) {
   console.warn("missing csrf token")
+} else {
+  headers["X-CSRF-Token"] = csrfToken
 }
 
 const httpLink = new HttpLink({
   credentials: "same-origin",
-  headers: {
-    "X-CSRF-Token": csrfToken,
-  },
+  headers,
 })
 
 const link = ApolloLink.split(hasSubscriptionOperation, new ActionCableLink({ cable }), httpLink)

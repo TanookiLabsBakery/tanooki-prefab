@@ -49,11 +49,6 @@ jobs:
         options: >-
           --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-      # chrome:
-      #   image: selenium/standalone-chrome:latest
-      #   volumes:
-      #     - /dev/shm:/dev/shm
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,6 +59,17 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
       - name: Setup test database
         env:
           RAILS_ENV: test
@@ -72,9 +78,19 @@ jobs:
           bin/rails db:create
           bin/rails db:schema:load
 
+      - name: Compile assets
+        env:
+          RAILS_ENV: test
+          ORIGIN: "http://example.com"
+        run: |
+          pnpm install
+          bin/rails assets:precompile
+
       - name: Run tests
         env:
           RAILS_ENV: test
+          ORIGIN: "http://example.com"
+          CUPRITE_INSPECTOR: false
           DATABASE_URL: "postgres://postgres:password@localhost:5432/test"
         run: bundle exec rspec
 

@@ -48,7 +48,7 @@ export const LandingScreen: React.FC = () => {
   }
 
   return (
-    <div>
+    <div data-testid="landing-screen">
       <h1>Welcome to the Landing Screen</h1>
       {viewer ? (
         <div>
