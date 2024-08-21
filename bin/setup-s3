@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+
+# This script creates S3 buckets to be used with a Rails app. It creates a bucket,
+# sets up CORS, creates an IAM user, attaches a policy, and displays credentials.
+# Big thanks to @alse for the original version!
+
+REGION="us-east-1"
+ALLOWED_ORIGINS_ARRAY='["http://localhost:5100"]'
+
+# Function to check if AWS CLI is configured
+check_aws_configuration() {
+  echo "Checking AWS CLI configuration..."
+
+  # Attempt to get the caller identity and capture the output and status
+  local caller_identity_output
+  caller_identity_output=$(aws sts get-caller-identity --output text 2>&1)
+
+  # Check if the command was successful by checking the status code
+  if [ $? -ne 0 ]; then
+    echo "Error: $caller_identity_output"
+    echo "An IAM user with an access and secret key will need to be created and configured with the CLI"
+    exit 1
+  else
+    echo "AWS CLI is configured."
+    echo "Caller identity: $caller_identity_output"
+  fi
+}
+
+# Input validation function for bucket names
+function validate_bucket_name() {
+  local bucket="$1"
+  if [[ ! $bucket =~ ^[a-z0-9.-]+$ ]]; then
+    echo "Invalid bucket name. Must be lowercase and can only contain numbers, dots, and hyphens."
+    exit 1
+  fi
+}
+
+function createUser(){
+  local bucket="$1"
+  echo "Creating user $bucket"
+
+  aws iam create-user --user-name $bucket --output text --no-cli-pager || {
+    echo "Error: Failed to create user $bucket."
+    exit 1
+  }
+
+  echo "Creating access key for $bucket"
+  credentials=$(aws iam create-access-key --user-name "${bucket}" --query 'AccessKey.[AccessKeyId,SecretAccessKey]' --output text) || {
+    echo "Error: Failed to create access key for user $bucket."
+    echo "IAM user configured in AWS CLI should have the IAMFullAccess permission."
+    exit 1
+  }
+
+  access_key_id=$(echo ${credentials} | awk '{print $1}')
+  secret_access_key=$(echo ${credentials} | awk '{$1="";print $0}' | tr -d '[:space:]')
+
+  local policy_name="S3AccessPolicy-${bucket}"
+  echo "Creating policy $policy_name"
+
+  policy=$(aws iam create-policy --policy-name "${policy_name}" --policy-document "{
+    \"Version\": \"2012-10-17\",
+    \"Statement\": [
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [
+          \"s3:ListBucket\",
+          \"s3:GetObject\",
+          \"s3:PutObject\",
+          \"s3:DeleteObject\"
+        ],
+        \"Resource\": \"arn:aws:s3:::${bucket}/*\"
+      }
+    ]
+  }" --output text) || {
+    echo "Error: Failed to create policy $policy_name."
+    exit 1
+  }
+
+  arn=$(echo ${policy} | awk '{print $2}')
+  echo "Attaching policy to user $bucket"
+  aws iam attach-user-policy --policy-arn "${arn}" --user-name "${bucket}" || {
+    echo "Error: Failed to attach policy to user $bucket."
+    exit 1
+  }
+}
+
+function createBucket(){
+  local bucket="$1"
+  echo "Creating bucket $bucket"
+  aws s3api create-bucket --bucket $bucket --region "${REGION}" --output text --no-cli-pager || {
+    echo "Error: Failed to create bucket $bucket."
+    echo "IAM user configured in AWS CLI should have the AmazonS3FullAccess permission."
+    exit 1
+  }
+}
+
+function setCors(){
+  local bucket="$1"
+  echo "Setting CORS for $bucket"
+
+  corsJson='{
+    "CORSRules": [
+      {
+        "AllowedOrigins": '${ALLOWED_ORIGINS_ARRAY}',
+        "AllowedMethods": ["GET", "PUT", "POST"],
+        "MaxAgeSeconds": 3000,
+        "AllowedHeaders": ["*"]
+      }
+    ]
+  }'
+
+  aws s3api put-bucket-cors --bucket $bucket --cors-configuration "${corsJson}" --output text --no-cli-pager || {
+    echo "Error: Failed to set CORS for bucket $bucket."
+    exit 1
+  }
+}
+
+# Start of the script
+check_aws_configuration
+
+# Prompt for inputs
+echo "Enter bucket name (e.g. myapp-staging): "
+read -r BUCKET </dev/tty
+
+# Validate inputs
+validate_bucket_name "$BUCKET"
+
+# Start the process
+echo "Creating S3 user and bucket for $BUCKET"
+createUser "$BUCKET"
+createBucket "$BUCKET"
+setCors "$BUCKET"
+
+# Output the credentials
+echo -e "Here are your credentials. They will not be shown again.\n\nAWS_BUCKET=${BUCKET}\nAWS_REGION=${REGION}\nAWS_ACCESS_KEY_ID=${access_key_id}\nAWS_SECRET_ACCESS_KEY=${secret_access_key}\n\nPress q to continue" | less
+echo "User and policies have been created."
