@@ -1,6 +1,8 @@
 <mj-section background-color="#ffffff" padding="20px">
   <mj-column>
-    <mj-text align="left" font-size="28px" font-weight="bold"> Welcome to Template </mj-text>
+    <mj-text align="left" font-size="28px" font-weight="bold">
+      Welcome to <%= AppConstants::APP_NAME %>
+    </mj-text>
   </mj-column>
 </mj-section>
 
