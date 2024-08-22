@@ -19,6 +19,7 @@ type CredentialsUserAuthPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  csrfToken: String!
   user: User
 }
 
@@ -43,6 +44,7 @@ type EmailTokenUserAuthPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  csrfToken: String!
   success: Boolean!
 }
 

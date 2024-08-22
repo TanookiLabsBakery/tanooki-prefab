@@ -1,12 +1,12 @@
-import { useMutation } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
-import * as z from "zod"
 import { v4 as uuidv4 } from "uuid"
+import * as z from "zod"
 import { gql } from "~/__generated__"
 import { credentialsLoginPath } from "~/common/paths"
+import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
@@ -27,7 +27,7 @@ const EMAIL_AUTH_CHALLENGE_MUTATION = gql(/* GraphQL */ `
 `)
 
 export const EmailLoginScreen: React.FC = () => {
-  const [emailAuthChallenge, { loading, error }] = useMutation(EMAIL_AUTH_CHALLENGE_MUTATION)
+  const [emailAuthChallenge, { loading, error }] = useSafeMutation(EMAIL_AUTH_CHALLENGE_MUTATION)
   const { toast } = useToast()
 
   const form = useForm<EmailLoginFormValues>({
@@ -49,30 +49,35 @@ export const EmailLoginScreen: React.FC = () => {
     const authCodes = JSON.parse(localStorage.getItem("authCodes") || "[]")
     const clientAuthCode = authCodes[authCodes.length - 1]
 
-    try {
-      const result = await emailAuthChallenge({
-        variables: {
-          input: {
-            email: values.email,
-            clientAuthCode,
-          },
+    const result = await emailAuthChallenge({
+      variables: {
+        input: {
+          email: values.email,
+          clientAuthCode,
         },
-      })
+      },
+    })
 
-      if (result.data?.emailUserAuthChallenge.success) {
-        toast({
-          title: "Email Sent",
-          description: "Please check your email for the login link.",
-          variant: "default",
-        })
-      } else {
-        throw new Error("Email challenge failed")
-      }
-    } catch (err) {
-      console.error("Email auth challenge failed:", err)
+    if (result.errors) {
+      console.error("Email auth challenge failed:", result.errors)
       toast({
         title: "Login Failed",
         description: "An error occurred during login. Please try again.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (result.data?.emailUserAuthChallenge.success) {
+      toast({
+        title: "Email Sent",
+        description: "Please check your email for the login link.",
+        variant: "default",
+      })
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Unable to send login email. Please try again.",
         variant: "destructive",
       })
     }

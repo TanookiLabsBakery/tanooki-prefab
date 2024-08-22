@@ -1,11 +1,13 @@
-import { useMutation, useQuery } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import { gql } from "~/__generated__"
+import { useViewerMaybe } from "~/auth/use-viewer"
 import { emailLoginPath, rootPath } from "~/common/paths"
+import { useFormErrors } from "~/common/use-form-errors"
+import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
@@ -30,19 +32,14 @@ const LOGIN_MUTATION = gql(/* GraphQL */ `
   }
 `)
 
-const VIEWER_QUERY = gql(`
-  query CredentialsLoginScreenViewer {
-    viewer {
-      id
-    }
-  }
-`)
-
 export const CredentialsLoginScreen: React.FC = () => {
-  const [login, { loading, error }] = useMutation(LOGIN_MUTATION)
-  const { data: viewerData } = useQuery(VIEWER_QUERY)
+  const [login, loginResult] = useSafeMutation(LOGIN_MUTATION)
+  const { viewer } = useViewerMaybe()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const {
+    result: { refetch: refetchViewer },
+  } = useViewerMaybe()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -51,40 +48,37 @@ export const CredentialsLoginScreen: React.FC = () => {
       password: "",
     },
   })
+  useFormErrors(form.setError, loginResult)
 
   const onSubmit = async (values: LoginFormValues) => {
-    try {
-      await login({
-        variables: {
-          input: {
-            email: values.email,
-            password: values.password,
-            rememberMe: true,
-          },
+    const result = await login({
+      variables: {
+        input: {
+          email: values.email,
+          password: values.password,
+          rememberMe: true,
         },
-      })
-      toast({
-        title: "Login Successful",
-        description: "You have been successfully logged in.",
-        variant: "default",
-      })
-      // Redirect to the root path
-      navigate(rootPath({}))
-    } catch (err) {
-      console.error("Login failed:", err)
-      toast({
-        title: "Login Failed",
-        description: "An error occurred during login. Please try again.",
-        variant: "destructive",
-      })
+      },
+    })
+
+    if (result.errors) {
+      return
     }
+
+    await refetchViewer()
+    toast({
+      title: "Login Successful",
+      description: "You have been successfully logged in.",
+      variant: "default",
+    })
+    navigate(rootPath({}))
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background">
       <div className="w-full max-w-md space-y-8">
         <h1 className="text-center text-2xl font-bold">Login with Credentials</h1>
-        {viewerData?.viewer ? (
+        {viewer ? (
           <p className="text-center">You are already logged in.</p>
         ) : (
           <>
@@ -103,16 +97,11 @@ export const CredentialsLoginScreen: React.FC = () => {
                   type="password"
                   placeholder="Enter your password"
                 />
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Logging in..." : "Login"}
+                <Button type="submit" className="w-full" disabled={loginResult.loading}>
+                  {loginResult.loading ? "Logging in..." : "Login"}
                 </Button>
               </form>
             </Form>
-            {error && (
-              <p className="mt-2 text-sm text-red-500">
-                {error.message || "An error occurred during login."}
-              </p>
-            )}
             <div className="text-center">
               <Link to={emailLoginPath({})} className="text-sm text-blue-600 hover:underline">
                 Login with email link

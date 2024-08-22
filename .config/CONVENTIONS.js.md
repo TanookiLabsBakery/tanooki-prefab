@@ -10,3 +10,5 @@
 - forms should use zod schema
 - form schemas only used by one form should be in the same file as the form
 - react-router is used for links and navigation
+- use useSafeMutation (`import { useSafeMutation } from "~/common/use-safe-mutation"`) instead of
+  apollo's useMutation, note that it never throws and returns an `errors` field

@@ -1,15 +1,19 @@
+import { useApolloClient } from "@apollo/client"
 import React, { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { useMutation } from "@apollo/client"
+import { useNavigate, useParams } from "react-router-dom"
 import { gql } from "~/__generated__"
+import { useViewerMaybe } from "~/auth/use-viewer"
+import { createApolloLink } from "~/common/create-apollo-link"
+import { rootPath } from "~/common/paths"
+import { useSafeMutation } from "~/common/use-safe-mutation"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
-import { rootPath } from "~/common/paths"
 
 const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
   mutation EmailTokenAuth($input: EmailTokenUserAuthInput!) {
     emailTokenUserAuth(input: $input) {
       success
+      csrfToken
     }
   }
 `)
@@ -20,7 +24,7 @@ export const EmailAuthScreen: React.FC = () => {
     token: string
     clientAuthCode: string
   }>()
-  const [emailTokenAuth] = useMutation(EMAIL_TOKEN_AUTH_MUTATION)
+  const [emailTokenAuth] = useSafeMutation(EMAIL_TOKEN_AUTH_MUTATION)
   const { toast } = useToast()
   const navigate = useNavigate()
   const [isValidClient, setIsValidClient] = useState<boolean | null>(null)
@@ -29,6 +33,10 @@ export const EmailAuthScreen: React.FC = () => {
     const storedAuthCodes = JSON.parse(localStorage.getItem("authCodes") || "[]")
     setIsValidClient(storedAuthCodes.includes(clientAuthCode))
   }, [clientAuthCode])
+  const apolloClient = useApolloClient()
+  const {
+    result: { refetch: viewerRefetch },
+  } = useViewerMaybe()
 
   const handleAuthentication = async () => {
     if (!email || !token || !clientAuthCode) {
@@ -40,32 +48,39 @@ export const EmailAuthScreen: React.FC = () => {
       return
     }
 
-    try {
-      const result = await emailTokenAuth({
-        variables: {
-          input: {
-            email,
-            token,
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          },
+    const result = await emailTokenAuth({
+      variables: {
+        input: {
+          email,
+          token,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         },
-      })
+      },
+    })
 
-      if (result.data?.emailTokenUserAuth.success) {
-        toast({
-          title: "Authentication Successful",
-          description: "You have been successfully logged in.",
-          variant: "default",
-        })
-        navigate(rootPath({}))
-      } else {
-        throw new Error("Authentication failed")
-      }
-    } catch (err) {
-      console.error("Email token auth failed:", err)
+    if (result.errors) {
+      console.error("Email token auth failed:", result.errors)
       toast({
         title: "Authentication Failed",
         description: "An error occurred during authentication. Please try again.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (result.data?.emailTokenUserAuth.success) {
+      apolloClient.link = createApolloLink(result.data.emailTokenUserAuth.csrfToken)
+      viewerRefetch()
+      toast({
+        title: "Authentication Successful",
+        description: "You have been successfully logged in.",
+        variant: "default",
+      })
+      navigate(rootPath({}))
+    } else {
+      toast({
+        title: "Authentication Failed",
+        description: "Unable to authenticate. Please try again.",
         variant: "destructive",
       })
     }

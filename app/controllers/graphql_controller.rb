@@ -24,6 +24,9 @@ class GraphqlController < ApplicationController
       },
       logout: -> { logout }
     }
+
+    # Add form_authenticity_token to context if the method is available
+    context[:form_authenticity_token] = -> { form_authenticity_token }
     result = AppSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render(json: result)
   rescue => e

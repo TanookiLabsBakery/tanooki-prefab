@@ -1,11 +1,15 @@
-import { useMutation, useQuery } from "@apollo/client"
+import { useApolloClient, useQuery } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
+import invariant from "tiny-invariant"
 import * as z from "zod"
 import { gql } from "~/__generated__"
+import { createApolloLink } from "~/common/create-apollo-link"
 import { emailLoginPath, rootPath } from "~/common/paths"
+import { useFormErrors } from "~/common/use-form-errors"
+import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
@@ -19,13 +23,14 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>
 
 const LOGIN_MUTATION = gql(/* GraphQL */ `
-  mutation Login($input: CredentialsUserAuthInput!) {
+  mutation CredentialsLoginScreenLogin($input: CredentialsUserAuthInput!) {
     login: credentialsUserAuth(input: $input) {
       user {
         id
         firstName
         lastName
       }
+      csrfToken
     }
   }
 `)
@@ -39,7 +44,7 @@ const VIEWER_QUERY = gql(`
 `)
 
 export const CredentialsLoginScreen: React.FC = () => {
-  const [login, { loading, error }] = useMutation(LOGIN_MUTATION)
+  const [login, loginResult] = useSafeMutation(LOGIN_MUTATION)
   const { data: viewerData } = useQuery(VIEWER_QUERY)
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -51,33 +56,35 @@ export const CredentialsLoginScreen: React.FC = () => {
       password: "",
     },
   })
+  useFormErrors(form.setError, loginResult)
+
+  const apolloClient = useApolloClient()
 
   const onSubmit = async (values: LoginFormValues) => {
-    try {
-      await login({
-        variables: {
-          input: {
-            email: values.email,
-            password: values.password,
-            rememberMe: true,
-          },
+    const result = await login({
+      variables: {
+        input: {
+          email: values.email,
+          password: values.password,
+          rememberMe: true,
         },
-      })
-      toast({
-        title: "Login Successful",
-        description: "You have been successfully logged in.",
-        variant: "default",
-      })
-      // Redirect to the root path
-      navigate(rootPath({}))
-    } catch (err) {
-      console.error("Login failed:", err)
-      toast({
-        title: "Login Failed",
-        description: "An error occurred during login. Please try again.",
-        variant: "destructive",
-      })
+      },
+    })
+
+    if (result.errors) {
+      return
     }
+    invariant(result.data, "Data should be present")
+
+    apolloClient.link = createApolloLink(result.data.login.csrfToken)
+
+    toast({
+      title: "Login Successful",
+      description: "You have been successfully logged in.",
+      variant: "default",
+    })
+    // Redirect to the root path
+    navigate(rootPath({}))
   }
 
   return (
@@ -103,16 +110,11 @@ export const CredentialsLoginScreen: React.FC = () => {
                   type="password"
                   placeholder="Enter your password"
                 />
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Logging in..." : "Login"}
+                <Button type="submit" className="w-full" disabled={loginResult.loading}>
+                  {loginResult.loading ? "Logging in..." : "Login"}
                 </Button>
               </form>
             </Form>
-            {error && (
-              <p className="mt-2 text-sm text-red-500">
-                {error.message || "An error occurred during login."}
-              </p>
-            )}
             <div className="text-center">
               <Link to={emailLoginPath({})} className="text-sm text-blue-600 hover:underline">
                 Login with email link

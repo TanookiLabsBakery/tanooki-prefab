@@ -1,7 +1,10 @@
 require "rails_helper"
 
-RSpec.describe Mutations::EmailUserAuthChallenge do
-  let(:mutation) do
+RSpec.describe "EmailUserAuthChallenge Mutation", type: :request do
+  let(:user) { create(:user) }
+  let(:email) { user.email }
+  let(:client_auth_code) { SecureRandom.uuid }
+  let(:query) do
     <<~GQL
       mutation EmailUserAuthChallenge($input: EmailUserAuthChallengeInput!) {
         emailUserAuthChallenge(input: $input) {
@@ -10,27 +13,22 @@ RSpec.describe Mutations::EmailUserAuthChallenge do
       }
     GQL
   end
-  describe ".resolve" do
-    let(:user) { create(:user) }
-    let(:email) { user.email }
-    let(:client_auth_code) { SecureRandom.uuid }
 
-    it "creates a UserAuthChallenge and sends an email" do
+  describe "POST /graphql" do
+    it "creates a UserAuthChallenge, sends an email" do
       expect {
-        graphql_execute(
-          mutation,
-          current_user: nil,
+        post "/graphql", params: {
+          query: query,
           variables: {input: {email: email, clientAuthCode: client_auth_code}}
-        )
+        }, as: :json
       }.to change(UserAuthChallenge, :count).by(1)
         .and have_enqueued_job.on_queue("mailers")
 
-      result = graphql_execute(
-        mutation,
-        current_user: nil,
-        variables: {input: {email: email, clientAuthCode: client_auth_code}}
-      )
-      expect(result["data"]["emailUserAuthChallenge"]["success"]).to be true
+      expect(response).to have_http_status(:ok)
+      json_response = JSON.parse(response.body)
+
+      expect(json_response["errors"]).to be_nil
+      expect(json_response["data"]["emailUserAuthChallenge"]["success"]).to be true
 
       challenge = UserAuthChallenge.last
       expect(challenge.user).to eq(user)
@@ -39,15 +37,17 @@ RSpec.describe Mutations::EmailUserAuthChallenge do
     end
 
     it "raises an error if user is not found" do
-      result = graphql_execute(
-        mutation,
-        current_user: nil,
-        variables: {input: {email: "nonexistent@example.com", clientAuthCode: client_auth_code}},
-        allow_errors: true
-      )
+      post "/graphql", params: {
+        query: query,
+        variables: {input: {email: "nonexistent@example.com", clientAuthCode: client_auth_code}}
+      }, as: :json
 
-      expect(result["errors"]).to be_present
-      expect(result["errors"][0]["message"]).to eq("User not found")
+      expect(response).to have_http_status(:ok)
+      json_response = JSON.parse(response.body)
+
+      expect(json_response["errors"]).to be_present
+      expect(json_response["errors"][0]["message"]).to eq("User not found")
+      expect(json_response["data"]).to be_nil
     end
   end
 end

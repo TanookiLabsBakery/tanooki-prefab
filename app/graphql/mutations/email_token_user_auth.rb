@@ -9,6 +9,7 @@ module Mutations
     argument :time_zone, String, required: true
 
     field :success, Boolean, null: false
+    field :csrf_token, String, null: false
 
     def resolve(input)
       email = input[:email]
@@ -29,7 +30,8 @@ module Mutations
         else
           context[:auto_login].call(user.email)
           challenge.update!(claimed_at: Time.current)
-          {success: true}
+          csrf_token = context[:form_authenticity_token].call
+          {success: true, csrf_token: csrf_token}
         end
       else
         raise GraphQL::ExecutionError, "Invalid token"

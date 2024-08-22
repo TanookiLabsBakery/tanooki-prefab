@@ -6,12 +6,7 @@ import { Exact, ViewerQuery } from "~/__generated__/graphql"
 import { GraphqlError } from "~/ui/errors"
 
 interface ViewerContextType {
-  result: QueryResult<
-    ViewerQuery,
-    Exact<{
-      [key: string]: never
-    }>
-  >
+  result: QueryResult<ViewerQuery, Exact<{ [key: string]: never }>>
   viewer: ViewerQuery["viewer"]
 }
 
@@ -42,7 +37,7 @@ export const ViewerProvider = ({ children }: { children: React.ReactNode }) => {
 export const useViewerMaybe = () => {
   const contextValue = useContext(ViewerContext)
   if (contextValue === null) {
-    throw Error("Context has not been Provided!")
+    throw Error("useViewer must be used within a ViewerProvider")
   }
   return contextValue
 }
