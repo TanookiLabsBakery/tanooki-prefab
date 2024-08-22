@@ -169,3 +169,54 @@ jobs:
             echo "Error: do not use tailwind's @apply syntax, use theme instead: https://tailwindcss.com/docs/functions-and-directives#theme"
             exit 1
           fi
+
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run GraphQL codegen
+        run: pnpm run codegen-graphql
+
+      - name: Run type-check
+        run: pnpm type-check
+
+  graphql-schema:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Generate GraphQL schema
+        run: bin/rails graphql:schema:idl
+
+      - name: Check if schema is up to date
+        run: |
+          if git diff --exit-code; then
+            echo "GraphQL schema is up to date."
+          else
+            echo "GraphQL schema is out of date. Please run 'bin/rails graphql:schema:dump' and commit the changes."
+            exit 1
+          fi
