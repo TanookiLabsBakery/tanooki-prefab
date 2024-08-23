@@ -98,6 +98,50 @@ type LogoutPayload {
   success: Boolean!
 }
 
+"""
+The connection type for Organization.
+"""
+type MembershipConnection {
+  """
+  A list of edges.
+  """
+  edges: [MembershipEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [Organization!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type MembershipEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Organization
+  role: MembershipRoleEnum!
+}
+
+"""
+Membership Role enum
+"""
+enum MembershipRoleEnum {
+  DEFAULT
+  ORGANIZATION_ADMIN
+}
+
 type Mutation {
   credentialsUserAuth(
     """
@@ -148,6 +192,78 @@ interface Node {
   id: ID!
 }
 
+type Organization implements Node {
+  createdAt: ISO8601DateTime!
+
+  """
+  ID of the object.
+  """
+  id: ID!
+  name: String!
+  organizationType: OrganizationTypeEnum!
+  slug: String!
+  updatedAt: ISO8601DateTime!
+
+  """
+  Users who are connected to a campaign in this company by teh account_manager or sales_rep fields
+  """
+  users(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): UserConnection!
+}
+
+"""
+Organization Type enum
+"""
+enum OrganizationTypeEnum {
+  PERSONAL
+  STANDARD
+  SYSTEM
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+}
+
 type Query {
   """
   An example field added by the generator
@@ -165,5 +281,70 @@ type User implements Node {
   """
   id: ID!
   lastName: String!
+  organizations(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): MembershipConnection!
   updatedAt: ISO8601DateTime!
+  userRole: UserRoleEnum!
+}
+
+"""
+The connection type for User.
+"""
+type UserConnection {
+  """
+  A list of edges.
+  """
+  edges: [UserEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [User!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type UserEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: User
+}
+
+"""
+User Role enum
+"""
+enum UserRoleEnum {
+  DEFAULT
+  SYSTEM_ADMIN
 }
