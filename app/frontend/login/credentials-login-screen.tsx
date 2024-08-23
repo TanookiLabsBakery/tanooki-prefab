@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
-import { emailLoginPath, rootPath } from "~/common/paths"
+import { loginPath, rootPath } from "~/common/paths"
 import { useFormErrors } from "~/common/use-form-errors"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
@@ -103,7 +103,7 @@ export const CredentialsLoginScreen: React.FC = () => {
               </form>
             </Form>
             <div className="text-center">
-              <Link to={emailLoginPath({})} className="text-sm text-blue-600 hover:underline">
+              <Link to={loginPath({})} className="text-sm text-blue-600 hover:underline">
                 Login with email link
               </Link>
             </div>
