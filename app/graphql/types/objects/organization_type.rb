@@ -4,7 +4,7 @@ module Types
   class Objects::OrganizationType < Types::BaseObject
     implements GraphQL::Types::Relay::Node
 
-    field :organization_type, Types::Enums::OrganizationTypeEnum, null: false
+    field :organization_type, Enums::OrganizationTypeType, null: false
     field :name, String, null: false
     field :slug, String, null: false
     # field :time_zone, String, null: false # TODO tz type?
@@ -19,7 +19,9 @@ module Types
       object.memberships.includes(:user).order("user.name")
     end
 
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
+    # TODO authenticate this
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+    # TODO authenticate this
+    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   end
 end

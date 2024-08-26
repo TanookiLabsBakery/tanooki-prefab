@@ -3,7 +3,7 @@ module Types
     class MembershipEdgeType < BaseEdge
       node_type(Types::Objects::OrganizationType)
 
-      field :role, Types::Enums::MembershipRoleEnum, null: false
+      field :role, Enums::MembershipRoleType, null: false
       def membership_role
         object.node.membership_role
       end

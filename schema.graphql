@@ -131,13 +131,13 @@ type MembershipEdge {
   The item at the end of the edge.
   """
   node: Organization
-  role: MembershipRoleEnum!
+  role: MembershipRole!
 }
 
 """
-Membership Role enum
+Membership role enum
 """
-enum MembershipRoleEnum {
+enum MembershipRole {
   DEFAULT
   ORGANIZATION_ADMIN
 }
@@ -200,7 +200,7 @@ type Organization implements Node {
   """
   id: ID!
   name: String!
-  organizationType: OrganizationTypeEnum!
+  organizationType: OrganizationType!
   slug: String!
   updatedAt: ISO8601DateTime!
 
@@ -231,9 +231,9 @@ type Organization implements Node {
 }
 
 """
-Organization Type enum
+Organization type enum
 """
-enum OrganizationTypeEnum {
+enum OrganizationType {
   PERSONAL
   STANDARD
   SYSTEM
@@ -303,7 +303,8 @@ type User implements Node {
     last: Int
   ): MembershipConnection!
   updatedAt: ISO8601DateTime!
-  userRole: UserRoleEnum!
+  userRole: UserRole!
+  userStatus: UserStatus!
 }
 
 """
@@ -342,9 +343,18 @@ type UserEdge {
 }
 
 """
-User Role enum
+User role enum
 """
-enum UserRoleEnum {
+enum UserRole {
   DEFAULT
   SYSTEM_ADMIN
+}
+
+"""
+User status enum
+"""
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  INVITED
 }

@@ -4,7 +4,8 @@ module Types
   class Objects::UserType < Types::BaseObject
     implements GraphQL::Types::Relay::Node
 
-    field :user_role, Types::Enums::UserRoleEnum, null: false
+    field :user_role, Enums::UserRoleType, null: false
+    field :user_status, Enums::UserStatusType, null: false
     field :first_name, String, null: false
     field :last_name, String, null: false
     # field :time_zone, String, null: false # TODO tz type?
