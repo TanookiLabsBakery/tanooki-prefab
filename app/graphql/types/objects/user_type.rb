@@ -8,8 +8,10 @@ module Types
     field :user_status, Enums::UserStatusType, null: false
     field :first_name, String, null: false
     field :last_name, String, null: false
+    field :email, String, null: false # TODO authenticate this
     # field :time_zone, String, null: false # TODO tz type?
-    # field :email, String, null: false # TODO authenticate this
+
+    field :full_name, String, null: false
 
     field(
       :organizations,

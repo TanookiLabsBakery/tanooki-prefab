@@ -10,5 +10,7 @@ import { path } from "static-path"
 export const rootPath = path("/")
 export const loginPath = path("/login")
 export const credentialsLoginPath = path("/login/credentials")
+export const detailsPath = path("/details")
+export const profilePath = path("/profile")
 export const dashboardPath = path("/dashboard")
 export const emailAuthPath = path("/auth/email/:email/:token/:clientAuthCode")

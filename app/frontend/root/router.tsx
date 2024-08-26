@@ -1,9 +1,10 @@
-import { RouteObject, createBrowserRouter } from "react-router-dom"
+import { Outlet, RouteObject, createBrowserRouter } from "react-router-dom"
 import {
   credentialsLoginPath,
   emailAuthPath,
   loginPath,
   rootPath,
+  profilePath,
   dashboardPath,
 } from "~/common/paths"
 import { RootScreen } from "./root-screen"
@@ -12,19 +13,27 @@ import { EmailAuthScreen } from "~/login/email-auth-screen"
 import { EmailLoginScreen } from "~/login/email-login-screen"
 import { RootLayout } from "./root-layout"
 import { ErrorBoundary } from "../ui/error-boundary"
-import { RequireUserSignedIn, RequireUserSignedOut } from "~/auth/auth-layouts"
+import {
+  RequireSystemAdminSignedIn,
+  RequireUserSignedIn,
+  RequireUserSignedOut,
+} from "~/auth/auth-layouts"
 import { LoginLayout } from "~/auth/login-layout"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
-import { TopBarLayout } from "~/layouts/top-bar-layout"
 import { ProfileScreen } from "~/profile/profile-screen"
+import { AdminDashboardScreen } from "~/admin/admin-dashboard-screen"
+
+const systemAdminAuthenticatedRoutes: Array<RouteObject> = [
+  {
+    path: dashboardPath.pattern,
+    element: <AdminDashboardScreen />,
+  },
+]
 
 const authenticatedRoutes: Array<RouteObject> = [
   {
-    path: dashboardPath.pattern,
+    path: profilePath.pattern,
     element: <ProfileScreen />,
-    handle: {
-      title: "Profile",
-    },
   },
 ]
 
@@ -35,13 +44,27 @@ export const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       {
+        element: <RequireSystemAdminSignedIn />,
+        children: [
+          {
+            element: <SidebarLayout />,
+            children: [
+              {
+                element: <Outlet />,
+                children: [...systemAdminAuthenticatedRoutes],
+              },
+            ],
+          },
+        ],
+      },
+      {
         element: <RequireUserSignedIn />,
         children: [
           {
             element: <SidebarLayout />,
             children: [
               {
-                element: <TopBarLayout />,
+                element: <Outlet />,
                 children: [...authenticatedRoutes],
               },
             ],

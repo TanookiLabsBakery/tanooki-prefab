@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom"
+import { getMetaContent } from "~/common/get-meta-content"
 
 export const LoginLayout = () => {
   return (
@@ -9,7 +10,8 @@ export const LoginLayout = () => {
 
           <div>
             <div className="text-center text-xs">
-              © {new Date().getFullYear()} Prefab Copyright All Rights Reserved
+              © {new Date().getFullYear()} {getMetaContent("APP_NAME")} Copyright All Rights
+              Reserved
             </div>
           </div>
         </div>

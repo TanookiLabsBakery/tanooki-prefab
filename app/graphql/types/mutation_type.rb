@@ -7,11 +7,6 @@ module Types
     field :email_user_auth_challenge, mutation: Mutations::EmailUserAuthChallenge
     field :logout, mutation: Mutations::Logout
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World"
-    end
+    field :user_update, mutation: Mutations::UserUpdate
   end
 end

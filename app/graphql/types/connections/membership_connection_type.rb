@@ -1,6 +1,6 @@
 module Types
   module Connections
-    class MembershipConnectionType < BaseConnection
+    class MembershipConnectionType < Types::BaseConnection
       edge_type(Types::Edges::MembershipEdgeType)
 
       def nodes

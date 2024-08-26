@@ -2,7 +2,7 @@
 
 module Types
   class BaseUnion < GraphQL::Schema::Union
-    edge_type_class(Types::Edges::BaseEdge)
-    connection_type_class(Types::Connections::BaseConnection)
+    edge_type_class(Types::BaseEdge)
+    connection_type_class(Types::BaseConnection)
   end
 end

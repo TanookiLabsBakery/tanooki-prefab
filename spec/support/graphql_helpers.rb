@@ -1,5 +1,7 @@
 # https://graphql-ruby.org/testing/integration_tests.html
 module GraphqlHelpers
+  class GraphqlError < StandardError; end
+
   def graphql_execute(query, current_user:, session: nil, variables: nil, allow_errors: false, context: {})
     result = AppSchema.execute(
       query,

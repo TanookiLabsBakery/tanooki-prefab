@@ -1,6 +1,6 @@
 module Types
   module Edges
-    class MembershipEdgeType < BaseEdge
+    class MembershipEdgeType < Types::BaseEdge
       node_type(Types::Objects::OrganizationType)
 
       field :role, Enums::MembershipRoleType, null: false

@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { rootPath, loginPath } from "~/common/paths"
 import { useViewerMaybe } from "./use-viewer"
+import { UserRole } from "~/__generated__/graphql"
 
 export const RequireUserSignedOut = () => {
   const navigate = useNavigate()
@@ -25,6 +26,21 @@ export const RequireUserSignedIn = () => {
   useEffect(() => {
     if (!result.loading && !viewer) {
       navigate(loginPath({}) + "?" + new URLSearchParams({ returnTo: window.location.pathname }))
+    }
+  }, [navigate, result.loading, viewer])
+
+  if (result.loading) return null
+
+  return <Outlet />
+}
+
+export const RequireSystemAdminSignedIn = () => {
+  const navigate = useNavigate()
+  const { viewer, result } = useViewerMaybe()
+
+  useEffect(() => {
+    if (viewer?.userRole !== UserRole.SystemAdmin) {
+      navigate(rootPath({}))
     }
   }, [navigate, result.loading, viewer])
 
