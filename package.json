@@ -54,7 +54,7 @@
     "vite-plugin-ruby": "^5.0.0"
   },
   "engines": {
-    "node": "v22"
+    "node": "22.1.x"
   },
   "lint-staged": {
     "*.{js,ts,tsx,css,md}": "prettier --write"
