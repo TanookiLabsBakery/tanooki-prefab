@@ -2,3 +2,4 @@ vite: bin/vite dev
 web: bin/rails s
 schema: pnpm run schema-dump-watch
 codegen: pnpm run codegen-graphql-watch
+worker: bundle exec good_job start
