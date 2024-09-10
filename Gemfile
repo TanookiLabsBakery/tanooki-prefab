@@ -45,3 +45,5 @@ end
 group :test do
   gem "cuprite"
 end
+
+gem "postmark-rails", "~> 0.22.1"

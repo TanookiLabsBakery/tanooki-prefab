@@ -107,3 +107,23 @@ git remote add git@github.com:TanookiLabs/example-project.git
 git fetch example-project
 git cherry-pick <ref>
 ```
+
+## Staging setup
+
+### Setup the tanookiapp.com subdomain
+
+this requires [jo](https://github.com/jpmens/jo), [jq](https://jqlang.github.io/jq/), and the
+[1password cli](https://developer.1password.com/docs/cli/get-started/)
+
+```bash
+just tanookiapp-heroku-domains-add-staging
+just tanookiapp-cloudflare-set-cname-staging
+just tanookiapp-certs-staging
+just tanookiapp-heroku-set-origin-staging
+```
+
+### Setup email
+
+1. set the POSTMARK_API_TOKEN environment variable
+1. set EMAIL_HOST_ALLOWLIST to a list of domains that can receive email, e.g.
+   `tanookilabs.com,exampleclient.co`
