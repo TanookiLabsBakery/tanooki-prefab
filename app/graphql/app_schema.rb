@@ -38,6 +38,9 @@ class AppSchema < GraphQL::Schema
 
   # Given a string UUID, find the object
   def self.object_from_id(global_id, query_ctx)
-    CoolId.locate(id)
+    CoolId.locate(global_id)
   end
+
+  default_max_page_size 250
+  default_page_size 50
 end
