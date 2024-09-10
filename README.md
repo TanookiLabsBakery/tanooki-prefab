@@ -1,38 +1,38 @@
-# README
+# Tanooki Prefab
 
-## Table of Contents
+## Development Setup
 
-- [dev setup](#dev-setup)
-- [emails](#emails)
-- [s3 setup script](#s3-setup-script)
+### Prerequisites
 
-## dev setup
-
-### prerequisites
-
-- [pnpm](https://pnpm.io/installation)
+- [pnpm](https://pnpm.io/installation) _[ni](https://github.com/antfu-collective/ni) is also
+  recommended if you use npm, yarn etc on other projects_
 - [postgres](https://www.postgresql.org/download/)
+- [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
 
-### setup
+### Setup
 
 ```bash
 bin/setup
 bin/dev
 ```
 
-## emails
+## Emails
 
-this application uses [MJML](https://mjml.io/) for building responsive email templates, combined
-with ERB for dynamic content rendering in Rails.
+This application uses [MJML](https://mjml.io/) for building responsive email templates.
 
-### previewing emails
+### Previewing Emails
 
 For development, you can view/manage sent emails at `/letter_opener`
 
-## s3 setup script
+## S3 Setup Script
 
 The `bin/setup-s3` script automates the process of creating S3 buckets and configuring them for use
-with a Rails application. It will:
+with a Rails application.
+
+<details>
+<summary>Click to expand S3 setup details</summary>
+
+It will:
 
 - Create an S3 bucket in your specified region.
 - Set up CORS (Cross-Origin Resource Sharing) for the bucket with http://localhost:5100 as the
@@ -42,7 +42,7 @@ with a Rails application. It will:
   listing, getting, putting, and deleting objects).
 - Output the IAM user's credentials for use in your Rails app.
 
-### prerequisites
+### Prerequisites
 
 Before using this script, you must have the following prerequisites configured:
 
@@ -58,7 +58,7 @@ Before using this script, you must have the following prerequisites configured:
 3. Configure your AWS CLI with `aws configure` and input the access and secret key from this IAM
    user.
 
-### running the script
+### Running the Script
 
 Run the script with the following command:
 
@@ -74,3 +74,36 @@ origin of localhost:5100. Additional allowed origins will need to be added manua
 
 The generated IAM credentials will be displayed on the screen. Make sure to copy them as they will
 not be shown again.
+
+</details>
+
+## Tanooki Prefab
+
+This project was initiated with [Tanooki Prefab](https://github.com/TanookiLabs/tanooki-prefab).
+Changes to prefab can be brought into this project and vice versa.
+
+### Moving Changes from Prefab into This Project
+
+Connect prefab:
+
+```bash
+cd path/to/example-project
+git remote add prefab git@github.com:TanookiLabs/tanooki-prefab.git
+```
+
+```bash
+git fetch prefab
+git cherry-pick <ref>
+```
+
+### Moving Changes from This Project into Prefab
+
+```bash
+cd path/to/prefab
+git remote add git@github.com:TanookiLabs/example-project.git
+```
+
+```bash
+git fetch example-project
+git cherry-pick <ref>
+```
