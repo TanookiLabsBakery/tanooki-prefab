@@ -46,3 +46,7 @@ node_modules
 /app/frontend/__generated__
 .aider.chat.history.md
 .aider*
+.byebug_history
+.vscode
+.DS_Store
+.eslintcache
