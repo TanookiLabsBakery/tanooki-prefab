@@ -4,6 +4,15 @@ Rails.application.routes.draw do
     mount(LetterOpenerWeb::Engine, at: "/letter_opener")
   end
 
+  unless Rails.env.test?
+    get(
+      "/(*path)",
+      to: redirect { |_, request| "#{ENV.fetch("ORIGIN")}#{request.fullpath}" },
+      constraints: ->(request) { request.base_url != ENV.fetch("ORIGIN") },
+      status: 302
+    )
+  end
+
   post("/graphql", to: "graphql#execute")
   get("up" => "rails/health#show", :as => :rails_health_check)
 

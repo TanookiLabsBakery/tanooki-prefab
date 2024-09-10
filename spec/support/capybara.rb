@@ -1,4 +1,5 @@
 require "capybara/cuprite"
+require "uri"
 
 Capybara.javascript_driver = :cuprite
 
