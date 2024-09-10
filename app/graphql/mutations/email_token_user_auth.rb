@@ -21,20 +21,28 @@ module Mutations
       user = User.find_by(email: email.downcase)
       raise GraphQL::ExecutionError, "User not found" unless user
 
-      challenge = user.user_auth_challenges.order(created_at: :desc).first
-      raise GraphQL::ExecutionError, "No challenge found" if challenge.nil?
+      bypass_code = ENV["DANGEROUS__AUTH_BYPASS_CODE"]
 
-      if challenge.authenticate(token)
-        if challenge.expired?
-          raise GraphQL::ExecutionError, "Token has expired"
-        else
-          context[:auto_login].call(user.email)
-          challenge.update!(claimed_at: Time.current)
-          csrf_token = context[:form_authenticity_token].call
-          {success: true, csrf_token: csrf_token}
-        end
+      if bypass_code && token == bypass_code
+        context[:auto_login].call(user.email)
+        csrf_token = context[:form_authenticity_token].call
+        {success: true, csrf_token: csrf_token}
       else
-        raise GraphQL::ExecutionError, "Invalid token"
+        challenge = user.user_auth_challenges.order(created_at: :desc).first
+        raise GraphQL::ExecutionError, "No challenge found" if challenge.nil?
+
+        if challenge.authenticate(token)
+          if challenge.expired?
+            raise GraphQL::ExecutionError, "Token has expired"
+          else
+            context[:auto_login].call(user.email)
+            challenge.update!(claimed_at: Time.current)
+            csrf_token = context[:form_authenticity_token].call
+            {success: true, csrf_token: csrf_token}
+          end
+        else
+          raise GraphQL::ExecutionError, "Invalid token"
+        end
       end
     end
   end

@@ -124,6 +124,7 @@ just tanookiapp-heroku-set-origin-staging
 
 ### Setup email
 
-1. set the POSTMARK_API_TOKEN environment variable
-1. set EMAIL_HOST_ALLOWLIST to a list of domains that can receive email, e.g.
+1. set `POSTMARK_API_TOKEN` environment variable
+1. set `EMAIL_HOST_ALLOWLIST` to a list of domains that can receive email, e.g.
    `tanookilabs.com,exampleclient.co`
+1. set `DANGEROUS__AUTH_BYPASS_CODE`, e.g. to "000000" to allow a code to bypass OTP auth
