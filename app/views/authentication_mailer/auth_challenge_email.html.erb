@@ -17,7 +17,11 @@
     </mj-text>
 
     <mj-text font-size="18px" font-weight="bold" align="center">
-      <%= @token %>
+      <mj-raw>
+        <span id="otp-code">
+          <%= @token %>
+        </span>
+      </mj-raw>
     </mj-text>
   </mj-column>
 </mj-section>

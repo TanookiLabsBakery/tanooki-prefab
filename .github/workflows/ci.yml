@@ -37,7 +37,57 @@ jobs:
       - name: Lint code for consistent style
         run: bin/standardrb
 
-  rspec:
+  rspec-non-system:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
+      - name: Install node dependencies for mjml
+        run: pnpm install
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: "postgres://postgres:password@localhost:5432/test"
+        run: |
+          bin/rails db:create
+          bin/rails db:schema:load
+
+      - name: Run non-system tests
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: "postgres://postgres:password@localhost:5432/test"
+        run: bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
+
+  rspec-system:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -78,7 +128,7 @@ jobs:
           bin/rails db:create
           bin/rails db:schema:load
 
-      - name: Compile assets
+      - name: Install dependencies and compile assets
         env:
           RAILS_ENV: test
           ORIGIN: "http://example.com"
@@ -86,13 +136,13 @@ jobs:
           pnpm install
           bin/rails assets:precompile
 
-      - name: Run tests
+      - name: Run system tests
         env:
           RAILS_ENV: test
           ORIGIN: "http://example.com"
           CUPRITE_INSPECTOR: false
           DATABASE_URL: "postgres://postgres:password@localhost:5432/test"
-        run: bundle exec rspec
+        run: bundle exec rspec spec/system
 
   lint-files:
     runs-on: ubuntu-latest

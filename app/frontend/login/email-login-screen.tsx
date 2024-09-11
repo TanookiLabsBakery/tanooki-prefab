@@ -1,11 +1,14 @@
+import { useApolloClient } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
 import * as z from "zod"
 import { gql } from "~/__generated__"
+import { useViewerMaybe } from "~/auth/use-viewer"
+import { createApolloLink } from "~/common/create-apollo-link"
 import { credentialsLoginPath, rootPath } from "~/common/paths"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
@@ -52,6 +55,11 @@ export const EmailLoginScreen: React.FC = () => {
   const { toast } = useToast()
   const [step, setStep] = useState<"email" | "checkEmail" | "otp">("email")
   const [email, setEmail] = useState("")
+  const navigate = useNavigate()
+  const apolloClient = useApolloClient()
+  const {
+    result: { refetch: viewerRefetch },
+  } = useViewerMaybe()
 
   const emailForm = useForm<EmailLoginFormValues>({
     resolver: zodResolver(emailLoginFormSchema),
@@ -135,13 +143,14 @@ export const EmailLoginScreen: React.FC = () => {
     }
 
     if (result.data?.emailTokenUserAuth.success) {
+      apolloClient.link = createApolloLink(result.data.emailTokenUserAuth.csrfToken)
+      viewerRefetch()
       toast({
         title: "Authentication Successful",
         description: "You have been successfully logged in.",
         variant: "default",
       })
-      // Navigate to root path or handle successful login
-      window.location.href = rootPath({})
+      navigate(rootPath({}))
     } else {
       toast({
         title: "Authentication Failed",

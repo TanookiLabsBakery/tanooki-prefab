@@ -2,10 +2,10 @@ require "capybara/cuprite"
 require "uri"
 
 Capybara.javascript_driver = :cuprite
+Capybara.server = :thruster
 
 RSpec.configure do |config|
   config.prepend_before(:each, type: :system) do
-    # Use JS driver always for system tests.
     driven_by Capybara.javascript_driver, options: {
       window_size: [1280, 832],
       browser_options: {}, # {"no-sandbox": nil} required for docker

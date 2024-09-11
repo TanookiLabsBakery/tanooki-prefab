@@ -44,6 +44,8 @@ end
 
 group :test do
   gem "cuprite"
+  gem "thruster"
+  gem "capybara-thruster"
 end
 
 gem "postmark-rails", "~> 0.22.1"

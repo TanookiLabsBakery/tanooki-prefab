@@ -25,8 +25,6 @@ module Mutations
       AuthenticationMailer.auth_challenge_email(user, token, client_auth_code).deliver_later(queue: "mailers")
 
       {success: true}
-    rescue => e
-      raise GraphQL::ExecutionError, e.message
     end
   end
 end
