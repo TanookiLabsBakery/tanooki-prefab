@@ -96,18 +96,6 @@ git fetch prefab
 git cherry-pick <ref>
 ```
 
-### Moving Changes from This Project into Prefab
-
-```bash
-cd path/to/prefab
-git remote add git@github.com:TanookiLabs/example-project.git
-```
-
-```bash
-git fetch example-project
-git cherry-pick <ref>
-```
-
 ## Staging setup
 
 ### Setup the tanookiapp.com subdomain
