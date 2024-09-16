@@ -167,8 +167,6 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    graphiql-rails (1.10.1)
-      railties
     graphql (2.3.16)
       base64
       fiber-storage
@@ -440,7 +438,6 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   good_job (~> 4.3)
-  graphiql-rails
   graphql
   letter_opener
   letter_opener_web
