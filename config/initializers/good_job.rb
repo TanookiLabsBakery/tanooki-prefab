@@ -7,4 +7,11 @@ Rails.application.configure do
   if Rails.env.production?
     config.good_job.enable_cron = ENV["DYNO"] == "worker.1"
   end
+
+  # config.good_job.cron = {
+  #   daily_notifications_job: {
+  #     cron: "0 4 * * *", # every day at 4am
+  #     class: "DailyNotificationsJob"
+  #   },
+  # }
 end

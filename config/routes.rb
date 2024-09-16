@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  unless Rails.env.test?
-    constraints UserConstraint.new { |user| Rails.env.development? || user&.user_role_system_admin? } do
-      mount(LetterOpenerWeb::Engine, at: "/letter_opener")
-      get "/graphiql", to: "graphiql#index", as: "graphiql"
-      mount GoodJob::Engine => "good_job"
-    end
+  if Rails.env.development?
+    mount(LetterOpenerWeb::Engine, at: "/letter_opener")
+  end
 
+  constraints UserConstraint.new { |user| Rails.env.development? || user&.user_role_system_admin? } do
+    get "/graphiql", to: "graphiql#index", as: "graphiql"
+    mount GoodJob::Engine => "good_job"
+  end
+
+  unless Rails.env.test?
     get(
       "/(*path)",
       to: redirect { |_, request| "#{ENV.fetch("ORIGIN")}#{request.fullpath}" },
