@@ -160,7 +160,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    good_job (4.2.1)
+    good_job (4.3.0)
       activejob (>= 6.1.0)
       activerecord (>= 6.1.0)
       concurrent-ruby (>= 1.3.1)
@@ -173,7 +173,7 @@ GEM
       base64
       fiber-storage
     hashie (5.0.0)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
     irb (1.14.0)
@@ -317,7 +317,7 @@ GEM
     redis-client (0.22.2)
       connection_pool
     regexp_parser (2.9.2)
-    reline (0.5.9)
+    reline (0.5.10)
       io-console (~> 0.5)
     rexml (3.3.5)
       strscan
@@ -439,7 +439,7 @@ DEPENDENCIES
   discard
   dotenv-rails
   factory_bot_rails
-  good_job (~> 4.2)
+  good_job (~> 4.3)
   graphiql-rails
   graphql
   letter_opener
