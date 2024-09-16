@@ -4,19 +4,20 @@ RSpec.describe Mutations::CredentialsUserAuth, type: :request do
   let(:user) { create(:user, email: "user@example.com", password: "password") }
   let(:query) do
     <<~GQL
-      mutation($email: String!, $password: String!, $rememberMe: Boolean!) {
-        credentialsUserAuth(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
+      mutation($email: String!, $password: String!, $rememberMe: Boolean!, $authType: AuthType) {
+        credentialsUserAuth(input: { email: $email, password: $password, rememberMe: $rememberMe, authType: $authType }) {
           user {
             id
             firstName
             lastName
           }
+          authToken
         }
       }
     GQL
   end
 
-  describe "POST /graphql" do
+  describe "session auth - POST /graphql" do
     context "with valid credentials" do
       it "returns a user" do
         post "/graphql", params: {query: query, variables: {email: user.email, password: "password", rememberMe: false}}, as: :json
@@ -27,6 +28,10 @@ RSpec.describe Mutations::CredentialsUserAuth, type: :request do
         data = json_response["data"]["credentialsUserAuth"]
         expect(data["user"]["firstName"]).to eq(user.first_name)
         expect(data["user"]["lastName"]).to eq(user.last_name)
+
+        # no token since we didn't request it
+        expect(data["authToken"]).to eq nil
+
         expect(session[:user_id]).to eq(user.id)
       end
 
@@ -53,6 +58,36 @@ RSpec.describe Mutations::CredentialsUserAuth, type: :request do
     context "with invalid credentials" do
       it "returns an error" do
         post "/graphql", params: {query: query, variables: {email: user.email, password: "wrong_password", rememberMe: false}}, as: :json
+
+        json_response = JSON.parse(response.body)
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response["errors"]).to be_present
+        expect(json_response["errors"][0]["message"]).to eq("Invalid email or password")
+        expect(json_response["data"]).to be_nil
+      end
+    end
+  end
+
+  describe "token auth - POST /graphql" do
+    context "with valid credentials" do
+      it "returns a user and a token" do
+        post "/graphql", params: {query: query, variables: {email: user.email, password: "password", rememberMe: false, authType: "TOKEN"}}, as: :json
+
+        json_response = JSON.parse(response.body)
+        expect(json_response["errors"]).to be_nil
+
+        data = json_response["data"]["credentialsUserAuth"]
+        expect(data["user"]["firstName"]).to eq(user.first_name)
+        expect(data["user"]["lastName"]).to eq(user.last_name)
+        expect(data["authToken"]).to_not eq nil
+        expect(session[:user_id]).to eq(nil)
+      end
+    end
+
+    context "with invalid credentials" do
+      it "returns an error" do
+        post "/graphql", params: {query: query, variables: {email: user.email, password: "wrong_password", rememberMe: false, authType: "TOKEN"}}, as: :json
 
         json_response = JSON.parse(response.body)
 

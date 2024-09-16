@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_10_185103) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_16_172643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -143,6 +143,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_185103) do
     t.index ["user_id"], name: "index_user_auth_challenges_on_user_id"
   end
 
+  create_table "user_auth_tokens", id: :string, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_user_auth_tokens_on_token"
+    t.index ["user_id"], name: "index_user_auth_tokens_on_user_id"
+  end
+
   create_table "users", id: :string, force: :cascade do |t|
     t.string "email", null: false
     t.string "first_name", null: false
@@ -170,4 +179,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_185103) do
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
   add_foreign_key "user_auth_challenges", "users"
+  add_foreign_key "user_auth_tokens", "users", on_delete: :cascade
 end

@@ -6,6 +6,8 @@ class GraphqlController < ApplicationController
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
 
+  before_action :raise_on_invalid_token
+
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
@@ -35,6 +37,20 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def raise_on_invalid_token
+    if request.headers["HTTP_AUTHORIZATION"] && !current_user
+      render json: {
+        errors: [
+          {message: "Session Not Found",
+           extensions: {
+             code: "FORBIDDEN"
+           }}
+        ],
+        data: {}
+      }, status: 401
+    end
+  end
 
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)

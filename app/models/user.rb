@@ -7,6 +7,7 @@ class User < ApplicationRecord
   pg_enum :user_status, ["invited", "active", "blocked"]
 
   has_many :user_auth_challenges, dependent: :destroy
+  has_many :user_auth_tokens, dependent: :destroy
   has_many :memberships, dependent: :destroy
   belongs_to :current_organization, class_name: "Organization"
 
