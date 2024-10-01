@@ -78,7 +78,7 @@ function createUser(){
 
   arn=$(echo ${policy} | awk '{print $2}')
   echo "Attaching policy to user $bucket"
-  aws iam attach-user-policy --policy-arn "${arn}" --user-name "${bucket}" || {
+  aws iam attach-user-policy --policy-arn "${arn}" --user-name "${bucket}" --output json || {
     echo "Error: Failed to attach policy to user $bucket."
     exit 1
   }
