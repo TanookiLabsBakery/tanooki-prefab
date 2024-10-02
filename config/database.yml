@@ -2,9 +2,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  <% if ENV["DATABASE_HOST"].present? %>
-  host: <%= ENV["DATABASE_HOST"] %>
-  <% end %>
+  <% if ENV["DATABASE_HOST"].present? %>host: <%= ENV["DATABASE_HOST"] %><% end %>
 
 development:
   <<: *default
