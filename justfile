@@ -116,10 +116,10 @@ _heroku-set-default-env-vars app:
   just _heroku-set-default-origin {{app}}
 
 heroku-buildpacks-setup-staging:
-  @just _heroku-buildpacks-setup {{heroku_app_staging}}
+  @just _heroku-buildpacks {{heroku_app_staging}}
 
 heroku-buildpacks-setup-production:
-  @just _heroku-buildpacks-setup {{heroku_app_staging}}
+  @just _heroku-buildpacks {{heroku_app_staging}}
 
 heroku-provision-pg-staging:
   @just _heroku-provision-pg {{heroku_app_staging}}
