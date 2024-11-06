@@ -49,4 +49,4 @@ end
 
 gem "postmark-rails", "~> 0.22.1"
 
-gem "good_job", "~> 4.3"
+gem "good_job", "~> 4.4"
