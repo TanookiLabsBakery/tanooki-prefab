@@ -14,6 +14,8 @@ export const TextField = <
   labelClassName,
   type = "text",
   placeholder,
+  disabled,
+  required,
 }: {
   label: string
   labelClassName?: string
@@ -21,16 +23,23 @@ export const TextField = <
   name: TName
   type?: string
   placeholder?: string
+  disabled?: boolean
+  required?: boolean
 } & InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem>
-          <FormLabel className={cn(labelClassName)}>{label}</FormLabel>
+          <FormLabel
+            className={cn("text-gray-400", fieldState.error && "text-destructive", labelClassName)}
+          >
+            {label}
+            {required && <span className="text-destructive">*</span>}
+          </FormLabel>
           <FormControl>
-            <Input {...field} type={type} placeholder={placeholder} />
+            <Input {...field} type={type} placeholder={placeholder} disabled={disabled} />
           </FormControl>
           <FormMessage className="text-xs" />
         </FormItem>

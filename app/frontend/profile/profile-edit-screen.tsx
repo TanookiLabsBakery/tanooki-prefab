@@ -10,10 +10,10 @@ import { TextField } from "~/fields/text-field"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
-import Text from "~/ui/typography"
 import { useToast } from "~/ui/use-toast"
+import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { rootPath } from "~/common/paths"
+import { rootPath, profilePath } from "~/common/paths"
 
 const mutation = gql(/* GraphQL */ `
   mutation UpdateProfile($input: UserUpdateInput!) {
@@ -36,6 +36,7 @@ export const ProfileEditScreen = () => {
   const formSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
+    email: z.string(),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,6 +44,7 @@ export const ProfileEditScreen = () => {
     values: {
       firstName: viewer.firstName ?? "",
       lastName: viewer.lastName ?? "",
+      email: viewer.email ?? "",
     },
   })
 
@@ -55,7 +57,8 @@ export const ProfileEditScreen = () => {
         input: {
           id: viewer.id,
           userInput: {
-            ...values,
+            firstName: values.firstName,
+            lastName: values.lastName,
           },
         },
       },
@@ -72,35 +75,37 @@ export const ProfileEditScreen = () => {
 
   return (
     <TablePageLayout>
+      <Link to={profilePath({})}>
+        &larr; <span className="align-text-bottom text-xs font-bold uppercase">Back</span>
+      </Link>
       <div className="flex flex-1 flex-col">
+        <div className="bottom-1 mb-4 flex items-center justify-between border-b py-4">
+          <h1 className="text-2xl">Edit Details</h1>
+          {/* <LinkButton to={}>Update Password</LinkButton> */}
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-[330px,650px] gap-8">
-              <div>
-                <Text variant="default" className="mb-4">
-                  Profile picture
-                </Text>
-              </div>
+            <div className="grid grid-cols-2 gap-8">
               <div className="space-y-8">
-                <Section variant="grayBackground" className="space-y-4">
-                  <div>
-                    <Text className="text-foreground">*</Text> <Text>Required Fields</Text>
-                  </div>
-
-                  <TextField control={form.control} name="firstName" label="First Name*" required />
-                  <TextField control={form.control} name="lastName" label="Last Name*" required />
+                <Section variant="grayBackground" className="space-y-4 p-0">
+                  <TextField control={form.control} name="firstName" label="First Name" required />
+                  <TextField control={form.control} name="lastName" label="Last Name" required />
+                  <TextField control={form.control} name="email" label="Email address" disabled />
                 </Section>
-
-                <div className="border-gray-d0 mt-4 space-y-4 border-t pt-10">
-                  <Button
-                    type="submit"
-                    disabled={form.formState.isSubmitting}
-                    className="block w-full"
-                  >
-                    Save Profile
-                  </Button>
-                </div>
               </div>
+            </div>
+            <div className="mt-4 flex items-center gap-4 border-t pt-10">
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                Save &amp; Update
+              </Button>
+              <Link to={profilePath({})} className="text-sm text-neutral-400">
+                Close &amp; Cancel
+              </Link>
+              {/* <div className="flex flex-1 justify-end">
+                <Link to={profilePath({})} className="text-sm text-neutral-400">
+                  Request account removal
+                </Link>
+              </div> */}
             </div>
           </form>
         </Form>
