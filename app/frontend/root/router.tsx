@@ -12,6 +12,7 @@ import {
   emailAuthPath,
   loginPath,
   profilePath,
+  profileEditPath,
   rootPath,
 } from "~/common/paths"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
@@ -19,6 +20,7 @@ import { CredentialsLoginScreen } from "~/login/credentials-login-screen"
 import { EmailAuthScreen } from "~/login/email-auth-screen"
 import { EmailLoginScreen } from "~/login/email-login-screen"
 import { ProfileScreen } from "~/profile/profile-screen"
+import { ProfileEditScreen } from "~/profile/profile-edit-screen"
 import { ErrorBoundary } from "../ui/error-boundary"
 import { RootLayout } from "./root-layout"
 import { RootScreen } from "./root-screen"
@@ -34,6 +36,10 @@ const authenticatedRoutes: Array<RouteObject> = [
   {
     path: profilePath.pattern,
     element: <ProfileScreen />,
+  },
+  {
+    path: profileEditPath.pattern,
+    element: <ProfileEditScreen />,
   },
 ]
 

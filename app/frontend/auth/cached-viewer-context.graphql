@@ -1,6 +1,9 @@
 fragment CachedViewerContext on User {
   id
+  fullName
   firstName
   lastName
+  email
+  createdAt
   userRole
 }
