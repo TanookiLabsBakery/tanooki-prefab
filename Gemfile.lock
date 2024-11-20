@@ -167,7 +167,7 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    graphql (2.4.1)
+    graphql (2.4.4)
       base64
       fiber-storage
     hashie (5.0.0)
