@@ -7,6 +7,10 @@ class UserPolicy < ApplicationPolicy
     user&.user_role_system_admin? || record == user
   end
 
+  def index?
+    user&.user_role_system_admin?
+  end
+
   relation_scope do |scope|
     if user&.user_role_system_admin?
       scope.kept

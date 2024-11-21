@@ -2,8 +2,10 @@ import * as React from "react"
 import { RouterProvider } from "react-router-dom"
 import { router } from "./router"
 
+import { KeyArgsFunction } from "@apollo/client/cache/inmemory/policies"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
+import { relayStylePagination } from "@apollo/client/utilities"
 import invariant from "tiny-invariant"
 import { ViewerProvider, viewerQuery } from "~/auth/use-viewer"
 import { Toaster } from "~/ui/toaster"
@@ -19,10 +21,10 @@ if (import.meta.env.DEV) {
 
 const csrfToken = getMetaContentMaybe("csrf-token")
 
-// const excludePaginationArgs: KeyArgsFunction = (args) => {
-//   if (!args) return false
-//   return Object.keys(args).filter((k) => !["first", "after"].includes(k))
-// }
+const excludePaginationArgs: KeyArgsFunction = (args) => {
+  if (!args) return false
+  return Object.keys(args).filter((k) => !["first", "after"].includes(k))
+}
 
 const apolloClient = new ApolloClient({
   uri: "/graphql",
@@ -31,7 +33,7 @@ const apolloClient = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          // users: relayStylePagination(excludePaginationArgs),
+          users: relayStylePagination(excludePaginationArgs),
         },
       },
     },

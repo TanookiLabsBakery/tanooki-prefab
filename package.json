@@ -8,6 +8,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@rails/actioncable": "^7.2.0",
+    "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eslint-plugin-react-hooks": "^4.6.2",
