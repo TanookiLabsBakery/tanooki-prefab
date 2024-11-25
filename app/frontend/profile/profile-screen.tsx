@@ -2,6 +2,7 @@ import { useViewer } from "~/auth/use-viewer"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { LinkButton } from "~/ui/link-button"
 import { profileEditPath } from "~/common/paths"
+import { UserAvatar } from "~/users/user-avatar"
 
 export const ProfileScreen = () => {
   const { viewer } = useViewer()
@@ -14,6 +15,11 @@ export const ProfileScreen = () => {
           <LinkButton to={profileEditPath({})}>Edit Details</LinkButton>
         </div>
         <div>
+          <UserAvatar
+            user={viewer}
+            alt="A picture that represents you and your account"
+            className="mb-8 mt-4 h-16 w-16"
+          />
           <table className="flex flex-wrap">
             <tbody>
               <tr>

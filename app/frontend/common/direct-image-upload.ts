@@ -1,0 +1,24 @@
+import { DirectUpload } from "@rails/activestorage"
+import { Blob } from "rails__activestorage"
+import { getMetaContent } from "./get-meta-content"
+
+export const directImageUpload = async (image: FileList[number]): Promise<any> => {
+  const data = await uploadFile(image)
+  return { signedId: data.signed_id }
+}
+
+const directUploadsUrl = getMetaContent("direct-uploads-url")
+
+const uploadFile = (file: File): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    const upload = new DirectUpload(file, directUploadsUrl)
+
+    upload.create((error, blob) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(blob)
+      }
+    })
+  })
+}

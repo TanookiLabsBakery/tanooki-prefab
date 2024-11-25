@@ -154,6 +154,12 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-arm-linux-gnu)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86-linux-gnu)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
     fiber-storage (1.0.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
@@ -173,6 +179,9 @@ GEM
     hashie (5.0.0)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
+    image_processing (1.13.0)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     io-console (0.7.2)
     irb (1.14.1)
       rdoc (>= 4.0.0)
@@ -203,6 +212,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.25.1)
     mjml-rails (4.12.1)
@@ -357,6 +367,9 @@ GEM
       sorbet-runtime (>= 0.5.10782)
     ruby-next-core (1.0.3)
     ruby-progressbar (1.13.0)
+    ruby-vips (2.2.2)
+      ffi (~> 1.12)
+      logger
     securerandom (0.3.1)
     snaky_hash (2.0.1)
       hashie
@@ -436,6 +449,7 @@ DEPENDENCIES
   factory_bot_rails
   good_job (~> 4.4)
   graphql
+  image_processing (~> 1.2)
   letter_opener
   letter_opener_web
   mjml-rails

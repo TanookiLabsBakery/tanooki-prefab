@@ -14,6 +14,7 @@ import { useToast } from "~/ui/use-toast"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { rootPath, profilePath } from "~/common/paths"
+import { AvatarUpload } from "./avatar-upload"
 
 const mutation = gql(/* GraphQL */ `
   mutation UpdateProfile($input: UserUpdateInput!) {
@@ -92,6 +93,11 @@ export const ProfileEditScreen = () => {
                   <TextField control={form.control} name="lastName" label="Last Name" required />
                   <TextField control={form.control} name="email" label="Email address" disabled />
                 </Section>
+              </div>
+              <div>
+                <div className="rounded border p-8 pr-12">
+                  <AvatarUpload userId={viewer.id} />
+                </div>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-4 border-t pt-10">

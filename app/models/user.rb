@@ -11,6 +11,10 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   belongs_to :current_organization, class_name: "Organization"
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [180, 180], preprocessed: true
+  end
+
   validates :first_name, :last_name, presence: true
   validates :time_zone, inclusion: {in: TZInfo::Timezone.all_identifiers}
 

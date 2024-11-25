@@ -8,13 +8,24 @@ module Mutations
 
     argument :id, ID, required: true
     argument :user_input, Types::Inputs::UserInputType, required: true
+    argument :avatar_signed_id, ID, required: false
+    argument :remove_avatar, Boolean, required: false
 
-    def resolve(id:, user_input:)
+    def resolve(id:, user_input:, avatar_signed_id: nil, remove_avatar: false)
       user = ::User.find(id)
       authorize! user, to: :update?
 
       unless user.update(user_input.to_h)
         raise ValidationError.new "Error updating user", record: user
+      end
+
+      if avatar_signed_id.present?
+        user.avatar.attach(avatar_signed_id)
+        user.save!
+      end
+
+      if remove_avatar
+        user.avatar.purge
       end
 
       {user: user}

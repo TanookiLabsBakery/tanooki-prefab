@@ -25,5 +25,15 @@ module Types
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
+
+    field :avatar_url, String, null: true
+    def avatar_url
+      Rails.application.routes.url_helpers.rails_storage_proxy_url(object.avatar.key) if object.avatar.attached?
+    end
+
+    field :avatar_thumb_url, String, null: true
+    def avatar_thumb_url
+      Rails.application.routes.url_helpers.rails_storage_proxy_url(object.avatar.variant(:thumb)) if object.avatar.attached?
+    end
   end
 end
