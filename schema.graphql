@@ -224,10 +224,6 @@ type Organization implements Node {
   organizationType: OrganizationType!
   slug: String!
   updatedAt: ISO8601DateTime!
-
-  """
-  Users who are connected to a campaign in this company by teh account_manager or sales_rep fields
-  """
   users(
     """
     Returns the elements in the list that come after the specified cursor.

@@ -1,9 +1,0 @@
-{
-  "commands": [
-    {
-      "command": "bin/rspec",
-      "match": "**/*_spec.rb",
-      "mode": "rspec"
-    }
-  ]
-}

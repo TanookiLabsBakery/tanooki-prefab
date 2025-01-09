@@ -12,8 +12,7 @@ module Types
     field(
       :users,
       Objects::UserType.connection_type,
-      null: false,
-      description: "Users who are connected to a campaign in this company by teh account_manager or sales_rep fields"
+      null: false
     )
     def users
       object.memberships.includes(:user).order("user.name")
