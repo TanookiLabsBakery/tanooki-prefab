@@ -119,7 +119,7 @@ heroku-buildpacks-setup-staging:
     @just _heroku-buildpacks {{ heroku_app_staging }}
 
 heroku-buildpacks-setup-production:
-    @just _heroku-buildpacks {{ heroku_app_staging }}
+    @just _heroku-buildpacks {{ heroku_app_production }}
 
 heroku-provision-pg-staging:
     @just _heroku-provision-pg {{ heroku_app_staging }}
