@@ -38,9 +38,6 @@ _heroku-buildpacks app:
     heroku buildpacks:add heroku/nodejs -a {{ app }}
     heroku buildpacks:add heroku/ruby -a {{ app }}
 
-_heroku-provision-pg app:
-    heroku addons:create heroku-postgresql:essential-0 -a {{ app }}
-
 _heroku-provision-redis app:
     heroku addons:create heroku-redis:mini -a {{ app }}
 
@@ -122,10 +119,10 @@ heroku-buildpacks-setup-production:
     @just _heroku-buildpacks {{ heroku_app_production }}
 
 heroku-provision-pg-staging:
-    @just _heroku-provision-pg {{ heroku_app_staging }}
+    heroku addons:create heroku-postgresql:essential-0 -a {{ heroku_app_staging }}
 
 heroku-provision-pg-production:
-    @just _heroku-provision-pg {{ heroku_app_production }}
+    heroku addons:create heroku-postgresql:standard-0 -a {{ heroku_app_production }}
 
 heroku-provision-redis-staging:
     @just _heroku-provision-redis {{ heroku_app_staging }}
