@@ -4,7 +4,7 @@ lint-cmd: bundle exec standardrb --fix
 auto-lint: true
 
 test-cmd: bin/rspec --format progress --no-profile --no-color --fail-fast --tag ~type:system
-auto-test: true
+auto-test: false
 
 aiderignore: .config/aiderignore-rb
 read: .config/CONVENTIONS.rb.md
