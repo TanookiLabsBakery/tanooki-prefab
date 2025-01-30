@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  scan-rb:
+  brakeman:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
-  lint-rb:
+  standardrb:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -37,7 +37,7 @@ jobs:
       - name: Lint code for consistent style
         run: bin/standardrb
 
-  rspec-non-system:
+  rspec:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -144,7 +144,7 @@ jobs:
           DATABASE_URL: "postgres://postgres:password@localhost:5432/test"
         run: bundle exec rspec spec/system
 
-  lint-files:
+  ls-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -167,7 +167,7 @@ jobs:
       - name: Run lint-files
         run: pnpm lint-files
 
-  format-check:
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -190,7 +190,7 @@ jobs:
       - name: Run format-check
         run: pnpm format-check
 
-  lint-check:
+  eslint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -220,7 +220,7 @@ jobs:
             exit 1
           fi
 
-  type-check:
+  typescript:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
