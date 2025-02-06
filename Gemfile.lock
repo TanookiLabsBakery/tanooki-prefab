@@ -88,6 +88,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    annotaterb (4.13.0)
     ast (2.4.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
@@ -437,6 +438,7 @@ PLATFORMS
 DEPENDENCIES
   action_policy
   action_policy-graphql
+  annotaterb
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman

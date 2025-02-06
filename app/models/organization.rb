@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: organizations
+#
+#  id                :string           not null, primary key
+#  discarded_at      :datetime
+#  name              :string           not null
+#  organization_type :enum             default("standard"), not null
+#  slug              :string           not null
+#  time_zone         :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+# Indexes
+#
+#  index_organizations_on_organization_type  (organization_type) UNIQUE WHERE (organization_type = 'system'::organization_type)
+#
 class Organization < ApplicationRecord
   include Discard::Model
   cool_id(prefix: "org")

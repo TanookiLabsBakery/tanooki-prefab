@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: user_auth_challenges
+#
+#  id               :string           not null, primary key
+#  claimed_at       :datetime
+#  client_auth_code :uuid             not null
+#  timeout_at       :datetime         not null
+#  token_digest     :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :string           not null
+#
+# Indexes
+#
+#  index_user_auth_challenges_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class UserAuthChallenge < ApplicationRecord
   include BCrypt
   cool_id prefix: "uac", length: 20
