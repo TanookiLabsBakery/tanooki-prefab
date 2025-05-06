@@ -4,4 +4,7 @@ class ApplicationJob < ActiveJob::Base
 
   # Most jobs are safe to ignore if the underlying records are no longer available
   # discard_on ActiveJob::DeserializationError
+  #
+  # Set the Sidekiq Queue as Default
+  queue_as :default
 end

@@ -79,5 +79,5 @@ Rails.application.configure do
     .tap { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
-  config.active_job.queue_adapter = :good_job
+  config.active_job.queue_adapter = :sidekiq
 end

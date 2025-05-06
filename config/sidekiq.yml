@@ -1,0 +1,20 @@
+---
+:verbose: true
+:concurrency: 5
+
+staging:
+  :verbose: true
+
+production:
+  :verbose: false
+
+:queues:
+  - critical
+  - default
+  - low
+# https://github.com/sidekiq-scheduler/sidekiq-scheduler
+# :scheduler:
+#   :schedule:
+#     hello_world:
+#       cron: '0 * * * * *'   # Runs once per minute
+#       class: SidekiqJob

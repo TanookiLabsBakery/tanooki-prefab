@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
   constraints UserConstraint.new { |user| Rails.env.development? || user&.user_role_system_admin? } do
     get "/graphiql", to: "graphiql#index", as: "graphiql"
-    mount GoodJob::Engine => "good_job"
+    require "sidekiq/web"
+    mount Sidekiq::Web => "/sidekiq"
   end
 
   unless Rails.env.test?
