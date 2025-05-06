@@ -50,5 +50,7 @@ end
 
 gem "postmark-rails", "~> 0.22.1"
 
+gem "lograge"
+
 gem "sidekiq", "~> 8.0.0"
 gem "sidekiq-scheduler", "~> 6.0.0.beta2"
