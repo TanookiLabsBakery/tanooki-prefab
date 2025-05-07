@@ -12,6 +12,7 @@ production:
   - critical
   - default
   - low
+  - mailers
 # https://github.com/sidekiq-scheduler/sidekiq-scheduler
 # :scheduler:
 #   :schedule:
