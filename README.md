@@ -4,8 +4,7 @@
 
 ### Prerequisites
 
-- [pnpm](https://pnpm.io/installation) _[ni](https://github.com/antfu-collective/ni) is also
-  recommended if you use npm, yarn etc on other projects_
+- [pnpm](https://pnpm.io/installation)
 - [postgres](https://www.postgresql.org/download/)
 - [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
 
