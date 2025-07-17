@@ -13,6 +13,7 @@ const config: CodegenConfig = {
           ISO8601DateTime: "string",
           BigInt: "string",
         },
+        enumsAsTypes: true,
       },
       preset: "client",
       plugins: [],

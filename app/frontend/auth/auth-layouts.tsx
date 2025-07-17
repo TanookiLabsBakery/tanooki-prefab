@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import { rootPath, loginPath } from "~/common/paths"
+import { loginPath, rootPath } from "~/common/paths"
 import { useViewerMaybe } from "./use-viewer"
-import { UserRole } from "~/__generated__/graphql"
 
 export const RequireUserSignedOut = () => {
   const navigate = useNavigate()
@@ -39,7 +38,7 @@ export const RequireSystemAdminSignedIn = () => {
   const { viewer, result } = useViewerMaybe()
 
   useEffect(() => {
-    if (viewer?.userRole !== UserRole.SystemAdmin) {
+    if (viewer?.userRole !== "SYSTEM_ADMIN") {
       navigate(rootPath({}))
     }
   }, [navigate, result.loading, viewer])

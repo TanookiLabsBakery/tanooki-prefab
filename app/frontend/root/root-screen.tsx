@@ -1,9 +1,8 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { dashboardPath, profilePath, loginPath } from "~/common/paths"
-import { useViewerMaybe } from "../auth/use-viewer"
+import { dashboardPath, loginPath, profilePath } from "~/common/paths"
 import { LinkButton } from "~/ui/link-button"
-import { UserRole } from "~/__generated__/graphql"
+import { useViewerMaybe } from "../auth/use-viewer"
 
 export const RootScreen = () => {
   const { viewer } = useViewerMaybe()
@@ -11,7 +10,7 @@ export const RootScreen = () => {
 
   useEffect(() => {
     if (viewer) {
-      if (viewer.userRole === UserRole.SystemAdmin) {
+      if (viewer.userRole === "SYSTEM_ADMIN") {
         navigate(dashboardPath({}))
       } else {
         navigate(profilePath({}))

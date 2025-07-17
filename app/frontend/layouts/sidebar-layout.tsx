@@ -1,11 +1,10 @@
 import { Link, Outlet, ScrollRestoration } from "react-router-dom"
 import { useLogout } from "~/auth/use-logout"
 import { useViewer } from "~/auth/use-viewer"
+import { cn } from "~/common/cn"
 import { rootPath } from "~/common/paths"
 import gridIcon from "~/images/grid-icon"
 import logoutIcon from "~/images/logout-icon"
-import { cn } from "~/common/cn"
-import { UserRole } from "~/__generated__/graphql"
 
 const sidebarItemStyles =
   "flex px-5 py-3 border-b border-gray-300 hover:bg-gray-100 text-sm font-medium text-gray-400 hover:text-gray-900 cursor-pointer"
@@ -25,7 +24,7 @@ export const SidebarLinks = () => {
   return (
     <nav className="mt-5 border-t border-gray-300">
       <ul className="list-none flex-col">
-        {viewer.userRole === UserRole.SystemAdmin && (
+        {viewer.userRole === "SYSTEM_ADMIN" && (
           <>
             <SidebarLink text={"Link 1"} to={rootPath({})} />
             <SidebarLink text={"Link 2"} to={rootPath({})} />
