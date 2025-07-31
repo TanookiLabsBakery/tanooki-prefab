@@ -13,6 +13,7 @@
 ActiveRecord::Schema[8.0].define(version: 2025_05_05_212031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_stat_statements"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
@@ -49,14 +50,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_212031) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "chats", id: :string, force: :cascade do |t|
-    t.string "model_id"
-    t.string "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_chats_on_user_id"
-  end
-
   create_table "memberships", id: :string, force: :cascade do |t|
     t.string "user_id", null: false
     t.string "organization_id", null: false
@@ -69,21 +62,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_212031) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "messages", id: :string, force: :cascade do |t|
-    t.string "chat_id", null: false
-    t.string "role", null: false
-    t.text "content"
-    t.string "model_id"
-    t.integer "input_tokens", default: 0, null: false
-    t.integer "output_tokens", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "tool_call_id"
-    t.bigserial "msg_seq", null: false
-    t.index ["chat_id"], name: "index_messages_on_chat_id"
-    t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
-  end
-
   create_table "organizations", id: :string, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -93,17 +71,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_212031) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_type"], name: "index_organizations_on_organization_type", unique: true, where: "(organization_type = 'system'::organization_type)"
-  end
-
-  create_table "tool_calls", id: :string, force: :cascade do |t|
-    t.string "message_id", null: false
-    t.string "tool_call_id", null: false
-    t.string "name", null: false
-    t.jsonb "arguments", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["message_id"], name: "index_tool_calls_on_message_id"
-    t.index ["tool_call_id"], name: "index_tool_calls_on_tool_call_id"
   end
 
   create_table "user_auth_challenges", id: :string, force: :cascade do |t|
@@ -152,12 +119,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_212031) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "chats", "users"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
-  add_foreign_key "messages", "chats"
-  add_foreign_key "messages", "tool_calls"
-  add_foreign_key "tool_calls", "messages"
   add_foreign_key "user_auth_challenges", "users"
   add_foreign_key "user_auth_tokens", "users", on_delete: :cascade
 end
