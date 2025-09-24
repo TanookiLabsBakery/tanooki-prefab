@@ -1,20 +1,25 @@
-import { Link, Outlet, ScrollRestoration } from "react-router-dom"
+import { Link, NavLink, Outlet, ScrollRestoration } from "react-router-dom"
 import { useLogout } from "~/auth/use-logout"
 import { useViewer } from "~/auth/use-viewer"
 import { cn } from "~/common/cn"
-import { rootPath } from "~/common/paths"
-import gridIcon from "~/images/grid-icon"
-import logoutIcon from "~/images/logout-icon"
+import { profilePath, rootPath } from "~/common/paths"
+import GridIcon from "~/images/grid-icon.svg?react"
+import LogoutIcon from "~/images/logout-icon.svg?react"
 
 const sidebarItemStyles =
   "flex px-5 py-3 border-b border-gray-300 hover:bg-gray-100 text-sm font-medium text-gray-400 hover:text-gray-900 cursor-pointer"
 
 const SidebarLink = ({ text, to }: { text: string; to: string }) => (
   <li className={sidebarItemStyles}>
-    <Link to={to} className="flex">
-      <img {...gridIcon} alt="" />
+    <NavLink
+      to={to}
+      className={({ isActive }) => {
+        return cn("flex", { "text-accent-foreground": isActive })
+      }}
+    >
+      <GridIcon />
       <div className="pl-4">{text}</div>
-    </Link>
+    </NavLink>
   </li>
 )
 
@@ -26,7 +31,7 @@ export const SidebarLinks = () => {
       <ul className="list-none flex-col">
         {viewer.userRole === "SYSTEM_ADMIN" && (
           <>
-            <SidebarLink text={"Link 1"} to={rootPath({})} />
+            <SidebarLink text={"Profile"} to={profilePath({})} />
             <SidebarLink text={"Link 2"} to={rootPath({})} />
           </>
         )}
@@ -50,7 +55,7 @@ export const SidebarLayout = () => {
         </div>
         <div className={cn("border-t border-gray-300", sidebarItemStyles)}>
           <button onClick={logout} className="flex w-full">
-            <img {...logoutIcon} alt="" />
+            <LogoutIcon />
             <div className="pl-4">Sign Out</div>
           </button>
         </div>
