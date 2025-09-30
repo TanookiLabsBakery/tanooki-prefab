@@ -37,5 +37,5 @@ export function useFormErrors<TFieldValues extends FieldValues>(
     }
 
     // unstable identities
-  }, [mutationResult.error])
+  }, [mutationResult.error, setError, toast])
 }

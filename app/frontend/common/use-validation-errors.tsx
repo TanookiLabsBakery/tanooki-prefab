@@ -37,5 +37,5 @@ export function useValidationErrors<TFieldValues extends FieldValues>(
     }
 
     // unstable identities
-  }, [mutationResult.error])
+  }, [mutationResult.error, setError, toast])
 }

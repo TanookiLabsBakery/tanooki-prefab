@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useRef } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { gql } from "~/__generated__"
 import { useViewer } from "~/auth/use-viewer"
-import { useSafeMutation } from "~/common/use-safe-mutation"
 import { directImageUpload } from "~/common/direct-image-upload"
-import { useToast } from "~/ui/use-toast"
+import { useSafeMutation } from "~/common/use-safe-mutation"
 import { Button } from "~/ui/button"
+import { useToast } from "~/ui/use-toast"
 import { UserAvatar } from "~/users/user-avatar"
 
 const userUpdateAvatarMutation = gql(/* GraphQL */ `
@@ -52,7 +52,7 @@ export const AvatarUpload = ({ userId }: { userId: string }) => {
 
       setIsSaving(false)
     },
-    [runUserUpdate, userId]
+    [runUserUpdate, userId, toast]
   )
 
   const removeAvatar = async (event: React.MouseEvent<HTMLButtonElement>) => {
