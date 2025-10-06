@@ -20,7 +20,6 @@
 #  user_status                         :enum             default("active"), not null
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
-#  current_organization_id             :string           not null
 #
 # Indexes
 #
@@ -38,8 +37,6 @@ class User < ApplicationRecord
 
   has_many :user_auth_challenges, dependent: :destroy
   has_many :user_auth_tokens, dependent: :destroy
-  has_many :memberships, dependent: :destroy
-  belongs_to :current_organization, class_name: "Organization"
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [180, 180], preprocessed: true
@@ -50,8 +47,6 @@ class User < ApplicationRecord
 
   normalizes :email, with: ->(value) { value.downcase.strip }
   normalizes :first_name, :last_name, with: ->(value) { value.strip }
-
-  before_validation :set_current_organization
 
   def full_name
     [first_name, last_name].compact.join(" ")
@@ -66,15 +61,5 @@ class User < ApplicationRecord
 
   def email_formatted
     email_address.to_s
-  end
-
-  private
-
-  def set_current_organization
-    unless current_organization.present?
-      system_org = Organization.system_organization
-      memberships.build(organization: system_org)
-      self.current_organization_id = system_org.id
-    end
   end
 end

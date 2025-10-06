@@ -13,16 +13,6 @@ module Types
 
     field :full_name, String, null: false
 
-    field(
-      :organizations,
-      Connections::MembershipConnectionType,
-      null: false
-      # authorized_scope: true
-    )
-    def organizations
-      object.memberships.includes(:organization).order("organizations.name")
-    end
-
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
 
