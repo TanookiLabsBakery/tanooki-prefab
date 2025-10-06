@@ -21,6 +21,7 @@
 #
 class UserAuthChallenge < ApplicationRecord
   include BCrypt
+
   cool_id prefix: "uac", length: 20
 
   belongs_to :user

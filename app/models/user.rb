@@ -29,6 +29,7 @@
 #
 class User < ApplicationRecord
   include Discard::Model
+
   authenticates_with_sorcery!
   cool_id(prefix: "usr")
 
