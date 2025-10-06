@@ -3,6 +3,9 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   <% if ENV["DATABASE_HOST"].present? %>host: <%= ENV["DATABASE_HOST"] %><% end %>
+  <% if ENV["DATABASE_PORT"].present? %>port: <%= ENV["DATABASE_PORT"] %><% end %>
+  <% if ENV["DATABASE_USERNAME"].present? %>username: <%= ENV["DATABASE_USERNAME"] %><% end %>
+  <% if ENV["DATABASE_PASSWORD"].present? %>password: <%= ENV["DATABASE_PASSWORD"] %><% end %>
 
 development:
   <<: *default

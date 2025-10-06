@@ -5,8 +5,8 @@
 ### Prerequisites
 
 - [pnpm](https://pnpm.io/installation)
-- [postgres](https://www.postgresql.org/download/)
-- [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
+- [postgres](https://www.postgresql.org/download/) (or use [containerized PostgreSQL](#running-postgres-in-a-container))
+- [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/) (or use [containerized Redis](#running-redis-in-a-container))
 
 ### Setup
 
@@ -22,6 +22,46 @@ This application uses [MJML](https://mjml.io/) for building responsive email tem
 ### Previewing Emails
 
 For development, you can view/manage sent emails at `/letter_opener`
+
+## Running Containers
+
+You can run PostgreSQL and Redis in containers instead of installing them locally.
+
+**Note:** These instructions use Apple's [Container](https://github.com/apple/container) tool. Docker and other container tools should also work but aren't documented here yet.
+
+### Initial Setup
+
+```bash
+brew install --cask container
+just setup container-setup
+```
+
+Add to `.env.development.local`:
+
+```
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=5433
+DATABASE_USERNAME=postgres
+REDIS_URL=redis://127.0.0.1:6380/1
+```
+
+**Note:** The default ports are PostgreSQL: `5433`, Redis: `6380`. You can customize these by setting `CONTAINER_POSTGRES_PORT` and `CONTAINER_REDIS_PORT` in your `.env` file. This allows multiple apps from this template to run simultaneously on the same machine. rebuild the container after changing this via `just container destroy && just container start`
+
+### Container Management
+
+```bash
+just container start   # Start containers
+just container stop    # Stop containers
+just container restart # Restart containers
+just container destroy # Remove containers and volumes
+```
+
+View logs:
+
+```bash
+just container logs-postgres
+just container logs-redis
+```
 
 ## S3 Setup Script
 
