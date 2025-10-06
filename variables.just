@@ -1,0 +1,7 @@
+project_name := "prefab"
+heroku_pipeline := "prefab"
+heroku_app_staging := "prefab-staging"
+heroku_app_production := "prefab-production"
+tanookiapp_domain_staging := "prefab-staging.tanookiapp.com"
+tanookiapp_domain_production := "prefab-production.tanookiapp.com"
+pg_db_development := "tanooki_prefab_development"

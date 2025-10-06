@@ -103,10 +103,10 @@ this requires [jo](https://github.com/jpmens/jo), [jq](https://jqlang.github.io/
 [1password cli](https://developer.1password.com/docs/cli/get-started/)
 
 ```bash
-just tanookiapp-heroku-domains-add-staging
-just tanookiapp-cloudflare-set-cname-staging
-just tanookiapp-certs-staging
-just tanookiapp-heroku-set-origin-staging
+just setup::tanookiapp-heroku-domains-add-staging
+just setup::tanookiapp-cloudflare-set-cname-staging
+just setup::tanookiapp-certs-staging
+just setup::tanookiapp-heroku-set-origin-staging
 ```
 
 ### Setup email
