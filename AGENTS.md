@@ -4,6 +4,15 @@
 - the dev server is already running in the background, do not attempt to start it
 - avoid adding comments
 
+# Bash commands
+
+- pnpm run type-check: run the typechecker
+
+# Workflow
+
+- Be sure to typecheck when you’re done making a series of code changes
+- Prefer running single tests, and not the whole test suite, for performance
+
 ## frontend
 
 - the package manager is pnpm
