@@ -33,7 +33,7 @@ You can run PostgreSQL and Redis in containers instead of installing them locall
 
 ```bash
 brew install --cask container
-just setup container-setup
+just container setup
 ```
 
 Add to `.env.development.local`:
