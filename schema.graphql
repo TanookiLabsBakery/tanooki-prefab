@@ -241,8 +241,8 @@ type Query {
 type User implements Node {
   avatarThumbUrl: String
   avatarUrl: String
-  createdAt: ISO8601DateTime!
-  email: String!
+  createdAt: ISO8601DateTime
+  email: String
   firstName: String!
   fullName: String!
 
@@ -251,7 +251,7 @@ type User implements Node {
   """
   id: ID!
   lastName: String!
-  updatedAt: ISO8601DateTime!
+  updatedAt: ISO8601DateTime
   userRole: UserRole!
   userStatus: UserStatus!
 }
@@ -296,6 +296,7 @@ input UserInput {
   firstName: String
   lastName: String
   timeZone: String
+  userRole: UserRole
   userStatus: UserStatus
 }
 

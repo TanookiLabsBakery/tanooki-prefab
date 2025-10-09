@@ -8,13 +8,12 @@ module Types
     field :user_status, Enums::UserStatusType, null: false
     field :first_name, String, null: false
     field :last_name, String, null: false
-    field :email, String, null: false # TODO authenticate this
-    # field :time_zone, String, null: false # TODO tz type?
+    field :email, String, null: true, authorize_field: {to: :view_full_user?}
 
     field :full_name, String, null: false
 
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false # TODO authenticate this
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: true, authorize_field: {to: :view_full_user?}
+    field :updated_at, GraphQL::Types::ISO8601DateTime, null: true, authorize_field: {to: :view_full_user?}
 
     field :avatar_url, String, null: true
     def avatar_url

@@ -5,8 +5,8 @@ import { ColumnDef } from "@tanstack/react-table"
 export type UserColumns = {
   id: string
   fullName: string
-  email: string
-  createdAt: string
+  email?: string | null
+  createdAt?: string | null
 }
 
 export const columns: ColumnDef<UserColumns | null | undefined>[] = [

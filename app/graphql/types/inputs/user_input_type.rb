@@ -7,9 +7,6 @@ module Types
     argument :last_name, String, required: false
     argument :time_zone, String, required: false
     argument :user_status, Types::Enums::UserStatusType, required: false
-
-    # argument :user_role, Types::Enums::UserRoleType, required: false
-    # argument :current_organization_id, String, required: false
-    # argument :discarded_at, GraphQL::Types::ISO8601DateTime, required: false
+    argument :user_role, Types::Enums::UserRoleType, required: false
   end
 end
