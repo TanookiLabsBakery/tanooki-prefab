@@ -155,3 +155,8 @@ just setup::tanookiapp-heroku-set-origin-staging
 1. set `EMAIL_HOST_ALLOWLIST` to a list of domains that can receive email, e.g.
    `tanookilabs.com,exampleclient.co`
 1. set `DANGEROUS__AUTH_BYPASS_CODE`, e.g. to "000000" to allow a code to bypass OTP auth
+
+### Sentry setup
+
+1. set `SENTRY_CURRENT_ENV` equal to `staging` or `production` depending on server
+1. set `SENTRY_DSN` to the same value for both servers

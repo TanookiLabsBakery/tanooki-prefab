@@ -400,6 +400,15 @@ GEM
     rufus-scheduler (3.9.2)
       fugit (~> 1.1, >= 1.11.1)
     securerandom (0.4.1)
+    sentry-rails (5.28.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.28.0)
+    sentry-ruby (5.28.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.28.0)
+      sentry-ruby (~> 5.28.0)
+      sidekiq (>= 3.0)
     sidekiq (8.0.7)
       connection_pool (>= 2.5.0)
       json (>= 2.9.0)
@@ -505,6 +514,8 @@ DEPENDENCIES
   redis (>= 4.0.1)
   rspec-rails
   ruby-lsp-rubyfmt!
+  sentry-rails
+  sentry-sidekiq
   sidekiq (~> 8.0.0)
   sidekiq-scheduler (~> 6.0.0.beta2)
   sorcery

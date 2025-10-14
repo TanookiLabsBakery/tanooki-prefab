@@ -54,3 +54,6 @@ gem "lograge"
 
 gem "sidekiq", "~> 8.0.0"
 gem "sidekiq-scheduler", "~> 6.0.0.beta2"
+
+gem "sentry-rails"
+gem "sentry-sidekiq"
