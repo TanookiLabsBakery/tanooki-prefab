@@ -45,23 +45,29 @@ const apolloClient = new ApolloClient({
   },
 })
 
-const metaTag = document.querySelector("meta[name=viewer-cache]")
-invariant(metaTag, "missing viewer-cache meta tag")
+const metaTag = document.querySelector("meta[name=preloaded-data]")
+invariant(metaTag, "missing preloaded-data meta tag")
 
-const viewerDataContent = metaTag.getAttribute("content")
-invariant(viewerDataContent, "missing viewer-cache meta tag content")
+const preloadedDataContent = metaTag.getAttribute("content")
+invariant(preloadedDataContent, "missing preloaded-data meta tag content")
 
-const userData = JSON.parse(viewerDataContent)
+const preloadedData = JSON.parse(preloadedDataContent)
 
-if (!userData.data) {
-  throw new Error("Error preloading viewer")
-} else {
-  apolloClient.writeQuery({
-    query: viewerQuery,
-    data: userData.data,
-    variables: {},
-  })
+if (!preloadedData.data) {
+  throw new Error("Error preloading data")
 }
+
+apolloClient.writeQuery({
+  query: viewerQuery,
+  data: { viewer: preloadedData.data.viewer },
+  variables: {},
+})
+
+apolloClient.writeQuery({
+  query: uiAccessQuery,
+  data: { uiAccess: preloadedData.data.uiAccess },
+  variables: {},
+})
 
 export default function App() {
   return (

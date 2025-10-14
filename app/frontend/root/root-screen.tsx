@@ -7,13 +7,14 @@ import { useViewerMaybe } from "../auth/use-viewer"
 
 export const RootScreen = () => {
   const { viewer } = useViewerMaybe()
+  const { uiAccess } = useUiAccess()
   const navigate = useNavigate()
 
   useEffect(() => {
     if (viewer) {
       navigate(profilePath({}))
     }
-  }, [navigate, viewer])
+  }, [navigate, viewer, uiAccess])
 
   if (viewer) return null
 

@@ -7,6 +7,11 @@ module Types
     field :node, resolver: Queries::NodeQuery, authorize: true
     field :nodes, resolver: Queries::NodesQuery
     field :viewer, resolver: Queries::ViewerQuery
+    field :ui_access, Types::Objects::UiAccessType, null: false
+
+    def ui_access
+      true
+    end
     field :internal_admin_users, resolver: Queries::InternalAdmin::UsersQuery
   end
 end

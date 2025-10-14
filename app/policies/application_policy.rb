@@ -12,7 +12,7 @@ class ApplicationPolicy < ActionPolicy::Base
   private
 
   def disallow_blocked_users
-    if user.user_status_blocked?
+    if user&.user_status_blocked?
       deny!(:blocked_user)
     end
   end

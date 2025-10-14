@@ -25,7 +25,7 @@ export const usersQuery = gql(/* GraphQL */ `
   }
 `)
 
-export const AdminDashboardScreen = () => {
+export const InternalAdminDashboardScreen = () => {
   const { data, fetchMore, error } = useQuery(usersQuery)
 
   if (error) {

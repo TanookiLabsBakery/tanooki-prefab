@@ -1,6 +1,6 @@
 # this determines access to the 'internal_admin' part of the site
-class InternalAdminPolicy < ApplicationPolicy
+class InternalAdminPolicy < GuestPolicy
   def view?
-    user.user_role_system_admin?
+    user&.user_role_system_admin?
   end
 end

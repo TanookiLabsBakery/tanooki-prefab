@@ -43,18 +43,19 @@ export const RequireUserSignedIn = () => {
 export const RequireSystemAdminSignedIn = () => {
   const navigate = useNavigate()
   const { viewer, result } = useViewerMaybe()
+  const { uiAccess, loading: uiAccessLoading } = useUiAccess()
   const redirectedRef = useRef(false)
 
   useEffect(() => {
     if (redirectedRef.current) return
     redirectedRef.current = true
 
-    if (viewer?.userRole !== "SYSTEM_ADMIN") {
+    if (!result.loading && !uiAccessLoading && !uiAccess?.canInternalAdmin.value) {
       navigate(rootPath({}))
     }
-  }, [navigate, result.loading, viewer])
+  }, [navigate, result.loading, uiAccessLoading, uiAccess, viewer])
 
-  if (result.loading || !viewer) return null
+  if (result.loading || !viewer || uiAccessLoading) return null
 
   return <Outlet />
 }

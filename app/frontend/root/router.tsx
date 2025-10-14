@@ -1,5 +1,5 @@
 import { Outlet, RouteObject, createBrowserRouter } from "react-router-dom"
-import { AdminDashboardScreen } from "~/admin/admin-dashboard-screen"
+import { InternalAdminDashboardScreen } from "~/admin/admin-dashboard-screen"
 import {
   RequireSystemAdminSignedIn,
   RequireUserSignedIn,
@@ -11,8 +11,8 @@ import {
   emailAuthPath,
   internalAdminDashboardPath,
   loginPath,
-  profilePath,
   profileEditPath,
+  profilePath,
   rootPath,
 } from "~/common/paths"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
@@ -27,8 +27,8 @@ import { RootScreen } from "./root-screen"
 
 const systemAdminAuthenticatedRoutes: Array<RouteObject> = [
   {
-    path: adminDashboardPath.pattern,
-    element: <AdminDashboardScreen />,
+    path: internalAdminDashboardPath.pattern,
+    element: <InternalAdminDashboardScreen />,
   },
 ]
 

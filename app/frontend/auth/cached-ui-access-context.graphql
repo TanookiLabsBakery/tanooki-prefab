@@ -1,0 +1,5 @@
+fragment CachedUiAccessContext on UiAccess {
+  canInternalAdmin {
+    value
+  }
+}

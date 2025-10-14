@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, ScrollRestoration } from "react-router-dom"
 import { useLogout } from "~/auth/use-logout"
-import { useViewer } from "~/auth/use-viewer"
+import { useUiAccess } from "~/auth/use-ui-access"
 import { cn } from "~/common/cn"
 import { internalAdminDashboardPath, profilePath, rootPath } from "~/common/paths"
 import GridIcon from "~/images/grid-icon.svg?react"
@@ -24,13 +24,13 @@ const SidebarLink = ({ text, to }: { text: string; to: string }) => (
 )
 
 export const SidebarLinks = () => {
-  const { viewer } = useViewer()
+  const { uiAccess } = useUiAccess()
 
   return (
     <nav className="mt-5 border-t border-gray-300">
       <ul className="list-none flex-col">
         <SidebarLink text={"Profile"} to={profilePath({})} />
-        {viewer.userRole === "SYSTEM_ADMIN" && (
+        {uiAccess?.canInternalAdmin.value && (
           <>
             <SidebarLink text={"Admin"} to={internalAdminDashboardPath({})} />
           </>
