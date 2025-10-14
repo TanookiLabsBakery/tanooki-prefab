@@ -1,5 +1,5 @@
 module Queries
-  class UsersQuery < BaseQuery
+  class InternalAdmin::UsersQuery < BaseQuery
     type Types::Objects::UserType.connection_type, null: false
 
     def resolve

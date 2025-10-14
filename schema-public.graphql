@@ -169,31 +169,6 @@ interface Node {
   id: ID!
 }
 
-"""
-Information about pagination in a connection.
-"""
-type PageInfo {
-  """
-  When paginating forwards, the cursor to continue.
-  """
-  endCursor: String
-
-  """
-  When paginating forwards, are there more items?
-  """
-  hasNextPage: Boolean!
-
-  """
-  When paginating backwards, are there more items?
-  """
-  hasPreviousPage: Boolean!
-
-  """
-  When paginating backwards, the cursor to continue.
-  """
-  startCursor: String
-}
-
 type Query {
   """
   Fetches an object given its ID.
@@ -214,27 +189,6 @@ type Query {
     """
     ids: [ID!]
   ): [Node]!
-  users(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): UserConnection!
   viewer: User
 }
 
@@ -252,41 +206,6 @@ type User implements Node {
   id: ID!
   lastName: String!
   updatedAt: ISO8601DateTime
-}
-
-"""
-The connection type for User.
-"""
-type UserConnection {
-  """
-  A list of edges.
-  """
-  edges: [UserEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [User!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type UserEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: User
 }
 
 input ViewerInput {

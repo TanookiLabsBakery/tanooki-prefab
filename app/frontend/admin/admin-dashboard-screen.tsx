@@ -8,7 +8,7 @@ import { DataTable } from "./data-table"
 
 export const usersQuery = gql(/* GraphQL */ `
   query Users($first: Int = 20, $after: String) {
-    users(first: $first, after: $after) {
+    internalAdminUsers(first: $first, after: $after) {
       edges {
         node {
           id
@@ -32,8 +32,8 @@ export const AdminDashboardScreen = () => {
     return <GraphqlError error={error} />
   }
 
-  const users = data?.users.edges.map((edge) => edge.node) ?? []
-  const pageInfo = data?.users.pageInfo
+  const users = data?.internalAdminUsers.edges.map((edge) => edge.node) ?? []
+  const pageInfo = data?.internalAdminUsers.pageInfo
 
   return (
     <TablePageLayout>
