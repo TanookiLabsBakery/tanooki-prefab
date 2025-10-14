@@ -1,7 +1,7 @@
 import { VariantProps } from "class-variance-authority"
 import { Link as RRLink, LinkProps as RRLinkProps } from "react-router-dom"
-import { buttonVariants } from "./button"
 import { cn } from "../common/cn"
+import { buttonVariants } from "./button"
 
 type LinkButtonProps = VariantProps<typeof buttonVariants> & RRLinkProps
 

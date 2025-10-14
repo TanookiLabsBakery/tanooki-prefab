@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 // Inspired by react-hot-toast library
 import * as React from "react"
-
 import type { ToastActionElement, ToastProps } from "~/./ui/toast"
 
 const TOAST_LIMIT = 1

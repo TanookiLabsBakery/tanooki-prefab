@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
-import { profilePath } from "~/common/paths"
+import invariant from "tiny-invariant"
 import { gql } from "~/__generated__"
+import { profilePath } from "~/common/paths"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { Button } from "~/ui/button"
-import Text from "~/ui/typography"
 import { GraphqlError } from "~/ui/errors"
-import invariant from "tiny-invariant"
+import Text from "~/ui/typography"
 
 const userDetailsQuery = gql(/* GraphQL */ `
   query userDetails($userId: ID!) {

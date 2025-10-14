@@ -1,16 +1,15 @@
-import * as React from "react"
-import { RouterProvider } from "react-router-dom"
-import { router } from "./router"
-
-import { KeyArgsFunction } from "@apollo/client/cache/inmemory/policies"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
+import { KeyArgsFunction } from "@apollo/client/cache/inmemory/policies"
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
 import { relayStylePagination } from "@apollo/client/utilities"
+import * as React from "react"
+import { RouterProvider } from "react-router-dom"
 import invariant from "tiny-invariant"
 import { ViewerProvider, viewerQuery } from "~/auth/use-viewer"
 import { Toaster } from "~/ui/toaster"
 import { createApolloLink } from "../common/create-apollo-link"
 import { getMetaContentMaybe } from "../common/get-meta-content"
+import { router } from "./router"
 
 // @ts-expect-error this is a vite-only feature
 if (import.meta.env.DEV) {

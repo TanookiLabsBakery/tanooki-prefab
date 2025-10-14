@@ -1,6 +1,6 @@
+import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "~/common/cn"
 import Text from "~/ui/typography"
-import { cva, type VariantProps } from "class-variance-authority"
 
 const sectionVariants = cva("", {
   variants: {

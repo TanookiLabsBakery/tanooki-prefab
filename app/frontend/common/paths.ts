@@ -4,7 +4,6 @@
 // tip: unless you're adding the route to the router, always call these as a
 // function even if they don't take parameters
 // e.g.  <Link to={rootPath({})}> and not <Link to={rootPath.pattern}>
-
 import { path } from "static-path"
 
 export const rootPath = path("/")

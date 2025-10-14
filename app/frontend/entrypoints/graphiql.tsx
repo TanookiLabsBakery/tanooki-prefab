@@ -1,6 +1,6 @@
-import { createRoot } from "react-dom/client"
-import { GraphiQL } from "graphiql"
 import type { Fetcher } from "@graphiql/toolkit"
+import { GraphiQL } from "graphiql"
+import { createRoot } from "react-dom/client"
 import "graphiql/graphiql.min.css"
 import { getMetaContent } from "~/common/get-meta-content"
 

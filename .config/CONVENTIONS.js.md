@@ -1,8 +1,11 @@
 - use this gql function instead of apollo's, it takes one argument:
+
   ```tsx
   import { gql } from "~/__generated__"
+
   gql(/* GraphQL */ ` <query or mutation> `)
   ```
+
 - use shadcn ui components
 - if a new component is needed suggest installing it with `pnpx shadcn-ui add <component>`
 - filenames should be written in kebab case

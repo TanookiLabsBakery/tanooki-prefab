@@ -1,7 +1,7 @@
 import { useViewer } from "~/auth/use-viewer"
+import { profileEditPath } from "~/common/paths"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { LinkButton } from "~/ui/link-button"
-import { profileEditPath } from "~/common/paths"
 import { UserAvatar } from "~/users/user-avatar"
 
 export const ProfileScreen = () => {

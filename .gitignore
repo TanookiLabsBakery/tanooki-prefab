@@ -47,7 +47,6 @@ node_modules
 .aider.chat.history.md
 .aider*
 .byebug_history
-.vscode
 .DS_Store
 .eslintcache
 .claude/settings.local.json

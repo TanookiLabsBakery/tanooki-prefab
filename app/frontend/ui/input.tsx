@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import * as React from "react"
-import { useFormField } from "~/ui/form"
-
 import { cn } from "~/common/cn"
+import { useFormField } from "~/ui/form"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
