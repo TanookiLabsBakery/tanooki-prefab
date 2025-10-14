@@ -6,7 +6,7 @@
 #  access_count_to_reset_password_page :integer          default(0)
 #  crypted_password                    :string
 #  discarded_at                        :datetime
-#  email                               :string           not null
+#  email                               :citext           not null
 #  first_name                          :string           not null
 #  last_name                           :string           not null
 #  remember_me_token                   :string

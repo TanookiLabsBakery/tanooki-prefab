@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_06_174633) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_130835) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
 
@@ -112,7 +113,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_06_174633) do
   end
 
   create_table "users", id: :string, force: :cascade do |t|
-    t.string "email", null: false
+    t.citext "email", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "time_zone", null: false
