@@ -15,6 +15,53 @@ bin/setup
 bin/dev
 ```
 
+## Authorization
+
+### Internal Admin Namespace
+
+Mutations and queries for internal admin users go in the `InternalAdmin::` namespace:
+
+```ruby
+module Mutations
+  class InternalAdmin::UserUpdate < BaseMutation
+    # Only visible to internal admins
+  end
+end
+```
+
+Works for mutations, queries, and input types.
+
+### Field-Level Authorization
+
+Two approaches for restricting field visibility:
+
+#### `require_internal_admin` - Simple Admin-Only Access
+
+Use `require_internal_admin: true` to restrict fields to internal admins only. This is a basic visibility check that doesn't involve policy logic:
+
+```ruby
+field :user_role, Enums::UserRoleType, null: false, require_internal_admin: true
+field :user_status, Enums::UserStatusType, null: false, require_internal_admin: true
+```
+
+Fields with `require_internal_admin: true` are only visible when `context[:visibility_profile] == :internal_admin`.
+
+#### `authorize_field` - Fine-Grained Policy-Based Access
+
+Use `authorize_field` for more complex authorization logic that depends on the specific object and user relationship:
+
+```ruby
+field :email, String, null: true, authorize_field: {to: :view_full_user?}
+field :created_at, GraphQL::Types::ISO8601DateTime, null: true, authorize_field: {to: :view_full_user?}
+```
+
+This delegates to policy rules (e.g., `UserPolicy#view_full_user?`) which can implement sophisticated access control based on object ownership, team membership, or other business logic.
+
+**When to use which:**
+
+- `require_internal_admin`: For data that should only be visible to internal admins (admin-only features)
+- `authorize_field`: For data that requires contextual access control (e.g., users can see their own email but not others')
+
 ## Emails
 
 This application uses [MJML](https://mjml.io/) for building responsive email templates.
