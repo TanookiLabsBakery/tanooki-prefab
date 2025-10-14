@@ -33,6 +33,12 @@
 - for active record enums use `pg_enum :status, ["active", "inactive"]` instead of `enum :status, {active: "active", inactive: "inactive"}, prefix: true` (pg_enum is a convenience method on ApplicationRecord)
 - when creating graphql enums based on an enum that exists in active record, use the rails_enum method on BaseEnum, e.g. `class Enums::ExampleStatusesType < Types::BaseEnum; rails_enum(ExampleModel.statuses); end`
 
+### authorization
+
+- internal admin mutations/queries/input types: use `InternalAdmin::` namespace (e.g. `Mutations::InternalAdmin::UserUpdate`)
+- internal admin only fields: `field :user_role, ..., require_internal_admin: true` (simple visibility check)
+- contextual access control fields: `field :email, ..., authorize_field: {to: :view_full_user?}` (uses policy rules)
+
 ### testing
 
 - do not use the faker gem, prefer rspec sequence for unique values and ruby array sample for random
