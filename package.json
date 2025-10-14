@@ -82,8 +82,8 @@
     "lint-check": "eslint --max-warnings=0 app/frontend",
     "lint-files": "ls-lint",
     "prepare": "husky",
-    "schema-dump": "bin/rails graphql:schema:idl",
-    "schema-dump-watch": "chokidar \"app/graphql/**/*.rb\" -c \"bin/rails graphql:schema:idl\"",
+    "schema-dump": "bin/rails graphql:schemas:dump",
+    "schema-dump-watch": "chokidar \"app/graphql/**/*.rb\" -c \"bin/rails graphql:schemas:dump\"",
     "type-check": "tsc --noEmit"
   },
   "type": "module"
