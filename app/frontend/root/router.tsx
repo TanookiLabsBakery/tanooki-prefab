@@ -9,11 +9,11 @@ import { LoginLayout } from "~/auth/login-layout"
 import {
   credentialsLoginPath,
   emailAuthPath,
+  internalAdminDashboardPath,
   loginPath,
   profilePath,
   profileEditPath,
   rootPath,
-  adminDashboardPath,
 } from "~/common/paths"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
 import { CredentialsLoginScreen } from "~/login/credentials-login-screen"

@@ -5,6 +5,5 @@ fragment CachedViewerContext on User {
   lastName
   email
   createdAt
-  userRole
   avatarThumbUrl
 }

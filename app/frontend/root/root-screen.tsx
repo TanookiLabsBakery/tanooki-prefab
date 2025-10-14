@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { loginPath, profilePath } from "~/common/paths"
 import { LinkButton } from "~/ui/link-button"
+import { useUiAccess } from "../auth/use-ui-access"
 import { useViewerMaybe } from "../auth/use-viewer"
 
 export const RootScreen = () => {

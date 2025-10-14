@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet, ScrollRestoration } from "react-router-dom"
 import { useLogout } from "~/auth/use-logout"
 import { useViewer } from "~/auth/use-viewer"
 import { cn } from "~/common/cn"
-import { adminDashboardPath, profilePath, rootPath } from "~/common/paths"
+import { internalAdminDashboardPath, profilePath, rootPath } from "~/common/paths"
 import GridIcon from "~/images/grid-icon.svg?react"
 import LogoutIcon from "~/images/logout-icon.svg?react"
 
@@ -32,7 +32,7 @@ export const SidebarLinks = () => {
         <SidebarLink text={"Profile"} to={profilePath({})} />
         {viewer.userRole === "SYSTEM_ADMIN" && (
           <>
-            <SidebarLink text={"Admin"} to={adminDashboardPath({})} />
+            <SidebarLink text={"Admin"} to={internalAdminDashboardPath({})} />
           </>
         )}
       </ul>

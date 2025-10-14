@@ -16,6 +16,11 @@ class AppSchema < GraphQL::Schema
     )
   end
 
+  use GraphQL::Schema::Visibility, profiles: {
+    public: {},
+    internal_admin: {internal_admin: true}
+  }
+
   # GraphQL-Ruby calls this when something goes wrong while running a query:
   def self.type_error(err, context)
     # if err.is_a?(GraphQL::InvalidNullError)

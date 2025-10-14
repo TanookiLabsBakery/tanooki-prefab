@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { loginPath, rootPath } from "~/common/paths"
+import { useUiAccess } from "./use-ui-access"
 import { useViewerMaybe } from "./use-viewer"
 import { RETURN_TO_STORAGE_KEY } from "./utils"
 

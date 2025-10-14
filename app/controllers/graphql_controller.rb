@@ -12,9 +12,16 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
+    visibility_profile = if current_user && InternalAdminPolicy.new(nil, user: current_user).apply(:view?)
+      :internal_admin
+    else
+      :public
+    end
+
     context = {
       session: session,
       current_user: current_user,
+      visibility_profile: visibility_profile,
       cookies: cookies,
       login: ->(email, password, remember_me) {
         login(email, password, remember_me)

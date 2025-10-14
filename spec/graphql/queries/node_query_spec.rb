@@ -10,6 +10,24 @@ RSpec.describe Queries::NodeQuery do
         node(id: $userId) {
           ... on User {
             id
+            firstName
+            lastName
+            email
+            fullName
+            createdAt
+            updatedAt
+          }
+        }
+      }
+    GRAPHQL
+  end
+
+  let(:admin_query) do
+    <<-GRAPHQL
+      query userDetails($userId: ID!) {
+        node(id: $userId) {
+          ... on User {
+            id
             userRole
             userStatus
             firstName
@@ -61,9 +79,9 @@ RSpec.describe Queries::NodeQuery do
   context "when user is a system admin" do
     let(:admin_user) { create(:user, user_role: "system_admin") }
 
-    it "returns all fields when accessing another user" do
+    it "returns all fields including admin fields when accessing another user" do
       result = graphql_execute(
-        query,
+        admin_query,
         current_user: admin_user,
         variables: {
           userId: other_user.id
@@ -73,6 +91,8 @@ RSpec.describe Queries::NodeQuery do
       user_node = result.dig("data", "node")
       expect(user_node["id"]).to eq other_user.id
       expect(user_node["email"]).to eq "john@example.com"
+      expect(user_node["userRole"]).to eq "DEFAULT"
+      expect(user_node["userStatus"]).to eq "ACTIVE"
       expect(user_node["createdAt"]).to be_present
       expect(user_node["updatedAt"]).to be_present
     end

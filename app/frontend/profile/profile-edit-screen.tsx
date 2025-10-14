@@ -17,8 +17,8 @@ import { useToast } from "~/ui/use-toast"
 import { AvatarUpload } from "./avatar-upload"
 
 const mutation = gql(/* GraphQL */ `
-  mutation UpdateProfile($input: UserUpdateInput!) {
-    userUpdate(input: $input) {
+  mutation UpdateProfile($input: ViewerUpdateInput!) {
+    viewerUpdate(input: $input) {
       user {
         id
         firstName
@@ -56,8 +56,7 @@ export const ProfileEditScreen = () => {
     const result = await exec({
       variables: {
         input: {
-          id: viewer.id,
-          userInput: {
+          viewerInput: {
             firstName: values.firstName,
             lastName: values.lastName,
           },
@@ -96,7 +95,7 @@ export const ProfileEditScreen = () => {
               </div>
               <div>
                 <div className="rounded border p-8 pr-12">
-                  <AvatarUpload userId={viewer.id} />
+                  <AvatarUpload />
                 </div>
               </div>
             </div>

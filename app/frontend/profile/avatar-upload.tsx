@@ -7,9 +7,9 @@ import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
 import { UserAvatar } from "~/users/user-avatar"
 
-const userUpdateAvatarMutation = gql(/* GraphQL */ `
-  mutation UserUpdate($input: UserUpdateInput!) {
-    userUpdate(input: $input) {
+const viewerUpdateAvatarMutation = gql(/* GraphQL */ `
+  mutation ViewerUpdate($input: ViewerUpdateInput!) {
+    viewerUpdate(input: $input) {
       user {
         id
         avatarThumbUrl
@@ -18,14 +18,14 @@ const userUpdateAvatarMutation = gql(/* GraphQL */ `
   }
 `)
 
-export const AvatarUpload = ({ userId }: { userId: string }) => {
+export const AvatarUpload = () => {
   const [isSaving, setIsSaving] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const { viewer } = useViewer()
   const { toast } = useToast()
 
-  const [runUserUpdate] = useSafeMutation(userUpdateAvatarMutation)
+  const [runViewerUpdate] = useSafeMutation(viewerUpdateAvatarMutation)
 
   const onFileSelect = useCallback(
     async (file: File) => {
@@ -33,11 +33,10 @@ export const AvatarUpload = ({ userId }: { userId: string }) => {
 
       const { signedId } = await directImageUpload(file)
 
-      const { errors } = await runUserUpdate({
+      const { errors } = await runViewerUpdate({
         variables: {
           input: {
-            id: userId,
-            userInput: {},
+            viewerInput: {},
             avatarSignedId: signedId,
           },
         },
@@ -52,18 +51,17 @@ export const AvatarUpload = ({ userId }: { userId: string }) => {
 
       setIsSaving(false)
     },
-    [runUserUpdate, userId, toast]
+    [runViewerUpdate, toast]
   )
 
   const removeAvatar = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
 
     try {
-      const { errors } = await runUserUpdate({
+      const { errors } = await runViewerUpdate({
         variables: {
           input: {
-            id: userId,
-            userInput: {},
+            viewerInput: {},
             removeAvatar: true,
           },
         },

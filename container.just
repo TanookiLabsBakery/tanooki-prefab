@@ -55,14 +55,16 @@ start:
       -e PGDATA=/var/lib/postgresql/data/pgdata \
       -v tanooki-prefab-postgres-data:/var/lib/postgresql/data \
       postgres:17-alpine 2>&1; then
-      echo "postgres container already exists or is running"
+      echo "postgres container already exists, attempting to start it"
+      container start tanooki-prefab-postgres 2>/dev/null || true
     fi
 
     if ! container run -d --name tanooki-prefab-redis \
       -p "127.0.0.1:${REDIS_PORT}:6379" \
       -v tanooki-prefab-redis-data:/data \
       redis:7-alpine redis-server --appendonly yes 2>&1; then
-      echo "redis container already exists or is running"
+      echo "redis container already exists, attempting to start it"
+      container start tanooki-prefab-redis 2>/dev/null || true
     fi
 
 stop:

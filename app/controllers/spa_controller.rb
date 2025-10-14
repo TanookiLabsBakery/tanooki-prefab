@@ -14,7 +14,13 @@ class SpaController < ApplicationController
       #{self.class.viewer_fragment}
     GRAPHQL
 
-    AppSchema.execute(viewer_query, context: {current_user:})
+    visibility_profile = if current_user && InternalAdminPolicy.new(nil, user: current_user).apply(:view?)
+      :internal_admin
+    else
+      :public
+    end
+
+    AppSchema.execute(viewer_query, context: {current_user:, visibility_profile:})
   end
 
   def self.viewer_fragment

@@ -3,11 +3,18 @@ module GraphqlHelpers
   class GraphqlError < StandardError; end
 
   def graphql_execute(query, current_user:, session: nil, variables: nil, allow_errors: false, context: {})
+    visibility_profile = if current_user && InternalAdminPolicy.new(nil, user: current_user).apply(:view?)
+      :internal_admin
+    else
+      :public
+    end
+
     result = AppSchema.execute(
       query,
       context: {
         current_user: current_user,
-        session: session
+        session: session,
+        visibility_profile: visibility_profile
       }.merge(context),
       variables: variables
     )

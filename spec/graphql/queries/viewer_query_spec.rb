@@ -8,6 +8,24 @@ RSpec.describe Queries::ViewerQuery do
       query Viewer {
         viewer {
           id
+          firstName
+          lastName
+          email
+          fullName
+          createdAt
+          updatedAt
+          avatarUrl
+          avatarThumbUrl
+        }
+      }
+    GRAPHQL
+  end
+
+  let!(:admin_query) do
+    <<-GRAPHQL
+      query Viewer {
+        viewer {
+          id
           userRole
           userStatus
           firstName
@@ -28,8 +46,6 @@ RSpec.describe Queries::ViewerQuery do
 
     viewer = result.dig("data", "viewer")
     expect(viewer["id"]).to eq current_user.id
-    expect(viewer["userRole"]).to eq "DEFAULT"
-    expect(viewer["userStatus"]).to eq "ACTIVE"
     expect(viewer["firstName"]).to eq "Jane"
     expect(viewer["lastName"]).to eq "Smith"
     expect(viewer["email"]).to eq "jane@example.com"
@@ -54,6 +70,26 @@ RSpec.describe Queries::ViewerQuery do
       expect(viewer["email"]).to eq "jane@example.com"
       expect(viewer["createdAt"]).to be_present
       expect(viewer["updatedAt"]).to be_present
+    end
+  end
+
+  describe "internal admin fields" do
+    it "returns userRole and userStatus for system_admin users" do
+      admin_user = create(:user, user_role: :system_admin)
+      result = graphql_execute(admin_query, current_user: admin_user)
+
+      viewer = result.dig("data", "viewer")
+      expect(viewer["userRole"]).to eq "SYSTEM_ADMIN"
+      expect(viewer["userStatus"]).to eq "ACTIVE"
+    end
+
+    it "does not return userRole and userStatus for non-admin users" do
+      result = graphql_execute(admin_query, current_user: current_user, allow_errors: true)
+
+      errors = result["errors"]
+      expect(errors).to be_present
+      expect(errors.map { |e| e["message"] }).to include("Field 'userRole' doesn't exist on type 'User'")
+      expect(errors.map { |e| e["message"] }).to include("Field 'userStatus' doesn't exist on type 'User'")
     end
   end
 end
