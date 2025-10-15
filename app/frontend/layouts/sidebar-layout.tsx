@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet, ScrollRestoration } from "react-router-dom"
 import { useLogout } from "~/auth/use-logout"
 import { useViewer } from "~/auth/use-viewer"
 import { cn } from "~/common/cn"
-import { profilePath, rootPath } from "~/common/paths"
+import { adminDashboardPath, profilePath, rootPath } from "~/common/paths"
 import GridIcon from "~/images/grid-icon.svg?react"
 import LogoutIcon from "~/images/logout-icon.svg?react"
 
@@ -10,11 +10,11 @@ const sidebarItemStyles =
   "flex px-5 py-3 border-b border-gray-300 hover:bg-gray-100 text-sm font-medium text-gray-400 hover:text-gray-900 cursor-pointer"
 
 const SidebarLink = ({ text, to }: { text: string; to: string }) => (
-  <li className={sidebarItemStyles}>
+  <li>
     <NavLink
       to={to}
       className={({ isActive }) => {
-        return cn("flex", { "text-accent-foreground": isActive })
+        return cn(sidebarItemStyles, { "text-accent-foreground": isActive })
       }}
     >
       <GridIcon />
@@ -29,10 +29,10 @@ export const SidebarLinks = () => {
   return (
     <nav className="mt-5 border-t border-gray-300">
       <ul className="list-none flex-col">
+        <SidebarLink text={"Profile"} to={profilePath({})} />
         {viewer.userRole === "SYSTEM_ADMIN" && (
           <>
-            <SidebarLink text={"Profile"} to={profilePath({})} />
-            <SidebarLink text={"Link 2"} to={rootPath({})} />
+            <SidebarLink text={"Admin"} to={adminDashboardPath({})} />
           </>
         )}
       </ul>
@@ -53,12 +53,10 @@ export const SidebarLayout = () => {
 
           <SidebarLinks />
         </div>
-        <div className={cn("border-t border-gray-300", sidebarItemStyles)}>
-          <button onClick={logout} className="flex w-full">
-            <LogoutIcon />
-            <div className="pl-4">Sign Out</div>
-          </button>
-        </div>
+        <button onClick={logout} className={cn("border-t border-gray-300", sidebarItemStyles)}>
+          <LogoutIcon />
+          <div className="pl-4">Sign Out</div>
+        </button>
       </div>
 
       <div className="flex max-w-full flex-1 flex-col overflow-hidden">

@@ -3,19 +3,21 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
 import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
+import { useNavigateAfterAuth } from "~/auth/utils"
 import { createApolloLink } from "~/common/create-apollo-link"
-import { credentialsLoginPath, rootPath } from "~/common/paths"
+import { credentialsLoginPath } from "~/common/paths"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/ui/form"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/ui/input-otp"
 import { useToast } from "~/ui/use-toast"
+import { EMAIL_TOKEN_AUTH_MUTATION } from "./email-auth-screen"
 
 const emailLoginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -38,15 +40,6 @@ const EMAIL_AUTH_CHALLENGE_MUTATION = gql(/* GraphQL */ `
   }
 `)
 
-const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
-  mutation EmailTokenAuth($input: EmailTokenUserAuthInput!) {
-    emailTokenUserAuth(input: $input) {
-      success
-      csrfToken
-    }
-  }
-`)
-
 export const EmailLoginScreen: React.FC = () => {
   const [emailAuthChallenge, { loading: challengeLoading }] = useSafeMutation(
     EMAIL_AUTH_CHALLENGE_MUTATION
@@ -55,7 +48,7 @@ export const EmailLoginScreen: React.FC = () => {
   const { toast } = useToast()
   const [step, setStep] = useState<"email" | "checkEmail" | "otp">("email")
   const [email, setEmail] = useState("")
-  const navigate = useNavigate()
+  const { navigateAfterAuth } = useNavigateAfterAuth()
   const apolloClient = useApolloClient()
   const {
     result: { refetch: viewerRefetch },
@@ -144,13 +137,13 @@ export const EmailLoginScreen: React.FC = () => {
 
     if (result.data?.emailTokenUserAuth.success) {
       apolloClient.link = createApolloLink(result.data.emailTokenUserAuth.csrfToken)
-      viewerRefetch()
+      await viewerRefetch()
       toast({
         title: "Authentication Successful",
         description: "You have been successfully logged in.",
         variant: "default",
       })
-      navigate(rootPath({}))
+      navigateAfterAuth()
     } else {
       toast({
         title: "Authentication Failed",

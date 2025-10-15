@@ -14,9 +14,6 @@ module Mutations
     field :auth_token, String, null: true
 
     def resolve(email:, token:, time_zone:, auth_type: "session")
-      # TODO: consider if we want to update the user
-      # time_zone
-
       user = User.find_by(email: email.downcase)
       raise GraphQL::ExecutionError, "User not found" unless user
 

@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   get("service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker)
   get("manifest" => "rails/pwa#manifest", :as => :pwa_manifest)
 
+  # chrome dev tools seems to make requests to this route
+  get "/.well-known/appspecific/com.chrome.devtools.json", to: ->(env) { [200, {"Content-Type" => "application/json"}, ["{}"]] }
+
   root("spa#index")
   get("login", to: "spa#index", as: :login)
   get("auth/email/:email/:token/:client_auth_code", to: "spa#index", as: :auth_email)

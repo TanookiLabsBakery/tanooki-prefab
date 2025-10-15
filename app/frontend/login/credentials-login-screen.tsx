@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
-import { loginPath, rootPath } from "~/common/paths"
+import { useNavigateAfterAuth } from "~/auth/utils"
+import { loginPath } from "~/common/paths"
 import { useFormErrors } from "~/common/use-form-errors"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
@@ -36,10 +37,10 @@ export const CredentialsLoginScreen: React.FC = () => {
   const [login, loginResult] = useSafeMutation(LOGIN_MUTATION)
   const { viewer } = useViewerMaybe()
   const { toast } = useToast()
-  const navigate = useNavigate()
   const {
     result: { refetch: refetchViewer },
   } = useViewerMaybe()
+  const { navigateAfterAuth } = useNavigateAfterAuth()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -71,7 +72,7 @@ export const CredentialsLoginScreen: React.FC = () => {
       description: "You have been successfully logged in.",
       variant: "default",
     })
-    navigate(rootPath({}))
+    navigateAfterAuth()
   }
 
   return (

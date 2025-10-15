@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
+import { useNavigateAfterAuth } from "~/auth/utils"
 import { createApolloLink } from "~/common/create-apollo-link"
 import { rootPath } from "~/common/paths"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
 
-const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
+export const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
   mutation EmailTokenAuth($input: EmailTokenUserAuthInput!) {
     emailTokenUserAuth(input: $input) {
       success
@@ -28,6 +29,7 @@ export const EmailAuthScreen: React.FC = () => {
   const { toast } = useToast()
   const navigate = useNavigate()
   const [isValidClient, setIsValidClient] = useState<boolean | null>(null)
+  const { navigateAfterAuth } = useNavigateAfterAuth()
 
   useEffect(() => {
     const storedAuthCodes = JSON.parse(localStorage.getItem("authCodes") || "[]")
@@ -70,13 +72,13 @@ export const EmailAuthScreen: React.FC = () => {
 
     if (result.data?.emailTokenUserAuth.success) {
       apolloClient.link = createApolloLink(result.data.emailTokenUserAuth.csrfToken)
-      viewerRefetch()
+      await viewerRefetch()
       toast({
         title: "Authentication Successful",
         description: "You have been successfully logged in.",
         variant: "default",
       })
-      navigate(rootPath({}))
+      navigateAfterAuth()
     } else {
       toast({
         title: "Authentication Failed",

@@ -8,12 +8,12 @@ import {
 import { LoginLayout } from "~/auth/login-layout"
 import {
   credentialsLoginPath,
-  dashboardPath,
   emailAuthPath,
   loginPath,
   profilePath,
   profileEditPath,
   rootPath,
+  adminDashboardPath,
 } from "~/common/paths"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
 import { CredentialsLoginScreen } from "~/login/credentials-login-screen"
@@ -27,7 +27,7 @@ import { RootScreen } from "./root-screen"
 
 const systemAdminAuthenticatedRoutes: Array<RouteObject> = [
   {
-    path: dashboardPath.pattern,
+    path: adminDashboardPath.pattern,
     element: <AdminDashboardScreen />,
   },
 ]
