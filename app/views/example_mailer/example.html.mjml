@@ -1,4 +1,4 @@
-<mj-section background-color="#ffffff" padding="20px">
+<mj-section background-color="#ffffff">
   <mj-column>
     <mj-text align="left" font-size="28px" font-weight="bold">
       Welcome to <%= AppConstants::APP_NAME %>
@@ -7,7 +7,7 @@
 </mj-section>
 
 <!-- Full-Width Logo Section -->
-<mj-section padding="0">
+<mj-section>
   <mj-column>
     <!-- Full width logo image -->
     <mj-image

@@ -8,15 +8,16 @@
       Click the following link to log in:
     </mj-text>
 
-    <mj-button href="<%= @auth_url %>">
+    <mj-button href="<%= @auth_url %>" align="left">
       Login to <%= AppConstants::APP_NAME %>
     </mj-button>
 
     <mj-text>
-      This link and code will only be valid for the next <%= distance_of_time_in_words(UserAuthChallenge.default_timeout) %>. If the link does not work, you can use the login verification code directly:
+      This link and code will only be valid for the next <%= distance_of_time_in_words(UserAuthChallenge.default_timeout) %>.
+      If the link does not work, you can use the login verification code directly:
     </mj-text>
 
-    <mj-text font-size="18px" font-weight="bold" align="center">
+    <mj-text font-size="18px" font-weight="bold">
       <mj-raw>
         <span id="otp-code">
           <%= @token %>

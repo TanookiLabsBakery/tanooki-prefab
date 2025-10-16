@@ -68,7 +68,7 @@ This application uses [MJML](https://mjml.io/) for building responsive email tem
 
 ### Previewing Emails
 
-For development, you can view/manage sent emails at `/letter_opener`
+Emails can be previewed here: http://localhost:5100/rails/mailers
 
 ## Running Containers
 

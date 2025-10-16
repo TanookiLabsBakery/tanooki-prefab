@@ -1,9 +1,4 @@
 class AuthenticationMailer < ApplicationMailer
-  def reset_password_email(user)
-    @user = user
-    mail subject: "Reset your password", to: @user.email_formatted
-  end
-
   def auth_challenge_email(user, token, client_auth_code)
     @user = user
     @token = token
