@@ -2,16 +2,16 @@ source "https://rubygems.org"
 
 ruby "3.4.6"
 
-gem "rails", "~> 8.1", ">= 8.0.3"
-gem "pg", "~> 1.5"
-gem "puma", ">= 5.0"
-gem "redis", ">= 4.0.1"
+gem "rails", "~> 8.1"
+gem "pg", "~> 1.6.2"
+gem "puma", ">= 7.1"
+gem "redis", ">= 5.4.1"
 gem "bcrypt", "~> 3.1.7"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.14"
 
 gem "graphql"
 gem "vite_rails"
@@ -53,7 +53,7 @@ gem "postmark-rails", "~> 0.22.1"
 gem "lograge"
 
 gem "sidekiq", "~> 8.0.0"
-gem "sidekiq-scheduler", "~> 6.0.0.beta2"
+gem "sidekiq-scheduler", "~> 6.0.1"
 
 gem "sentry-rails"
 gem "sentry-sidekiq"
