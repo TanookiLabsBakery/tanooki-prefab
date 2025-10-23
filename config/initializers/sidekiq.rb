@@ -4,7 +4,8 @@ Sidekiq.configure_server do |config|
   config.redis = {
     url: ENV[ENV.fetch("REDIS_PROVIDER", "REDIS_URL")] ||
       Rails.application.credentials.dig(:redis, :url) ||
-      "redis://localhost:6379/1"
+      "redis://localhost:6379/1",
+    ssl_params: {verify_mode: OpenSSL::SSL::VERIFY_NONE}
   }
 
   config.death_handlers <<
@@ -30,7 +31,8 @@ Sidekiq.configure_client do |config|
   config.redis = {
     url: ENV[ENV.fetch("REDIS_PROVIDER", "REDIS_URL")] ||
       Rails.application.credentials.dig(:redis, :url) ||
-      "redis://localhost:6379/1"
+      "redis://localhost:6379/1",
+    ssl_params: {verify_mode: OpenSSL::SSL::VERIFY_NONE}
   }
   # Middleware Client attachment
   # config.client_middleware do |chain|
