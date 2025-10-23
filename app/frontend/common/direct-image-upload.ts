@@ -1,5 +1,6 @@
 import { DirectUpload } from "@rails/activestorage"
 import { Blob } from "rails__activestorage"
+import invariant from "tiny-invariant"
 import { getMetaContent } from "./get-meta-content"
 
 export const directImageUpload = async (image: FileList[number]): Promise<any> => {
@@ -16,8 +17,10 @@ const uploadFile = (file: File): Promise<Blob> => {
     upload.create((error, blob) => {
       if (error) {
         reject(error)
-      } else {
+      } else if (blob) {
         resolve(blob)
+      } else {
+        invariant("expected error or blob")
       }
     })
   })

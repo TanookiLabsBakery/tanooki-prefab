@@ -1,4 +1,3 @@
-import { useApolloClient } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 import React, { useState } from "react"
@@ -9,7 +8,6 @@ import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
-import { createApolloLink } from "~/common/create-apollo-link"
 import { credentialsLoginPath } from "~/common/paths"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { TextField } from "~/fields/text-field"
@@ -18,6 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/ui/input-otp"
 import { useToast } from "~/ui/use-toast"
 import { EMAIL_TOKEN_AUTH_MUTATION } from "./email-auth-screen"
+import { updateCsrfTag } from "./utils"
 
 const emailLoginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -49,7 +48,6 @@ export const EmailLoginScreen: React.FC = () => {
   const [step, setStep] = useState<"email" | "checkEmail" | "otp">("email")
   const [email, setEmail] = useState("")
   const { navigateAfterAuth } = useNavigateAfterAuth()
-  const apolloClient = useApolloClient()
   const {
     result: { refetch: viewerRefetch },
   } = useViewerMaybe()
@@ -136,7 +134,7 @@ export const EmailLoginScreen: React.FC = () => {
     }
 
     if (result.data?.emailTokenUserAuth.success) {
-      apolloClient.link = createApolloLink(result.data.emailTokenUserAuth.csrfToken)
+      updateCsrfTag(result.data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
       toast({
         title: "Authentication Successful",

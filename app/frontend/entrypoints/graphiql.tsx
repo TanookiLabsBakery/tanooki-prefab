@@ -1,7 +1,8 @@
 import type { Fetcher } from "@graphiql/toolkit"
 import { GraphiQL } from "graphiql"
 import { createRoot } from "react-dom/client"
-import "graphiql/graphiql.min.css"
+//@ts-expect-error no types
+import "graphiql/style.css"
 import { getMetaContent } from "~/common/get-meta-content"
 
 console.log("Vite ⚡️ Rails")

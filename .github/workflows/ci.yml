@@ -131,6 +131,7 @@ jobs:
           ORIGIN: "http://example.com"
         run: |
           pnpm install
+          pnpm run codegen-graphql
           bin/rails assets:precompile
 
       - name: Run system tests

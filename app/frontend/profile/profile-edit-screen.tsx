@@ -23,6 +23,7 @@ const mutation = gql(/* GraphQL */ `
         id
         firstName
         lastName
+        ...CachedViewerContext
       }
     }
   }

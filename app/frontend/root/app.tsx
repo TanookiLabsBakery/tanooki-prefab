@@ -2,14 +2,12 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { KeyArgsFunction } from "@apollo/client/cache/inmemory/policies"
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
 import { relayStylePagination } from "@apollo/client/utilities"
-import * as React from "react"
 import { RouterProvider } from "react-router-dom"
 import invariant from "tiny-invariant"
 import { uiAccessQuery } from "~/auth/use-ui-access"
 import { ViewerProvider, viewerQuery } from "~/auth/use-viewer"
 import { Toaster } from "~/ui/toaster"
 import { createApolloLink } from "../common/create-apollo-link"
-import { getMetaContentMaybe } from "../common/get-meta-content"
 import { router } from "./router"
 
 // @ts-expect-error this is a vite-only feature
@@ -19,8 +17,6 @@ if (import.meta.env.DEV) {
   loadErrorMessages()
 }
 
-const csrfToken = getMetaContentMaybe("csrf-token")
-
 const excludePaginationArgs: KeyArgsFunction = (args) => {
   if (!args) return false
   return Object.keys(args).filter((k) => !["first", "after"].includes(k))
@@ -28,7 +24,7 @@ const excludePaginationArgs: KeyArgsFunction = (args) => {
 
 const apolloClient = new ApolloClient({
   uri: "/graphql",
-  link: createApolloLink(csrfToken),
+  link: createApolloLink(),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
@@ -71,13 +67,13 @@ apolloClient.writeQuery({
 
 export default function App() {
   return (
-    <React.StrictMode>
+    <>
       <ApolloProvider client={apolloClient}>
         <ViewerProvider>
           <RouterProvider router={router} />
         </ViewerProvider>
       </ApolloProvider>
       <Toaster />
-    </React.StrictMode>
+    </>
   )
 }

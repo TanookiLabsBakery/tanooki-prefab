@@ -9,3 +9,4 @@
 /config/database.yml
 /.jj
 /app/**/*.mjml
+pnpm-workspace.yaml

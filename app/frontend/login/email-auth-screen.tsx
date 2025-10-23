@@ -1,14 +1,13 @@
-import { useApolloClient } from "@apollo/client"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
-import { createApolloLink } from "~/common/create-apollo-link"
 import { rootPath } from "~/common/paths"
 import { useSafeMutation } from "~/common/use-safe-mutation"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
+import { updateCsrfTag } from "./utils"
 
 export const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
   mutation EmailTokenAuth($input: EmailTokenUserAuthInput!) {
@@ -19,6 +18,11 @@ export const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
   }
 `)
 
+const checkValidity = (clientAuthCode: string | undefined) => {
+  const storedAuthCodes = JSON.parse(localStorage.getItem("authCodes") || "[]")
+  return storedAuthCodes.includes(clientAuthCode)
+}
+
 export const EmailAuthScreen: React.FC = () => {
   const { email, token, clientAuthCode } = useParams<{
     email: string
@@ -28,14 +32,10 @@ export const EmailAuthScreen: React.FC = () => {
   const [emailTokenAuth] = useSafeMutation(EMAIL_TOKEN_AUTH_MUTATION)
   const { toast } = useToast()
   const navigate = useNavigate()
-  const [isValidClient, setIsValidClient] = useState<boolean | null>(null)
+  const [isValidClient] = useState<boolean | null>(checkValidity(clientAuthCode))
   const { navigateAfterAuth } = useNavigateAfterAuth()
 
-  useEffect(() => {
-    const storedAuthCodes = JSON.parse(localStorage.getItem("authCodes") || "[]")
-    setIsValidClient(storedAuthCodes.includes(clientAuthCode))
-  }, [clientAuthCode])
-  const apolloClient = useApolloClient()
+  useEffect(() => {}, [clientAuthCode])
   const {
     result: { refetch: viewerRefetch },
   } = useViewerMaybe()
@@ -71,7 +71,7 @@ export const EmailAuthScreen: React.FC = () => {
     }
 
     if (result.data?.emailTokenUserAuth.success) {
-      apolloClient.link = createApolloLink(result.data.emailTokenUserAuth.csrfToken)
+      updateCsrfTag(result.data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
       toast({
         title: "Authentication Successful",
@@ -106,8 +106,8 @@ export const EmailAuthScreen: React.FC = () => {
         ) : (
           <div className="space-y-4">
             <p>
-              It appears you're using a different browser than the one you initiated the login from.
-              Please return to the original browser or device to complete the authentication
+              It appears you&apos;re using a different browser than the one you initiated the login
+              from. Please return to the original browser or device to complete the authentication
               process.
             </p>
             <Button onClick={() => navigate(rootPath({}))} className="w-full">

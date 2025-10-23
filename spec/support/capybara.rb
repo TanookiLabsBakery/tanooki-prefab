@@ -7,6 +7,7 @@ Capybara.server = :thruster
 RSpec.configure do |config|
   config.prepend_before(:each, type: :system) do
     driven_by Capybara.javascript_driver, options: {
+      # headless: false,
       window_size: [1280, 832],
       browser_options: {}, # {"no-sandbox": nil} required for docker
       timeout: 30,

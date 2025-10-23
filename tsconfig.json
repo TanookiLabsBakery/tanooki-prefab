@@ -5,6 +5,7 @@
     "paths": {
       "~/*": ["app/frontend/*"]
     },
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "verbatimModuleSyntax": false
   }
 }
