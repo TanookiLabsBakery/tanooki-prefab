@@ -12,7 +12,7 @@ export const textVariants = cva("", {
     },
     wrapping: {
       default: "",
-      wrap: "whitespace-pre-wrap break-words",
+      wrap: "whitespace-pre-wrap wrap-break-word",
     },
   },
   defaultVariants: {

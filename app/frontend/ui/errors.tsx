@@ -11,8 +11,8 @@ export const GraphqlError = ({ error }: { error: ApolloError }) => (
 )
 
 export const ErrorBox = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex-shrink-0 overflow-auto">
-    <div className="flex-shrink-0 overflow-auto rounded border border-red-500 p-3 text-red-600">
+  <div className="shrink-0 overflow-auto">
+    <div className="shrink-0 overflow-auto rounded border border-red-500 p-3 text-red-600">
       {children}
     </div>
   </div>

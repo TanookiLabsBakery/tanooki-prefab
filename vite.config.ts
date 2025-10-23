@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite"
 import ReactPlugin from "@vitejs/plugin-react"
 import path from "path"
 import { defineConfig } from "vite"
@@ -13,6 +14,8 @@ export default defineConfig({
       },
     }),
     svgr(),
+    //@ts-ignore
+    tailwindcss(),
   ],
   resolve: {
     alias: {
