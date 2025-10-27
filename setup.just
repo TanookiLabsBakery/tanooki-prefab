@@ -2,6 +2,9 @@ import 'variables.just'
 
 set dotenv-load := true
 
+default:
+    just --justfile setup.just --list --unsorted
+
 heroku-git-remote-setup:
     -heroku git:remote -a {{ heroku_app_staging }} --remote staging
     -heroku git:remote -a {{ heroku_app_production }} --remote production

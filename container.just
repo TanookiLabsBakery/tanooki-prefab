@@ -2,6 +2,9 @@ import 'variables.just'
 
 set dotenv-load := true
 
+default:
+    just --justfile container.just --list --unsorted
+
 setup:
     just container setup-postgres
     just container setup-redis
