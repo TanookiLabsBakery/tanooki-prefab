@@ -1,6 +1,8 @@
 # general
 
-- this is a rails app with a react frontend, all communication with the frontend happens through a graphql api
+- this is a rails app with a react frontend
+- all frontend code should be written in react (exception: email templates)
+- the frontend communicates with the backend exclusively through the graphql api in `app/graphql` - do not use standard rails controllers for frontend requests
 - the dev server is already running in the background, do not attempt to start it
 - avoid adding comments
 
@@ -10,8 +12,17 @@
 
 # Workflow
 
-- Be sure to typecheck when you’re done making a series of code changes
+- Be sure to typecheck when you're done making a series of code changes
 - Prefer running single tests, and not the whole test suite, for performance
+
+## verifying work
+
+Verify work when it's done or before making a pull request:
+
+- [ ] are actions authorized properly?
+- [ ] are there any excessive comments that should be removed?
+- [ ] is this tested appropriately, and not a tautological test?
+- [ ] are formatters, linters and tests all passing?
 
 ## frontend
 
@@ -35,6 +46,10 @@
 
 ### authorization
 
+- authorization uses the `action_policy` and `action_policy-graphql` gems
+  - docs: https://actionpolicy.evilmartians.io/
+  - action_policy: https://github.com/palkan/action_policy
+  - action_policy-graphql: https://github.com/palkan/action_policy-graphql
 - internal admin mutations/queries/input types: use `InternalAdmin::` namespace (e.g. `Mutations::InternalAdmin::UserUpdate`)
 - internal admin only fields: `field :user_role, ..., require_internal_admin: true` (simple visibility check)
 - contextual access control fields: `field :email, ..., authorize_field: {to: :view_full_user?}` (uses policy rules)
