@@ -9,11 +9,11 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  unless Rails.env.test?
+  if ENV["REDIRECT_TO_ORIGIN"].present?
     get(
       "/(*path)",
-      to: redirect { |_, request| "#{ENV.fetch("ORIGIN")}#{request.fullpath}" },
-      constraints: ->(request) { request.base_url != ENV.fetch("ORIGIN") },
+      to: redirect { |_, request| "#{AppOrigin.url}#{request.fullpath}" },
+      constraints: ->(request) { request.base_url != AppOrigin.url },
       status: 302
     )
   end

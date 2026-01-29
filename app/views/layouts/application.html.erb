@@ -16,7 +16,7 @@
 
     <% content_for :head %>
     <%= tag.meta name: "APP_NAME", content: AppConstants::APP_NAME %>
-    <%= tag.meta name: "direct-uploads-url", content: Rails.application.routes.url_helpers.rails_direct_uploads_url(host: ENV['ORIGIN']) %>
+    <%= tag.meta name: "direct-uploads-url", content: Rails.application.routes.url_helpers.rails_direct_uploads_url(host: AppOrigin.url) %>
 
     <%= vite_react_refresh_tag %>
     <%= vite_stylesheet_tag "application" %>
