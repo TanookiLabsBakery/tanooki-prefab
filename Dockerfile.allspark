@@ -1,0 +1,100 @@
+# Dockerfile.allspark for tanooki-prefab
+# This file is used by AllSpark Builder when this repo is the target.
+# It overrides the generic target Dockerfile to use Ruby 3.4.
+
+FROM ruby:3.4.6-slim
+
+LABEL allspark.version="target-custom"
+LABEL allspark.target="tanooki-prefab"
+LABEL allspark.ruby="3.4"
+
+# Install system dependencies
+RUN apt-get update -qq && \
+    apt-get install -y \
+    build-essential \
+    libpq-dev \
+    libyaml-dev \
+    git \
+    curl \
+    vim \
+    tmux \
+    procps \
+    htop \
+    tree \
+    wget \
+    unzip \
+    ca-certificates \
+    gnupg \
+    lsb-release \
+    jq \
+    openssh-client \
+    dnsutils \
+    python3 \
+    python3-pip \
+    python3-venv \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libgdk-pixbuf-2.0-0 \
+    libgtk-3-0 \
+    libgbm1 \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    fonts-liberation \
+    xdg-utils && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update -qq && \
+    apt-get install -y docker-ce-cli && \
+    apt-get install -y chromium chromium-driver && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Overmind
+RUN curl -L https://github.com/DarthSim/overmind/releases/download/v2.4.0/overmind-v2.4.0-linux-amd64.gz | gunzip > /usr/local/bin/overmind && \
+    chmod +x /usr/local/bin/overmind
+
+# Install doctl
+RUN cd /tmp && \
+    wget -q https://github.com/digitalocean/doctl/releases/download/v1.104.0/doctl-1.104.0-linux-amd64.tar.gz && \
+    tar xf doctl-1.104.0-linux-amd64.tar.gz && \
+    mv doctl /usr/local/bin/ && \
+    chmod +x /usr/local/bin/doctl && \
+    rm doctl-1.104.0-linux-amd64.tar.gz
+
+# Install 1Password CLI
+RUN curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+    gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" | \
+    tee /etc/apt/sources.list.d/1password.list && \
+    mkdir -p /etc/debsig/policies/AC2D62742012EA22/ && \
+    curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | \
+    tee /etc/debsig/policies/AC2D62742012EA22/1password.pol && \
+    mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22 && \
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+    gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg && \
+    apt-get update && apt-get install -y 1password-cli && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Node.js and Yarn
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    corepack enable
+
+# Install Claude Code CLI
+RUN npm install -g @anthropic-ai/claude-code || echo "Claude Code installation skipped"
+
+WORKDIR /app
+
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMIUM_BIN=/usr/bin/chromium
+ENV DOCKER_CONTAINER=true
+
+# Install bundler versions
+RUN gem install bundler:2.5.17 bundler:2.6.3
+
+# Install Ansible
+RUN pip3 install --no-cache-dir --break-system-packages ansible
+
+EXPOSE 3000
+
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
