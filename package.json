@@ -78,7 +78,7 @@
     "lint": "eslint --fix app/frontend",
     "lint-check": "eslint --max-warnings=0 app/frontend",
     "lint-files": "ls-lint",
-    "prepare": "husky",
+    "prepare": "husky && (pnpm run codegen-graphql 2>/dev/null || true)",
     "schema-dump": "bin/rails graphql:schemas:dump",
     "schema-dump-watch": "chokidar \"app/graphql/**/*.rb\" -c \"bin/rails graphql:schemas:dump\"",
     "type-check": "tsc --noEmit"
