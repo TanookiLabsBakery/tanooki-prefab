@@ -43,6 +43,7 @@ Verify work when it's done or before making a pull request:
 - graphql tests should use the graphql_execute spec helper
 - for active record enums use `pg_enum :status, ["active", "inactive"]` instead of `enum :status, {active: "active", inactive: "inactive"}, prefix: true` (pg_enum is a convenience method on ApplicationRecord)
 - when creating graphql enums based on an enum that exists in active record, use the rails_enum method on BaseEnum, e.g. `class Enums::ExampleStatusesType < Types::BaseEnum; rails_enum(ExampleModel.statuses); end`
+- models must set a unique cool_id prefix (2-3 chars based on model name, like Stripe IDs), e.g. `cool_id prefix: "usr"`
 
 ### authorization
 
