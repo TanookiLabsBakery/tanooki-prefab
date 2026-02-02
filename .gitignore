@@ -31,6 +31,10 @@
 
 /public/assets
 
+# Ignore esbuild/asset pipeline build artifacts
+/app/assets/builds
+/public/service-worker.js
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
