@@ -42,9 +42,9 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Set host for links generated in mailer templates.
-  # When running in AllSpark, use ALLSPARK_HOST for proper URLs.
-  config.action_mailer.default_url_options = if ENV["ALLSPARK_HOST"].present?
-    {host: ENV["ALLSPARK_HOST"], protocol: "https"}
+  # When running in AllSpark, use AppOrigin which parses ALLSPARK_ORIGIN.
+  config.action_mailer.default_url_options = if ENV["ALLSPARK_ORIGIN"].present?
+    {host: AppOrigin.host, protocol: "https"}
   else
     {host: "localhost", port: 3000}
   end
