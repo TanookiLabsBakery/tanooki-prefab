@@ -7,14 +7,23 @@ import {
 } from "~/auth/auth-layouts"
 import { LoginLayout } from "~/auth/login-layout"
 import {
+  contactPath,
   credentialsLoginPath,
   emailAuthPath,
+  featuresPath,
   internalAdminDashboardPath,
   loginPath,
+  pricingPath,
   profileEditPath,
   profilePath,
   rootPath,
+  testimonialsPath,
 } from "~/common/paths"
+import { ContactPage } from "~/landing/contact-page"
+import { FeaturesPage } from "~/landing/features-page"
+import { MarketingLayout } from "~/landing/marketing-layout"
+import { PricingPage } from "~/landing/pricing-page"
+import { TestimonialsPage } from "~/landing/testimonials-page"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
 import { CredentialsLoginScreen } from "~/login/credentials-login-screen"
 import { EmailAuthScreen } from "~/login/email-auth-screen"
@@ -100,8 +109,29 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: rootPath.pattern,
-        element: <RootScreen />,
+        element: <MarketingLayout />,
+        children: [
+          {
+            path: rootPath.pattern,
+            element: <RootScreen />,
+          },
+          {
+            path: featuresPath.pattern,
+            element: <FeaturesPage />,
+          },
+          {
+            path: testimonialsPath.pattern,
+            element: <TestimonialsPage />,
+          },
+          {
+            path: pricingPath.pattern,
+            element: <PricingPage />,
+          },
+          {
+            path: contactPath.pattern,
+            element: <ContactPage />,
+          },
+        ],
       },
     ],
   },

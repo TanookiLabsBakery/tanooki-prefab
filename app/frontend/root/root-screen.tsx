@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { loginPath, profilePath } from "~/common/paths"
-import { LinkButton } from "~/ui/link-button"
+import { profilePath } from "~/common/paths"
+import { LandingPage } from "~/landing/landing-page"
 import { useUiAccess } from "../auth/use-ui-access"
 import { useViewerMaybe } from "../auth/use-viewer"
 
@@ -18,9 +18,5 @@ export const RootScreen = () => {
 
   if (viewer) return null
 
-  return (
-    <div data-testid="root-screen">
-      <LinkButton to={loginPath({})}>Sign In</LinkButton>
-    </div>
-  )
+  return <LandingPage />
 }
