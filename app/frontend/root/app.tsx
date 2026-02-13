@@ -7,6 +7,7 @@ import { RouterProvider } from "react-router-dom"
 import invariant from "tiny-invariant"
 import { uiAccessQuery } from "~/auth/use-ui-access"
 import { ViewerProvider, viewerQuery } from "~/auth/use-viewer"
+import { PwaPullToRefresh } from "~/common/pwa-pull-to-refresh"
 import { Toaster } from "~/ui/sonner"
 import { createApolloLink } from "../common/create-apollo-link"
 import { router } from "./router"
@@ -71,13 +72,13 @@ apolloClient.writeQuery({
 
 export default function App() {
   return (
-    <>
+    <PwaPullToRefresh>
       <ApolloProvider client={apolloClient}>
         <ViewerProvider>
           <RouterProvider router={router} />
         </ViewerProvider>
       </ApolloProvider>
       <Toaster />
-    </>
+    </PwaPullToRefresh>
   )
 }
