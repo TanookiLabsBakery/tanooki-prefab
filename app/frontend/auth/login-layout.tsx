@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { getMetaContent } from "~/common/get-meta-content"
+import { AppConfig } from "~/common/app-config"
 
 export const LoginLayout = () => {
   return (
@@ -10,8 +10,7 @@ export const LoginLayout = () => {
 
           <div>
             <div className="text-center text-xs">
-              © {new Date().getFullYear()} {getMetaContent("APP_NAME")} Copyright All Rights
-              Reserved
+              © {new Date().getFullYear()} {AppConfig.app_name} Copyright All Rights Reserved
             </div>
           </div>
         </div>

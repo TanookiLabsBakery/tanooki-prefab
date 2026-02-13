@@ -8,13 +8,13 @@ RSpec.describe AuthenticationMailer, type: :mailer do
     let(:mail) { AuthenticationMailer.auth_challenge_email(user, token, client_auth_code).deliver_now }
 
     it "renders the headers" do
-      expect(mail.subject).to eq("Login to #{AppConstants::APP_NAME}")
+      expect(mail.subject).to eq("Login to #{AppConfig.app_name}")
       expect(mail.to).to eq([user.email]) # Extract email from formatted email
-      expect(mail.from).to eq([AppConstants::DEFAULT_FROM_EMAIL[/<(.+)>/, 1]]) # Ensure matching email extraction
+      expect(mail.from).to eq([AppConfig.default_from_email[/<(.+)>/, 1]]) # Ensure matching email extraction
     end
 
     it "renders the MJML content" do
-      expect(mail.body.encoded).to match(/Login to #{AppConstants::APP_NAME}/o)
+      expect(mail.body.encoded).to match(/Login to #{AppConfig.app_name}/o)
       expect(mail.body.encoded).to match(/Click the following link to log in:/)
       expect(mail.body.encoded).to match(/This link and code will only be valid for the next/)
       expect(mail.body.encoded).to match(/#{token}/)

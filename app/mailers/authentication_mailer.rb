@@ -7,7 +7,7 @@ class AuthenticationMailer < ApplicationMailer
 
     mail(
       to: @user.email_formatted,
-      subject: "Login to #{AppConstants::APP_NAME}"
+      subject: "Login to #{AppConfig.app_name}"
     )
   end
 end

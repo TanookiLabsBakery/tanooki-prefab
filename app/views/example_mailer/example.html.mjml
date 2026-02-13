@@ -1,7 +1,7 @@
 <mj-section background-color="#ffffff">
   <mj-column>
     <mj-text align="left" font-size="28px" font-weight="bold">
-      Welcome to <%= AppConstants::APP_NAME %>
+      Welcome to <%= AppConfig.app_name %>
     </mj-text>
   </mj-column>
 </mj-section>

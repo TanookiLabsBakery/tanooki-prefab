@@ -1,7 +1,7 @@
 <mj-section>
   <mj-column>
     <mj-text font-size="24px" font-weight="bold">
-      Login to <%= AppConstants::APP_NAME %>
+      Login to <%= AppConfig.app_name %>
     </mj-text>
 
     <mj-text>
@@ -9,7 +9,7 @@
     </mj-text>
 
     <mj-button href="<%= @auth_url %>" align="left">
-      Login to <%= AppConstants::APP_NAME %>
+      Login to <%= AppConfig.app_name %>
     </mj-button>
 
     <mj-text>

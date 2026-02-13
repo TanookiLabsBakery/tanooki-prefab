@@ -1,7 +1,7 @@
 import { useEffect } from "react"
-import { getMetaContent } from "./get-meta-content"
+import { AppConfig } from "./app-config"
 
-const defaultSuffix = ` · ${getMetaContent("APP_NAME")}`
+const defaultSuffix = ` · ${AppConfig.app_name}`
 
 export const useDocumentTitle = (title: string | null, suffix = defaultSuffix) => {
   useEffect(() => {

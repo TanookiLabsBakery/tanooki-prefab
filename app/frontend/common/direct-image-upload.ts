@@ -1,14 +1,14 @@
 import { DirectUpload } from "@rails/activestorage"
 import { Blob } from "rails__activestorage"
 import invariant from "tiny-invariant"
-import { getMetaContent } from "./get-meta-content"
+import { AppConfig } from "./app-config"
 
 export const directImageUpload = async (image: FileList[number]): Promise<any> => {
   const data = await uploadFile(image)
   return { signedId: data.signed_id }
 }
 
-const directUploadsUrl = getMetaContent("direct-uploads-url")
+const directUploadsUrl = AppConfig.direct_uploads_url
 
 const uploadFile = (file: File): Promise<Blob> => {
   return new Promise((resolve, reject) => {

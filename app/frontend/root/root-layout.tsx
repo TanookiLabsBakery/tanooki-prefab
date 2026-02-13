@@ -1,9 +1,9 @@
 import { Outlet, ScrollRestoration } from "react-router-dom"
-import { getMetaContent } from "~/common/get-meta-content"
+import { AppConfig } from "~/common/app-config"
 import { useDocumentTitle } from "~/common/use-document-title"
 
 export const RootLayout = () => {
-  useDocumentTitle(getMetaContent("APP_NAME"))
+  useDocumentTitle(AppConfig.app_name)
   return (
     <>
       <Outlet />
