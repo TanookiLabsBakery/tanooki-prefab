@@ -7,6 +7,7 @@ import { Link } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
 import * as z from "zod"
 import { gql } from "~/__generated__"
+import { useUiAccess } from "~/auth/use-ui-access"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
 import { useFormErrorHandling } from "~/common/error-handling"
@@ -53,6 +54,7 @@ export const EmailLoginScreen: React.FC = () => {
   const {
     result: { refetch: viewerRefetch },
   } = useViewerMaybe()
+  const { refetch: refetchUiAccess } = useUiAccess()
 
   const emailForm = useForm<EmailLoginFormValues>({
     resolver: zodResolver(emailLoginFormSchema),
@@ -131,6 +133,7 @@ export const EmailLoginScreen: React.FC = () => {
     if (data?.emailTokenUserAuth.success) {
       updateCsrfTag(data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
+      await refetchUiAccess()
       toast({
         title: "Authentication Successful",
         description: "You have been successfully logged in.",

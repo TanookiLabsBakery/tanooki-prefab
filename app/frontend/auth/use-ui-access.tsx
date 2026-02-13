@@ -18,5 +18,6 @@ export const useUiAccess = () => {
     uiAccess: result.data?.uiAccess,
     loading: result.loading,
     error: result.error,
+    refetch: result.refetch,
   }
 }

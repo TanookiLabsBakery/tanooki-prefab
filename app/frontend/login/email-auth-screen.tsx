@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client/react"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { gql } from "~/__generated__"
+import { useUiAccess } from "~/auth/use-ui-access"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
 import { rootPath } from "~/common/paths"
@@ -39,6 +40,7 @@ export const EmailAuthScreen: React.FC = () => {
   const {
     result: { refetch: viewerRefetch },
   } = useViewerMaybe()
+  const { refetch: refetchUiAccess } = useUiAccess()
 
   const handleAuthentication = async () => {
     if (!email || !token || !clientAuthCode) {
@@ -73,6 +75,7 @@ export const EmailAuthScreen: React.FC = () => {
     if (result.data?.emailTokenUserAuth.success) {
       updateCsrfTag(result.data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
+      await refetchUiAccess()
       toast({
         title: "Authentication Successful",
         description: "You have been successfully logged in.",

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import * as z from "zod"
 import { gql } from "~/__generated__"
+import { useUiAccess } from "~/auth/use-ui-access"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
 import { useFormErrorHandling } from "~/common/error-handling"
@@ -41,6 +42,7 @@ export const CredentialsLoginScreen: React.FC = () => {
     result: { refetch: refetchViewer },
   } = useViewerMaybe()
   const { navigateAfterAuth } = useNavigateAfterAuth()
+  const { refetch: refetchUiAccess } = useUiAccess()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -68,6 +70,7 @@ export const CredentialsLoginScreen: React.FC = () => {
     }
 
     await refetchViewer()
+    await refetchUiAccess()
     toast({
       title: "Login Successful",
       description: "You have been successfully logged in.",
