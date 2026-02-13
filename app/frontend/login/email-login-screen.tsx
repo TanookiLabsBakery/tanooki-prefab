@@ -4,6 +4,7 @@ import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
+import { toast } from "sonner"
 import { v4 as uuidv4 } from "uuid"
 import * as z from "zod"
 import { gql } from "~/__generated__"
@@ -17,7 +18,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { TextField } from "~/ui/forms/fields/text-field"
 import { FormGeneralErrors } from "~/ui/forms/form-general-errors"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/ui/input-otp"
-import { useToast } from "~/ui/use-toast"
 import { EMAIL_TOKEN_AUTH_MUTATION } from "./email-auth-screen"
 import { updateCsrfTag } from "./utils"
 
@@ -47,7 +47,6 @@ export const EmailLoginScreen: React.FC = () => {
     EMAIL_AUTH_CHALLENGE_MUTATION
   )
   const [emailTokenAuth, { loading: tokenAuthLoading }] = useMutation(EMAIL_TOKEN_AUTH_MUTATION)
-  const { toast } = useToast()
   const [step, setStep] = useState<"email" | "checkEmail" | "otp">("email")
   const [email, setEmail] = useState("")
   const { navigateAfterAuth } = useNavigateAfterAuth()
@@ -100,16 +99,12 @@ export const EmailLoginScreen: React.FC = () => {
     if (data?.emailUserAuthChallenge.success) {
       setEmail(values.email)
       setStep("checkEmail")
-      toast({
-        title: "Email Sent",
+      toast.success("Email Sent", {
         description: "Please check your email for the login link.",
-        variant: "default",
       })
     } else {
-      toast({
-        title: "Login Failed",
+      toast.error("Login Failed", {
         description: "Unable to send login email. Please try again.",
-        variant: "destructive",
       })
     }
   }
@@ -134,17 +129,13 @@ export const EmailLoginScreen: React.FC = () => {
       updateCsrfTag(data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
       await refetchUiAccess()
-      toast({
-        title: "Authentication Successful",
+      toast.success("Authentication Successful", {
         description: "You have been successfully logged in.",
-        variant: "default",
       })
       navigateAfterAuth()
     } else {
-      toast({
-        title: "Authentication Failed",
+      toast.error("Authentication Failed", {
         description: "Unable to authenticate. Please try again.",
-        variant: "destructive",
       })
     }
   }

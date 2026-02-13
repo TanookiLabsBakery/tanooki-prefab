@@ -1,13 +1,13 @@
 import { useMutation } from "@apollo/client/react"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { toast } from "sonner"
 import { gql } from "~/__generated__"
 import { useUiAccess } from "~/auth/use-ui-access"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
 import { rootPath } from "~/common/paths"
 import { Button } from "~/ui/button"
-import { useToast } from "~/ui/use-toast"
 import { updateCsrfTag } from "./utils"
 
 export const EMAIL_TOKEN_AUTH_MUTATION = gql(/* GraphQL */ `
@@ -31,7 +31,6 @@ export const EmailAuthScreen: React.FC = () => {
     clientAuthCode: string
   }>()
   const [emailTokenAuth] = useMutation(EMAIL_TOKEN_AUTH_MUTATION)
-  const { toast } = useToast()
   const navigate = useNavigate()
   const [isValidClient] = useState<boolean | null>(checkValidity(clientAuthCode))
   const { navigateAfterAuth } = useNavigateAfterAuth()
@@ -44,10 +43,8 @@ export const EmailAuthScreen: React.FC = () => {
 
   const handleAuthentication = async () => {
     if (!email || !token || !clientAuthCode) {
-      toast({
-        title: "Authentication Failed",
+      toast.error("Authentication Failed", {
         description: "Missing required information for authentication.",
-        variant: "destructive",
       })
       return
     }
@@ -64,10 +61,8 @@ export const EmailAuthScreen: React.FC = () => {
 
     if (result.error) {
       console.error("Email token auth failed:", result.error)
-      toast({
-        title: "Authentication Failed",
+      toast.error("Authentication Failed", {
         description: "An error occurred during authentication. Please try again.",
-        variant: "destructive",
       })
       return
     }
@@ -76,17 +71,13 @@ export const EmailAuthScreen: React.FC = () => {
       updateCsrfTag(result.data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
       await refetchUiAccess()
-      toast({
-        title: "Authentication Successful",
+      toast.success("Authentication Successful", {
         description: "You have been successfully logged in.",
-        variant: "default",
       })
       navigateAfterAuth()
     } else {
-      toast({
-        title: "Authentication Failed",
+      toast.error("Authentication Failed", {
         description: "Unable to authenticate. Please try again.",
-        variant: "destructive",
       })
     }
   }

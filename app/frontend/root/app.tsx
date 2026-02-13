@@ -7,7 +7,7 @@ import { RouterProvider } from "react-router-dom"
 import invariant from "tiny-invariant"
 import { uiAccessQuery } from "~/auth/use-ui-access"
 import { ViewerProvider, viewerQuery } from "~/auth/use-viewer"
-import { Toaster } from "~/ui/toaster"
+import { Toaster } from "~/ui/sonner"
 import { createApolloLink } from "../common/create-apollo-link"
 import { router } from "./router"
 

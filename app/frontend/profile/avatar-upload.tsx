@@ -1,10 +1,10 @@
 import { useMutation } from "@apollo/client/react"
 import React, { useCallback, useRef, useState } from "react"
+import { toast } from "sonner"
 import { gql } from "~/__generated__"
 import { useViewer } from "~/auth/use-viewer"
 import { directImageUpload } from "~/common/direct-image-upload"
 import { Button } from "~/ui/button"
-import { useToast } from "~/ui/use-toast"
 import { UserAvatar } from "~/users/user-avatar"
 
 const viewerUpdateAvatarMutation = gql(/* GraphQL */ `
@@ -23,7 +23,6 @@ export const AvatarUpload = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const { viewer } = useViewer()
-  const { toast } = useToast()
 
   const [runViewerUpdate] = useMutation(viewerUpdateAvatarMutation)
 
@@ -43,15 +42,12 @@ export const AvatarUpload = () => {
       })
 
       if (error) {
-        toast({
-          title: "Failed to save avatar",
-          variant: "destructive",
-        })
+        toast.error("Failed to save avatar")
       }
 
       setIsSaving(false)
     },
-    [runViewerUpdate, toast]
+    [runViewerUpdate]
   )
 
   const removeAvatar = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,16 +64,10 @@ export const AvatarUpload = () => {
       })
 
       if (error) {
-        toast({
-          title: "Failed to remove avatar",
-          variant: "destructive",
-        })
+        toast.error("Failed to remove avatar")
       }
     } catch {
-      toast({
-        title: "Error removing avatar",
-        variant: "destructive",
-      })
+      toast.error("Error removing avatar")
     }
   }
 

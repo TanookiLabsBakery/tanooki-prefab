@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import { z } from "zod"
 import { gql } from "~/__generated__"
 import { useViewer } from "~/auth/use-viewer"
@@ -14,7 +15,6 @@ import { Form } from "~/ui/form"
 import { TextField } from "~/ui/forms/fields/text-field"
 import { FormGeneralErrors } from "~/ui/forms/form-general-errors"
 import { Section } from "~/ui/section"
-import { useToast } from "~/ui/use-toast"
 import { AvatarUpload } from "./avatar-upload"
 
 const mutation = gql(/* GraphQL */ `
@@ -31,7 +31,6 @@ const mutation = gql(/* GraphQL */ `
 `)
 
 export const ProfileEditScreen = () => {
-  const { toast } = useToast()
   const navigate = useNavigate()
 
   const { viewer } = useViewer()
@@ -69,8 +68,7 @@ export const ProfileEditScreen = () => {
 
     if (result.error) return
 
-    toast({
-      title: "Profile Updated",
+    toast.success("Profile Updated", {
       description: "Your profile has been successfully updated.",
     })
     navigate(rootPath.pattern)

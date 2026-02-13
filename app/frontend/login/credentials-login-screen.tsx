@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
+import { toast } from "sonner"
 import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useUiAccess } from "~/auth/use-ui-access"
@@ -13,7 +14,7 @@ import { loginPath } from "~/common/paths"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
 import { TextField } from "~/ui/forms/fields/text-field"
-import { useToast } from "~/ui/use-toast"
+import { FormGeneralErrors } from "~/ui/forms/form-general-errors"
 
 const loginFormSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
@@ -37,7 +38,6 @@ const LOGIN_MUTATION = gql(/* GraphQL */ `
 export const CredentialsLoginScreen: React.FC = () => {
   const [login, loginResult] = useMutation(LOGIN_MUTATION)
   const { viewer } = useViewerMaybe()
-  const { toast } = useToast()
   const {
     result: { refetch: refetchViewer },
   } = useViewerMaybe()
@@ -71,10 +71,8 @@ export const CredentialsLoginScreen: React.FC = () => {
 
     await refetchViewer()
     await refetchUiAccess()
-    toast({
-      title: "Login Successful",
+    toast.success("Login Successful", {
       description: "You have been successfully logged in.",
-      variant: "default",
     })
     navigateAfterAuth()
   }
@@ -89,6 +87,7 @@ export const CredentialsLoginScreen: React.FC = () => {
           <>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormGeneralErrors control={form.control} />
                 <TextField
                   control={form.control}
                   name="email"
