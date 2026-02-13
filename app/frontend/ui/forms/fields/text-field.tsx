@@ -2,7 +2,7 @@ import { InputHTMLAttributes } from "react"
 import { Control, FieldPath, FieldValues } from "react-hook-form"
 import { cn } from "~/common/cn"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/ui/form"
-import { Input } from "../ui/input"
+import { Input } from "~/ui/input"
 
 export const TextField = <
   TFieldValues extends FieldValues = FieldValues,

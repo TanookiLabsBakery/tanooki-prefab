@@ -1,11 +1,11 @@
-import { useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client/react"
 import { useNavigate } from "react-router-dom"
 import invariant from "tiny-invariant"
 import { gql } from "~/__generated__"
 import { profilePath } from "~/common/paths"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { Button } from "~/ui/button"
-import { GraphqlError } from "~/ui/errors"
+import { GraphqlError } from "~/ui/graphql-error"
 import Text from "~/ui/typography"
 
 const userDetailsQuery = gql(/* GraphQL */ `

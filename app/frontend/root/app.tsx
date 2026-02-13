@@ -1,7 +1,8 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
-import { KeyArgsFunction } from "@apollo/client/cache/inmemory/policies"
+import { ApolloClient, InMemoryCache } from "@apollo/client"
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
+import { ApolloProvider } from "@apollo/client/react"
 import { relayStylePagination } from "@apollo/client/utilities"
+import { KeyArgsFunction } from "node_modules/@apollo/client/cache/inmemory/policies"
 import { RouterProvider } from "react-router-dom"
 import invariant from "tiny-invariant"
 import { uiAccessQuery } from "~/auth/use-ui-access"
@@ -23,7 +24,6 @@ const excludePaginationArgs: KeyArgsFunction = (args) => {
 }
 
 const apolloClient = new ApolloClient({
-  uri: "/graphql",
   link: createApolloLink(),
   cache: new InMemoryCache({
     typePolicies: {
@@ -37,6 +37,10 @@ const apolloClient = new ApolloClient({
   defaultOptions: {
     watchQuery: {
       fetchPolicy: "cache-and-network",
+      errorPolicy: "all",
+    },
+    mutate: {
+      errorPolicy: "all",
     },
   },
 })

@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client/react"
 import { gql } from "~/__generated__"
 
 export const uiAccessQuery = gql(/* GraphQL */ `

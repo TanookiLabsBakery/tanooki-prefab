@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
@@ -6,16 +7,15 @@ import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
+import { useFormErrorHandling } from "~/common/error-handling"
 import { loginPath } from "~/common/paths"
-import { useFormErrors } from "~/common/use-form-errors"
-import { useSafeMutation } from "~/common/use-safe-mutation"
-import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
+import { TextField } from "~/ui/forms/fields/text-field"
 import { useToast } from "~/ui/use-toast"
 
 const loginFormSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.email({ message: "Invalid email address" }),
   password: z.string(),
 })
 
@@ -34,7 +34,7 @@ const LOGIN_MUTATION = gql(/* GraphQL */ `
 `)
 
 export const CredentialsLoginScreen: React.FC = () => {
-  const [login, loginResult] = useSafeMutation(LOGIN_MUTATION)
+  const [login, loginResult] = useMutation(LOGIN_MUTATION)
   const { viewer } = useViewerMaybe()
   const { toast } = useToast()
   const {
@@ -49,10 +49,11 @@ export const CredentialsLoginScreen: React.FC = () => {
       password: "",
     },
   })
-  useFormErrors(form.setError, loginResult)
+  const { onError } = useFormErrorHandling(form)
 
   const onSubmit = async (values: LoginFormValues) => {
-    const result = await login({
+    const { error } = await login({
+      onError,
       variables: {
         input: {
           email: values.email,
@@ -62,7 +63,7 @@ export const CredentialsLoginScreen: React.FC = () => {
       },
     })
 
-    if (result.errors) {
+    if (error) {
       return
     }
 

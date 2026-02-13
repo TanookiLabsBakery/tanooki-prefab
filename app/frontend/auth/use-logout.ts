@@ -1,7 +1,7 @@
+import { useMutation } from "@apollo/client/react"
 import invariant from "tiny-invariant"
 import { gql } from "~/__generated__"
 import { rootPath } from "~/common/paths"
-import { useSafeMutation } from "~/common/use-safe-mutation"
 import { useToast } from "~/ui/use-toast"
 
 const LOGOUT_MUTATION = gql(`
@@ -13,7 +13,7 @@ const LOGOUT_MUTATION = gql(`
 `)
 
 export const useLogout = () => {
-  const [logoutMutation] = useSafeMutation(LOGOUT_MUTATION)
+  const [logoutMutation] = useMutation(LOGOUT_MUTATION)
   const { toast } = useToast()
 
   const logout = async () => {
@@ -21,8 +21,8 @@ export const useLogout = () => {
       variables: { input: {} },
     })
 
-    if (result.errors) {
-      console.error("Logout failed:", result.errors)
+    if (result.error) {
+      console.error("Logout failed:", result.error)
       toast({
         title: "Logout Failed",
         description: "An error occurred during logout. Please try again.",

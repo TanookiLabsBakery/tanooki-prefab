@@ -1,12 +1,12 @@
-import { QueryResult, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client/react"
 import React, { createContext, useContext, useMemo } from "react"
 import invariant from "tiny-invariant"
 import { gql } from "~/__generated__"
 import { Exact, ViewerQuery } from "~/__generated__/graphql"
-import { GraphqlError } from "~/ui/errors"
+import { GraphqlError } from "~/ui/graphql-error"
 
 interface ViewerContextType {
-  result: QueryResult<ViewerQuery, Exact<{ [key: string]: never }>>
+  result: useQuery.Result<ViewerQuery, Exact<{ [key: string]: never }>>
   viewer: ViewerQuery["viewer"]
 }
 

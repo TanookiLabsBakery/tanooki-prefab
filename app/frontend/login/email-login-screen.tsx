@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 import React, { useState } from "react"
@@ -8,18 +9,19 @@ import * as z from "zod"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
+import { useFormErrorHandling } from "~/common/error-handling"
 import { credentialsLoginPath } from "~/common/paths"
-import { useSafeMutation } from "~/common/use-safe-mutation"
-import { TextField } from "~/fields/text-field"
 import { Button } from "~/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/ui/form"
+import { TextField } from "~/ui/forms/fields/text-field"
+import { FormGeneralErrors } from "~/ui/forms/form-general-errors"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/ui/input-otp"
 import { useToast } from "~/ui/use-toast"
 import { EMAIL_TOKEN_AUTH_MUTATION } from "./email-auth-screen"
 import { updateCsrfTag } from "./utils"
 
 const emailLoginFormSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.email({ message: "Invalid email address" }),
 })
 
 const otpFormSchema = z.object({
@@ -40,10 +42,10 @@ const EMAIL_AUTH_CHALLENGE_MUTATION = gql(/* GraphQL */ `
 `)
 
 export const EmailLoginScreen: React.FC = () => {
-  const [emailAuthChallenge, { loading: challengeLoading }] = useSafeMutation(
+  const [emailAuthChallenge, { loading: challengeLoading }] = useMutation(
     EMAIL_AUTH_CHALLENGE_MUTATION
   )
-  const [emailTokenAuth, { loading: tokenAuthLoading }] = useSafeMutation(EMAIL_TOKEN_AUTH_MUTATION)
+  const [emailTokenAuth, { loading: tokenAuthLoading }] = useMutation(EMAIL_TOKEN_AUTH_MUTATION)
   const { toast } = useToast()
   const [step, setStep] = useState<"email" | "checkEmail" | "otp">("email")
   const [email, setEmail] = useState("")
@@ -66,6 +68,9 @@ export const EmailLoginScreen: React.FC = () => {
     },
   })
 
+  const { onError: onEmailFormError } = useFormErrorHandling(emailForm)
+  const { onError: onOtpFormError } = useFormErrorHandling(otpForm)
+
   const onEmailSubmit = async (values: EmailLoginFormValues) => {
     const storedAuthCodes = JSON.parse(localStorage.getItem("authCodes") || "[]")
     let newClientAuthCode: string
@@ -76,7 +81,8 @@ export const EmailLoginScreen: React.FC = () => {
       newClientAuthCode = storedAuthCodes[storedAuthCodes.length - 1]
     }
 
-    const result = await emailAuthChallenge({
+    const { data, error } = await emailAuthChallenge({
+      onError: onEmailFormError,
       variables: {
         input: {
           email: values.email,
@@ -85,17 +91,11 @@ export const EmailLoginScreen: React.FC = () => {
       },
     })
 
-    if (result.errors) {
-      console.error("Email auth challenge failed:", result.errors)
-      toast({
-        title: "Login Failed",
-        description: "An error occurred during login. Please try again.",
-        variant: "destructive",
-      })
+    if (error) {
       return
     }
 
-    if (result.data?.emailUserAuthChallenge.success) {
+    if (data?.emailUserAuthChallenge.success) {
       setEmail(values.email)
       setStep("checkEmail")
       toast({
@@ -113,7 +113,8 @@ export const EmailLoginScreen: React.FC = () => {
   }
 
   const onOtpSubmit = async (values: OtpFormValues) => {
-    const result = await emailTokenAuth({
+    const { data, error } = await emailTokenAuth({
+      onError: onOtpFormError,
       variables: {
         input: {
           email,
@@ -123,18 +124,12 @@ export const EmailLoginScreen: React.FC = () => {
       },
     })
 
-    if (result.errors) {
-      console.error("Email token auth failed:", result.errors)
-      toast({
-        title: "Authentication Failed",
-        description: "An error occurred during authentication. Please try again.",
-        variant: "destructive",
-      })
+    if (error) {
       return
     }
 
-    if (result.data?.emailTokenUserAuth.success) {
-      updateCsrfTag(result.data.emailTokenUserAuth.csrfToken)
+    if (data?.emailTokenUserAuth.success) {
+      updateCsrfTag(data.emailTokenUserAuth.csrfToken)
       await viewerRefetch()
       toast({
         title: "Authentication Successful",
@@ -158,6 +153,7 @@ export const EmailLoginScreen: React.FC = () => {
         {step === "email" && (
           <Form {...emailForm}>
             <form onSubmit={emailForm.handleSubmit(onEmailSubmit)} className="space-y-6">
+              <FormGeneralErrors control={emailForm.control} />
               <TextField
                 control={emailForm.control}
                 name="email"
@@ -181,6 +177,7 @@ export const EmailLoginScreen: React.FC = () => {
         {step === "otp" && (
           <Form {...otpForm}>
             <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="flex flex-col space-y-6">
+              <FormGeneralErrors control={otpForm.control} />
               <FormField
                 control={otpForm.control}
                 name="otp"

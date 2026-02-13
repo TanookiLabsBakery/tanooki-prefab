@@ -1,8 +1,8 @@
+import { useMutation } from "@apollo/client/react"
 import React, { useCallback, useRef, useState } from "react"
 import { gql } from "~/__generated__"
 import { useViewer } from "~/auth/use-viewer"
 import { directImageUpload } from "~/common/direct-image-upload"
-import { useSafeMutation } from "~/common/use-safe-mutation"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
 import { UserAvatar } from "~/users/user-avatar"
@@ -25,7 +25,7 @@ export const AvatarUpload = () => {
   const { viewer } = useViewer()
   const { toast } = useToast()
 
-  const [runViewerUpdate] = useSafeMutation(viewerUpdateAvatarMutation)
+  const [runViewerUpdate] = useMutation(viewerUpdateAvatarMutation)
 
   const onFileSelect = useCallback(
     async (file: File) => {
@@ -33,7 +33,7 @@ export const AvatarUpload = () => {
 
       const { signedId } = await directImageUpload(file)
 
-      const { errors } = await runViewerUpdate({
+      const { error } = await runViewerUpdate({
         variables: {
           input: {
             viewerInput: {},
@@ -42,7 +42,7 @@ export const AvatarUpload = () => {
         },
       })
 
-      if (errors) {
+      if (error) {
         toast({
           title: "Failed to save avatar",
           variant: "destructive",
@@ -58,7 +58,7 @@ export const AvatarUpload = () => {
     event.preventDefault()
 
     try {
-      const { errors } = await runViewerUpdate({
+      const { error } = await runViewerUpdate({
         variables: {
           input: {
             viewerInput: {},
@@ -67,7 +67,7 @@ export const AvatarUpload = () => {
         },
       })
 
-      if (errors) {
+      if (error) {
         toast({
           title: "Failed to remove avatar",
           variant: "destructive",

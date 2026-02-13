@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
@@ -5,13 +6,13 @@ import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { gql } from "~/__generated__"
 import { useViewer } from "~/auth/use-viewer"
+import { useFormErrorHandling } from "~/common/error-handling"
 import { rootPath, profilePath } from "~/common/paths"
-import { useSafeMutation } from "~/common/use-safe-mutation"
-import { useValidationErrors } from "~/common/use-validation-errors"
-import { TextField } from "~/fields/text-field"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { Button } from "~/ui/button"
 import { Form } from "~/ui/form"
+import { TextField } from "~/ui/forms/fields/text-field"
+import { FormGeneralErrors } from "~/ui/forms/form-general-errors"
 import { Section } from "~/ui/section"
 import { useToast } from "~/ui/use-toast"
 import { AvatarUpload } from "./avatar-upload"
@@ -50,11 +51,12 @@ export const ProfileEditScreen = () => {
     },
   })
 
-  const [exec, mutationResult] = useSafeMutation(mutation)
-  useValidationErrors(form.setError, mutationResult)
+  const { onError } = useFormErrorHandling(form)
+  const [exec] = useMutation(mutation, { onError: () => null })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const result = await exec({
+      onError,
       variables: {
         input: {
           viewerInput: {
@@ -65,13 +67,13 @@ export const ProfileEditScreen = () => {
       },
     })
 
-    if (!result.errors) {
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
-      })
-      navigate(rootPath({}))
-    }
+    if (result.error) return
+
+    toast({
+      title: "Profile Updated",
+      description: "Your profile has been successfully updated.",
+    })
+    navigate(rootPath.pattern)
   }
 
   return (
@@ -86,6 +88,8 @@ export const ProfileEditScreen = () => {
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormGeneralErrors control={form.control} className="mb-4" />
+
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-8">
                 <Section variant="grayBackground" className="space-y-4 p-0">
@@ -107,11 +111,6 @@ export const ProfileEditScreen = () => {
               <Link to={profilePath({})} className="text-sm text-neutral-400">
                 Close &amp; Cancel
               </Link>
-              {/* <div className="flex flex-1 justify-end">
-                <Link to={profilePath({})} className="text-sm text-neutral-400">
-                  Request account removal
-                </Link>
-              </div> */}
             </div>
           </form>
         </Form>

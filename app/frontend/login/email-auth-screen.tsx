@@ -1,10 +1,10 @@
+import { useMutation } from "@apollo/client/react"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { gql } from "~/__generated__"
 import { useViewerMaybe } from "~/auth/use-viewer"
 import { useNavigateAfterAuth } from "~/auth/utils"
 import { rootPath } from "~/common/paths"
-import { useSafeMutation } from "~/common/use-safe-mutation"
 import { Button } from "~/ui/button"
 import { useToast } from "~/ui/use-toast"
 import { updateCsrfTag } from "./utils"
@@ -29,7 +29,7 @@ export const EmailAuthScreen: React.FC = () => {
     token: string
     clientAuthCode: string
   }>()
-  const [emailTokenAuth] = useSafeMutation(EMAIL_TOKEN_AUTH_MUTATION)
+  const [emailTokenAuth] = useMutation(EMAIL_TOKEN_AUTH_MUTATION)
   const { toast } = useToast()
   const navigate = useNavigate()
   const [isValidClient] = useState<boolean | null>(checkValidity(clientAuthCode))
@@ -60,8 +60,8 @@ export const EmailAuthScreen: React.FC = () => {
       },
     })
 
-    if (result.errors) {
-      console.error("Email token auth failed:", result.errors)
+    if (result.error) {
+      console.error("Email token auth failed:", result.error)
       toast({
         title: "Authentication Failed",
         description: "An error occurred during authentication. Please try again.",

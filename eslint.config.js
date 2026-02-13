@@ -43,5 +43,10 @@ export default defineConfig([
     linterOptions: {
       reportUnusedDisableDirectives: "off",
     },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
   },
 ])
