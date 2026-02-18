@@ -12,8 +12,13 @@
 # explicitly allow cross-origin embedding via CSP frame-ancestors.
 
 # Detect if we're running on a sprites.app domain
-running_on_sprite = ENV["HOSTNAME"]&.include?("sprites.app") ||
-                    ENV["APP_HOST"]&.include?("sprites.app")
+# Check hostname, environment variables, and special sprite paths
+require 'socket'
+hostname = Socket.gethostname rescue nil
+running_on_sprite = hostname&.include?("sprites.app") ||
+                    ENV["HOSTNAME"]&.include?("sprites.app") ||
+                    ENV["APP_HOST"]&.include?("sprites.app") ||
+                    File.exist?("/.sprite") # Sprites have a /.sprite directory
 
 if ENV["ALLSPARK_ORIGIN"].present? || running_on_sprite
   if running_on_sprite
