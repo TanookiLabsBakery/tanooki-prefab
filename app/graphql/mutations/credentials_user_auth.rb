@@ -16,7 +16,7 @@ module Mutations
         context[:login].call(email.downcase, password, remember_me)
       elsif auth_type == "token"
         user_ = User.find_by(email: email.downcase)
-        user_.valid_password?(password) ? user_ : nil
+        user_&.valid_password?(password) ? user_ : nil
       end
 
       if user && auth_type == "session"

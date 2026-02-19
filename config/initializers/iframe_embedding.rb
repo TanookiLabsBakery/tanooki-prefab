@@ -13,24 +13,27 @@
 
 # Detect if we're running on a sprites.app domain
 # Check hostname, environment variables, and special sprite paths
-require 'socket'
-hostname = Socket.gethostname rescue nil
+require "socket"
+hostname = begin
+  Socket.gethostname
+rescue
+  nil
+end
 running_on_sprite = hostname&.include?("sprites.app") ||
-                    ENV["HOSTNAME"]&.include?("sprites.app") ||
-                    ENV["APP_HOST"]&.include?("sprites.app") ||
-                    File.exist?("/.sprite") # Sprites have a /.sprite directory
+  ENV["HOSTNAME"]&.include?("sprites.app") ||
+  ENV["APP_HOST"]&.include?("sprites.app") ||
+  File.exist?("/.sprite") # Sprites have a /.sprite directory
 
 if ENV["ALLSPARK_ORIGIN"].present? || running_on_sprite
   if running_on_sprite
     # Sprite deployment: allow embedding from creator.console.allspark.build
     creator_origin = "https://creator.console.allspark.build"
-    frame_ancestors = "'self' #{creator_origin}"
   else
     # Traditional deployment: derive creator origin from ALLSPARK_ORIGIN
     uri = URI.parse(ENV["ALLSPARK_ORIGIN"])
     creator_origin = "#{uri.scheme}://creator.#{uri.host}"
-    frame_ancestors = "'self' #{creator_origin}"
   end
+  frame_ancestors = "'self' #{creator_origin}"
 
   # Must set default_headers during initialization, not in after_initialize block
   # Use CSP frame-ancestors (modern, more flexible than X-Frame-Options)
