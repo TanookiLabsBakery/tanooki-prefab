@@ -55,3 +55,4 @@ node_modules
 .eslintcache
 .claude/settings.local.json
 .pnpm-store/
+CLAUDE.local.md

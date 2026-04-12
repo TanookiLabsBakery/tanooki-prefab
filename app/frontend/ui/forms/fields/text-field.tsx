@@ -33,7 +33,11 @@ export const TextField = <
       render={({ field, fieldState }) => (
         <FormItem>
           <FormLabel
-            className={cn("text-gray-400", fieldState.error && "text-destructive", labelClassName)}
+            className={cn(
+              "text-muted-foreground",
+              fieldState.error && "text-destructive",
+              labelClassName
+            )}
           >
             {label}
             {required && <span className="text-destructive">*</span>}

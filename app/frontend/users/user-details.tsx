@@ -55,22 +55,22 @@ export const UserDetails: React.FC<{ userId: string }> = ({ userId }) => {
           <Text as="h1">{user.fullName}</Text>
           <Button onClick={handleEdit}>Edit Details</Button>
         </div>
-        <hr className="my-4 border-gray-300" />
+        <hr className="my-4 border-border" />
         <div className="space-y-4">
           <div className="flex">
-            <Text variant="default" className="w-24 text-gray-500">
+            <Text variant="default" className="w-24 text-muted-foreground">
               First Name
             </Text>
             <Text variant="default">{user.firstName}</Text>
           </div>
           <div className="flex">
-            <Text variant="default" className="w-24 text-gray-500">
+            <Text variant="default" className="w-24 text-muted-foreground">
               Last Name
             </Text>
             <Text variant="default">{user.lastName}</Text>
           </div>
           <div className="flex">
-            <Text variant="default" className="w-24 text-gray-500">
+            <Text variant="default" className="w-24 text-muted-foreground">
               Role
             </Text>
             <Text variant="default">{user.userRole}</Text>

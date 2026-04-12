@@ -1,26 +1,26 @@
+import { Menu } from "lucide-react"
+import { useState } from "react"
 import { Link, Outlet } from "react-router-dom"
 import { cn } from "~/common/cn"
-import {
-  contactPath,
-  featuresPath,
-  loginPath,
-  pricingPath,
-  rootPath,
-  testimonialsPath,
-} from "~/common/paths"
+import { featuresPath, loginPath, rootPath } from "~/common/paths"
+import { Button } from "~/ui/button"
 import { LinkButton } from "~/ui/link-button"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "~/ui/sheet"
 
 const NavLink = ({
   to,
   children,
   className,
+  onClick,
 }: {
   to: string
   children: React.ReactNode
   className?: string
+  onClick?: () => void
 }) => (
   <Link
     to={to}
+    onClick={onClick}
     className={cn(
       "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
       className
@@ -31,26 +31,48 @@ const NavLink = ({
 )
 
 const Navigation = () => {
+  const [mobileOpen, setMobileOpen] = useState(false)
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <Link to={rootPath({})} className="mr-6 flex items-center space-x-2">
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            AllSpark
+          <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-xl font-bold text-transparent">
+            Prefab
           </span>
         </Link>
-        <nav className="hidden md:flex flex-1 items-center space-x-6 text-sm font-medium">
+        <nav className="hidden flex-1 items-center space-x-6 text-sm font-medium md:flex">
           <NavLink to={featuresPath({})}>Features</NavLink>
-          <NavLink to={pricingPath({})}>Pricing</NavLink>
-          <NavLink to={testimonialsPath({})}>Testimonials</NavLink>
-          <NavLink to={contactPath({})}>Contact</NavLink>
         </nav>
-        <div className="flex flex-1 items-center justify-end space-x-4">
+        <div className="hidden flex-1 items-center justify-end space-x-4 md:flex">
           <NavLink to={loginPath({})}>Sign In</NavLink>
           <LinkButton to={loginPath({})} size="sm">
             Get Started
           </LinkButton>
         </div>
+        <div className="flex flex-1 justify-end md:hidden">
+          <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
+            <Menu className="size-5" />
+          </Button>
+        </div>
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>Navigation</SheetTitle>
+            </SheetHeader>
+            <nav className="mt-6 flex flex-col gap-4">
+              <NavLink to={featuresPath({})} onClick={() => setMobileOpen(false)}>
+                Features
+              </NavLink>
+              <NavLink to={loginPath({})} onClick={() => setMobileOpen(false)}>
+                Sign In
+              </NavLink>
+              <LinkButton to={loginPath({})} onClick={() => setMobileOpen(false)}>
+                Get Started
+              </LinkButton>
+            </nav>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   )
@@ -59,63 +81,19 @@ const Navigation = () => {
 const Footer = () => {
   return (
     <footer className="border-t bg-muted/40">
-      <div className="container py-12">
-        <div className="grid gap-8 md:grid-cols-4">
-          <div>
-            <Link to={rootPath({})} className="flex items-center space-x-2">
-              <span className="text-xl font-bold">AllSpark</span>
-            </Link>
-            <p className="mt-4 text-sm text-muted-foreground">
-              A modern, production-ready Rails + React application template built with best
-              practices and powerful features.
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-4 text-sm font-semibold">Product</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <NavLink to={featuresPath({})}>Features</NavLink>
-              </li>
-              <li>
-                <NavLink to={pricingPath({})}>Pricing</NavLink>
-              </li>
-              <li>
-                <span className="text-muted-foreground/60">Documentation</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground/60">Changelog</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="mb-4 text-sm font-semibold">Company</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <span className="text-muted-foreground/60">About Us</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground/60">Blog</span>
-              </li>
-              <li>
-                <NavLink to={contactPath({})}>Contact</NavLink>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="mb-4 text-sm font-semibold">Legal</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <span className="text-muted-foreground/60">Privacy Policy</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground/60">Terms of Service</span>
-              </li>
-            </ul>
-          </div>
+      <div className="container py-8">
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+          <Link to={rootPath({})} className="text-lg font-bold">
+            Prefab
+          </Link>
+          <nav className="flex gap-6">
+            <NavLink to={featuresPath({})}>Features</NavLink>
+            <NavLink to={loginPath({})}>Sign In</NavLink>
+          </nav>
         </div>
-        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} AllSpark. All rights reserved.</p>
-          <p className="mt-2">Built with Ruby on Rails, React, Shadcn/ui, and Tailwind CSS</p>
+        <div className="mt-6 border-t pt-6 text-center text-sm text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} Prefab. All rights reserved.</p>
+          <p className="mt-1">Built with Rails, React, GraphQL, and shadcn/ui</p>
         </div>
       </div>
     </footer>

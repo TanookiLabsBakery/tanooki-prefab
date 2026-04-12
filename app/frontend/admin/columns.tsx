@@ -17,7 +17,7 @@ export const columns: ColumnDef<UserColumns | null | undefined>[] = [
       return (
         <>
           <div className="text-sm">{row.getValue("fullName")}</div>
-          <div className="text-gray-500">{row.original?.email}</div>
+          <div className="text-muted-foreground">{row.original?.email}</div>
         </>
       )
     },

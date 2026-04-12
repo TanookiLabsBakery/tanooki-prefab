@@ -82,7 +82,6 @@ export const ProfileEditScreen = () => {
       <div className="flex flex-1 flex-col">
         <div className="bottom-1 mb-4 flex items-center justify-between border-b py-4">
           <h1 className="text-2xl">Edit Details</h1>
-          {/* <LinkButton to={}>Update Password</LinkButton> */}
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

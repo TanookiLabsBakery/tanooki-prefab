@@ -7,29 +7,26 @@ import {
 } from "~/auth/auth-layouts"
 import { LoginLayout } from "~/auth/login-layout"
 import {
-  contactPath,
   credentialsLoginPath,
+  dashboardPath,
   emailAuthPath,
   featuresPath,
   internalAdminDashboardPath,
   loginPath,
-  pricingPath,
   profileEditPath,
   profilePath,
   rootPath,
-  testimonialsPath,
 } from "~/common/paths"
-import { ContactPage } from "~/landing/contact-page"
+import { DashboardScreen } from "~/dashboard/dashboard-screen"
 import { FeaturesPage } from "~/landing/features-page"
 import { MarketingLayout } from "~/landing/marketing-layout"
-import { PricingPage } from "~/landing/pricing-page"
-import { TestimonialsPage } from "~/landing/testimonials-page"
 import { SidebarLayout } from "~/layouts/sidebar-layout"
 import { CredentialsLoginScreen } from "~/login/credentials-login-screen"
 import { EmailAuthScreen } from "~/login/email-auth-screen"
 import { EmailLoginScreen } from "~/login/email-login-screen"
 import { ProfileEditScreen } from "~/profile/profile-edit-screen"
 import { ProfileScreen } from "~/profile/profile-screen"
+import { NotFoundScreen } from "~/root/not-found-screen"
 import { ErrorBoundary } from "../ui/error-boundary"
 import { RootLayout } from "./root-layout"
 import { RootScreen } from "./root-screen"
@@ -42,6 +39,10 @@ const systemAdminAuthenticatedRoutes: Array<RouteObject> = [
 ]
 
 const authenticatedRoutes: Array<RouteObject> = [
+  {
+    path: dashboardPath.pattern,
+    element: <DashboardScreen />,
+  },
   {
     path: profilePath.pattern,
     element: <ProfileScreen />,
@@ -119,19 +120,11 @@ export const router = createBrowserRouter([
             path: featuresPath.pattern,
             element: <FeaturesPage />,
           },
-          {
-            path: testimonialsPath.pattern,
-            element: <TestimonialsPage />,
-          },
-          {
-            path: pricingPath.pattern,
-            element: <PricingPage />,
-          },
-          {
-            path: contactPath.pattern,
-            element: <ContactPage />,
-          },
         ],
+      },
+      {
+        path: "*",
+        element: <NotFoundScreen />,
       },
     ],
   },

@@ -50,7 +50,7 @@ export const InternalAdminDashboardScreen = () => {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="disabled:bg-gray-100"
+                  className="disabled:bg-muted"
                   onClick={() => {
                     fetchMore({
                       variables: {

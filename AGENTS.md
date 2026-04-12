@@ -30,12 +30,16 @@ Verify work when it's done or before making a pull request:
 - use shadcn components for ui, install new ones with `pnpm dlx shadcn@latest add <component>`
 - when conditionally setting classnames, use the cn helper `import { cn } from "~/common/cn"`
 - avoid inlining svg code directly, instead put a placeholder like 'TODO: insert graphic'
-- avoid using hex values in tailwind classes, use named colors in the tailwind.config.js
+- avoid using hex values in tailwind classes, use semantic theme colors (e.g. `bg-primary`, `text-muted-foreground`, `border-border`) defined via CSS variables in `application.css`
+- tailwind v4 uses CSS-based config via `@theme` blocks in `application.css` (no `tailwind.config.js`)
 - when updating graphql queries and mutations in typescript, make sure to run `pnpm codegen-graphql` to update the generated code, it will fail if there are problems, do not verify that the generated types are updated
 - any graphql request from typescript should handle errors, e.g. by displaying <GraphqlError error={error} /> from `import { GraphqlError } from "~/ui/errors"`
 - typescript switch cases should be exhaustive, via `default: throw foo satisfies never;`
 - all paths used in links should use the path helpers in app/frontend/common/paths.ts e.g. `rootPath({})`
 - when adding new screens, ensure they have a document title set (use app/frontend/common/use-document-title.ts)
+- authenticated users are redirected to `/dashboard` (not `/profile`)
+- the sidebar layout uses shadcn's `Sidebar` component with theme toggle and collapsible icon mode
+- theme switching (light/dark/system) uses the `useTheme` hook in `app/frontend/hooks/use-theme.ts`
 
 ## backend
 
@@ -59,6 +63,23 @@ Verify work when it's done or before making a pull request:
 
 - do not use the faker gem, prefer rspec sequence for unique values and ruby array sample for random
 - do not use or install the shoulda-matchers gem
+
+### seed data
+
+- `bin/rails db:seed` creates two users:
+  - Admin: `admin@example.com` / `password123` (system_admin role)
+  - User: `user@example.com` / `password123` (default role)
+
+### design tokens
+
+- design tokens are managed by AllSpark and delivered via `allspark_design_system_css(format: "instance")`
+- the agent writes the output directly to `app/frontend/entrypoints/design-tokens.css` which is imported by `application.css`
+- the CSS uses unlayered `:root { ... }` and `.dark { ... }` blocks with raw HSL values (e.g. `--primary: 24.6 94.5% 53.1%`)
+- must be unlayered (no `@layer`) so it overrides the `@layer base` defaults in `application.css`
+- must include BOTH `:root` and `.dark` blocks with ALL variables to avoid light values leaking into dark mode
+- sidebar variables use `hsl()` wrapped values (e.g. `--sidebar: hsl(24.6, 94.5%, 53.1%)`)
+- if `design-tokens.css` is empty, the defaults in `application.css` are used
+- Vite HMR picks up changes to `design-tokens.css` automatically
 
 ### migrations
 

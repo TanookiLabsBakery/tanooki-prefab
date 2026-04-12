@@ -4,7 +4,7 @@
   "rsc": false,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.js",
+    "config": "",
     "css": "app/frontend/entrypoints/application.css",
     "baseColor": "neutral",
     "cssVariables": true,
@@ -13,6 +13,8 @@
   "aliases": {
     "components": "~/.",
     "utils": "~/common/cn",
-    "ui": "~/ui"
+    "ui": "~/ui",
+    "hooks": "~/hooks",
+    "lib": "~/lib"
   }
 }

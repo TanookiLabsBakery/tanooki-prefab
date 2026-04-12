@@ -1,3 +1,4 @@
+import { Check, X } from "lucide-react"
 import { featuresPath, loginPath } from "~/common/paths"
 import { useDocumentTitle } from "~/common/use-document-title"
 import { Badge } from "~/ui/badge"
@@ -32,13 +33,13 @@ const HeroSection = () => (
         </div>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-2">
-            <CheckIcon /> No credit card required
+            <Check className="h-4 w-4 text-primary" /> No credit card required
           </span>
           <span className="flex items-center gap-2">
-            <CheckIcon /> Setup in 5 minutes
+            <Check className="h-4 w-4 text-primary" /> Setup in 5 minutes
           </span>
           <span className="flex items-center gap-2">
-            <CheckIcon /> Full source code included
+            <Check className="h-4 w-4 text-primary" /> Full source code included
           </span>
         </div>
       </div>
@@ -46,32 +47,8 @@ const HeroSection = () => (
   </section>
 )
 
-const CheckIcon = () => (
-  <svg
-    className="h-4 w-4 text-primary"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-  </svg>
-)
-
-const XIcon = () => (
-  <svg
-    className="h-4 w-4 text-destructive"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-  </svg>
-)
-
 const ProblemSolutionSection = () => (
-  <section className="py-20 bg-muted/30">
+  <section className="bg-muted/30 py-20">
     <div className="container">
       <div className="grid gap-12 md:grid-cols-2">
         <div>
@@ -87,15 +64,15 @@ const ProblemSolutionSection = () => (
           </p>
           <ul className="mt-6 space-y-3">
             <li className="flex items-start gap-3">
-              <XIcon />
+              <X className="h-4 w-4 text-destructive" />
               <span className="text-sm">Weeks spent on authentication and user management</span>
             </li>
             <li className="flex items-start gap-3">
-              <XIcon />
+              <X className="h-4 w-4 text-destructive" />
               <span className="text-sm">Constant reinvention of common patterns</span>
             </li>
             <li className="flex items-start gap-3">
-              <XIcon />
+              <X className="h-4 w-4 text-destructive" />
               <span className="text-sm">Delayed time-to-market for your unique features</span>
             </li>
           </ul>
@@ -113,17 +90,17 @@ const ProblemSolutionSection = () => (
           </p>
           <ul className="mt-6 space-y-3">
             <li className="flex items-start gap-3">
-              <CheckIcon />
+              <Check className="h-4 w-4 text-primary" />
               <span className="text-sm">Ship your MVP in days, not months</span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckIcon />
+              <Check className="h-4 w-4 text-primary" />
               <span className="text-sm">
                 Built with Rails 8, React 19, and modern best practices
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckIcon />
+              <Check className="h-4 w-4 text-primary" />
               <span className="text-sm">Production-ready from day one</span>
             </li>
           </ul>
@@ -186,11 +163,11 @@ const FeaturesPreview = () => (
 )
 
 const CTASection = () => (
-  <section className="py-20 bg-gradient-to-r from-violet-600 to-pink-500 text-white">
+  <section className="bg-primary py-20 text-primary-foreground">
     <div className="container">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold md:text-4xl">Ready to ship faster?</h2>
-        <p className="mt-4 text-white/80">
+        <p className="mt-4 text-primary-foreground/80">
           Join hundreds of developers who are building amazing products with this template. Start
           your project today.
         </p>
@@ -198,7 +175,7 @@ const CTASection = () => (
           <LinkButton
             to={loginPath({})}
             size="lg"
-            className="bg-white text-violet-600 hover:bg-white/90"
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
             Start Building Now
           </LinkButton>
@@ -206,12 +183,12 @@ const CTASection = () => (
             to={featuresPath({})}
             variant="outline"
             size="lg"
-            className="border-white bg-transparent text-white hover:bg-white hover:text-violet-600"
+            className="border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary"
           >
             Learn More
           </LinkButton>
         </div>
-        <p className="mt-6 text-sm text-white/60">
+        <p className="mt-6 text-sm text-primary-foreground/60">
           No credit card required &bull; Setup in 5 minutes &bull; Full source code included
         </p>
       </div>
@@ -223,11 +200,11 @@ export const LandingPage = () => {
   useDocumentTitle("Home")
 
   return (
-    <>
+    <div data-testid="root-screen">
       <HeroSection />
       <ProblemSolutionSection />
       <FeaturesPreview />
       <CTASection />
-    </>
+    </div>
   )
 }

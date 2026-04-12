@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { profilePath } from "~/common/paths"
+import { dashboardPath } from "~/common/paths"
 import { LandingPage } from "~/landing/landing-page"
 import { useUiAccess } from "../auth/use-ui-access"
 import { useViewerMaybe } from "../auth/use-viewer"
@@ -12,7 +12,7 @@ export const RootScreen = () => {
 
   useEffect(() => {
     if (viewer) {
-      navigate(profilePath({}))
+      navigate(dashboardPath({}))
     }
   }, [navigate, viewer, uiAccess])
 

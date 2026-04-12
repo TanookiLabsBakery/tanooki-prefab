@@ -7,10 +7,8 @@
 import { path } from "static-path"
 
 export const rootPath = path("/")
+export const dashboardPath = path("/dashboard")
 export const featuresPath = path("/features")
-export const testimonialsPath = path("/testimonials")
-export const pricingPath = path("/pricing")
-export const contactPath = path("/contact")
 export const loginPath = path("/login")
 export const credentialsLoginPath = path("/login/credentials")
 export const detailsPath = path("/details")
