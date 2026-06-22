@@ -24,6 +24,7 @@ import {
   profilePath,
   settingsPath,
 } from "~/common/paths"
+import { SparkLogo } from "~/components/ui/spark-logo"
 import {
   Sidebar,
   SidebarContent,
@@ -38,6 +39,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "~/ui/sidebar"
 import { ThemeToggle } from "~/ui/theme-toggle"
 import { UserAvatar } from "~/users/user-avatar"
@@ -46,6 +48,8 @@ function AppSidebar() {
   const { uiAccess } = useUiAccess()
   const { viewer } = useViewer()
   const logout = useLogout()
+  const { open } = useSidebar()
+  const isCollapsed = !open
 
   return (
     <Sidebar collapsible="icon">
@@ -54,23 +58,19 @@ function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <NavLink to={dashboardPath({})}>
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="size-4"
-                    aria-hidden="true"
-                  >
-                    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
-                  </svg>
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">AllSpark Social</span>
-                </div>
+                <span className="flex shrink-0 items-center">
+                  <SparkLogo className="size-7" />
+                </span>
+                {!isCollapsed && (
+                  <div className="flex flex-col items-start justify-center gap-0.5 leading-none mt-[11px]">
+                    <span className="font-serif text-base font-medium tracking-wider leading-none">
+                      AllSpark
+                    </span>
+                    <span className="text-[10px] font-light tracking-[0.2em] uppercase text-muted-foreground">
+                      Social
+                    </span>
+                  </div>
+                )}
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -1,3 +1,12 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <polygon points="252,120 404,196 252,272 100,196"
+    stroke="#272B35" stroke-width="21" stroke-linejoin="round" fill="none"/>
+  <polygon points="100,196 252,272 252,468 100,392"
+    stroke="#272B35" stroke-width="21" stroke-linejoin="round" fill="none"/>
+  <polygon points="404,196 252,272 252,468 404,392"
+    stroke="#272B35" stroke-width="21" stroke-linejoin="round" fill="none"/>
+  <path d="M372,46 C378,86 380,96 422,110 C380,124 378,134 372,174 C366,134 364,124 322,110 C364,96 366,86 372,46 Z"
+    fill="#272B35"/>
+  <path d="M372,68 C375,90 377,97 405,110 C377,123 375,130 372,152 C369,130 367,123 339,110 C367,97 369,90 372,68 Z"
+    fill="#F3BC16"/>
 </svg>
