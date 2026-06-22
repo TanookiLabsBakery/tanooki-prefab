@@ -16,6 +16,10 @@
 }
 
 @theme {
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
