@@ -1,0 +1,8 @@
+mutation PostGenerateVariants($input: PostGenerateVariantsInput!) {
+  postGenerateVariants(input: $input) {
+    variants {
+      channelId
+      body
+    }
+  }
+}

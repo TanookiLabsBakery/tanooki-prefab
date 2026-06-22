@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_14_130835) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_22_124808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -18,7 +18,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_14_130835) do
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum "user_role", ["system_admin", "default"]
+  create_enum "channel_provider", ["bluesky", "mastodon", "threads"]
+  create_enum "post_status", ["draft", "scheduled", "published", "error", "needs_approval"]
+  create_enum "user_role", ["system_admin", "default", "contributor", "editor", "admin"]
   create_enum "user_status", ["invited", "active", "blocked"]
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -92,6 +94,77 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_14_130835) do
     t.index ["visitor_token", "started_at"], name: "index_ahoy_visits_on_visitor_token_and_started_at"
   end
 
+  create_table "channels", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "credential_id", null: false
+    t.string "name", null: false
+    t.string "organization_id", null: false
+    t.enum "provider", null: false, enum_type: "channel_provider"
+    t.string "remote_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["credential_id"], name: "index_channels_on_credential_id"
+    t.index ["organization_id"], name: "index_channels_on_organization_id"
+  end
+
+  create_table "credentials", id: :string, force: :cascade do |t|
+    t.text "access_token"
+    t.datetime "created_at", null: false
+    t.text "expires_at"
+    t.string "organization_id", null: false
+    t.string "provider", null: false
+    t.text "refresh_token"
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_credentials_on_organization_id"
+  end
+
+  create_table "media_assets", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "organization_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_media_assets_on_organization_id"
+  end
+
+  create_table "organizations", id: :string, force: :cascade do |t|
+    t.text "brand_voice_guidelines"
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "post_analytics", id: :string, force: :cascade do |t|
+    t.integer "comments", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "fetched_at"
+    t.integer "impressions", default: 0, null: false
+    t.integer "likes", default: 0, null: false
+    t.string "post_channel_variant_id", null: false
+    t.integer "reposts", default: 0, null: false
+    t.integer "shares", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_channel_variant_id"], name: "index_post_analytics_on_post_channel_variant_id", unique: true
+  end
+
+  create_table "post_channel_variants", id: :string, force: :cascade do |t|
+    t.text "body"
+    t.string "channel_id", null: false
+    t.datetime "created_at", null: false
+    t.string "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_post_channel_variants_on_channel_id"
+    t.index ["post_id"], name: "index_post_channel_variants_on_post_id"
+  end
+
+  create_table "posts", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "organization_id", null: false
+    t.datetime "scheduled_at"
+    t.string "sidekiq_job_id"
+    t.enum "status", default: "draft", null: false, enum_type: "post_status"
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_posts_on_organization_id"
+    t.index ["sidekiq_job_id"], name: "index_posts_on_sidekiq_job_id"
+  end
+
   create_table "user_auth_challenges", id: :string, force: :cascade do |t|
     t.datetime "claimed_at"
     t.uuid "client_auth_code", null: false
@@ -120,6 +193,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_14_130835) do
     t.citext "email", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
+    t.datetime "onboarding_completed_at"
+    t.string "organization_id"
     t.string "remember_me_token"
     t.datetime "remember_me_token_expires_at"
     t.datetime "reset_password_email_sent_at"
@@ -131,12 +206,22 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_14_130835) do
     t.enum "user_role", default: "default", null: false, enum_type: "user_role"
     t.enum "user_status", default: "active", null: false, enum_type: "user_status"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "channels", "credentials"
+  add_foreign_key "channels", "organizations"
+  add_foreign_key "credentials", "organizations"
+  add_foreign_key "media_assets", "organizations"
+  add_foreign_key "post_analytics", "post_channel_variants"
+  add_foreign_key "post_channel_variants", "channels"
+  add_foreign_key "post_channel_variants", "posts"
+  add_foreign_key "posts", "organizations"
   add_foreign_key "user_auth_challenges", "users"
   add_foreign_key "user_auth_tokens", "users", on_delete: :cascade
+  add_foreign_key "users", "organizations"
 end

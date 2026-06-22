@@ -10,3 +10,4 @@
 /.jj
 /app/**/*.mjml
 pnpm-workspace.yaml
+/app/frontend/entrypoints/design-tokens.css

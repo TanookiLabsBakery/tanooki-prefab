@@ -48,6 +48,8 @@ group :test do
   gem "capybara-thruster"
 end
 
+gem "aws-sdk-s3", require: false
+
 gem "postmark-rails", "~> 0.22.1"
 
 gem "lograge"
@@ -57,3 +59,8 @@ gem "sidekiq-scheduler", "~> 6.0.1"
 
 gem "sentry-rails"
 gem "sentry-sidekiq"
+
+gem "anthropic"
+
+gem "httparty"
+gem "nokogiri"

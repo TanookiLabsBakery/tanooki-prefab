@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Optional LD_PRELOAD of libjemalloc to cut Ruby memory fragmentation.
+# No-op if jemalloc is not installed on this droplet.
+JEMALLOC=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+if [ -f "$JEMALLOC" ]; then
+  export LD_PRELOAD="$JEMALLOC${LD_PRELOAD:+:$LD_PRELOAD}"
+fi
+exec "$@"

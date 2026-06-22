@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react"
+import { Check } from "lucide-react"
 import { featuresPath, loginPath } from "~/common/paths"
 import { useDocumentTitle } from "~/common/use-document-title"
 import { Badge } from "~/ui/badge"
@@ -11,17 +11,18 @@ const HeroSection = () => (
     <div className="container relative">
       <div className="mx-auto max-w-3xl text-center">
         <Badge variant="secondary" className="mb-4">
-          Production-Ready Rails + React Template
+          Social publishing for agent-native organizations
         </Badge>
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          Build Your Next Great{" "}
+          Schedule what the{" "}
           <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Product
+            agent wrote
           </span>
         </h1>
         <p className="mt-6 text-lg text-muted-foreground">
-          Skip the boilerplate. Start with a modern Rails 8 + React foundation that includes
-          authentication, Shadcn/ui components, GraphQL API, and everything you need to ship faster.
+          AllSpark Social distributes AI-drafted content across every connected network with
+          channel-appropriate formatting. Humans review and approve without losing context or
+          rebuilding work from scratch.
         </p>
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
           <LinkButton to={loginPath({})} size="lg">
@@ -33,77 +34,14 @@ const HeroSection = () => (
         </div>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-primary" /> No credit card required
+            <Check className="h-4 w-4 text-primary" /> Bluesky, Threads & Mastodon
           </span>
           <span className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-primary" /> Setup in 5 minutes
+            <Check className="h-4 w-4 text-primary" /> Approval workflows built in
           </span>
           <span className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-primary" /> Full source code included
+            <Check className="h-4 w-4 text-primary" /> Analytics per channel
           </span>
-        </div>
-      </div>
-    </div>
-  </section>
-)
-
-const ProblemSolutionSection = () => (
-  <section className="bg-muted/30 py-20">
-    <div className="container">
-      <div className="grid gap-12 md:grid-cols-2">
-        <div>
-          <Badge variant="outline" className="mb-4 border-destructive/50 text-destructive">
-            The Problem
-          </Badge>
-          <h2 className="text-2xl font-bold md:text-3xl">
-            Starting from scratch is time-consuming
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Building a production-ready application requires setting up authentication, UI
-            components, API architecture, email systems, background jobs, and so much more.
-          </p>
-          <ul className="mt-6 space-y-3">
-            <li className="flex items-start gap-3">
-              <X className="h-4 w-4 text-destructive" />
-              <span className="text-sm">Weeks spent on authentication and user management</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <X className="h-4 w-4 text-destructive" />
-              <span className="text-sm">Constant reinvention of common patterns</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <X className="h-4 w-4 text-destructive" />
-              <span className="text-sm">Delayed time-to-market for your unique features</span>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <Badge variant="outline" className="mb-4 border-primary/50 text-primary">
-            The Solution
-          </Badge>
-          <h2 className="text-2xl font-bold md:text-3xl">
-            A complete starter template that just works
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            This isn&apos;t just another boilerplate. It&apos;s a fully-featured, production-tested
-            Rails + React application that you can customize and deploy immediately.
-          </p>
-          <ul className="mt-6 space-y-3">
-            <li className="flex items-start gap-3">
-              <Check className="h-4 w-4 text-primary" />
-              <span className="text-sm">Ship your MVP in days, not months</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <Check className="h-4 w-4 text-primary" />
-              <span className="text-sm">
-                Built with Rails 8, React 19, and modern best practices
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <Check className="h-4 w-4 text-primary" />
-              <span className="text-sm">Production-ready from day one</span>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -112,19 +50,19 @@ const ProblemSolutionSection = () => (
 
 const features = [
   {
-    title: "Authentication & Authorization",
+    title: "Multi-Channel Composer",
     description:
-      "Token-based authentication with role-based access control (RBAC). User management, email verification, and session handling all configured.",
+      "Write once, customize per channel. Publish to Bluesky, Threads, and Mastodon with platform-specific character limits and formatting.",
   },
   {
-    title: "Shadcn/ui Components",
+    title: "Approval Workflows",
     description:
-      "Built with Shadcn/ui and Tailwind CSS. Responsive, accessible components including modals, forms, tables, and navigation.",
+      "Route posts through review before publishing. Approve, reject, or request changes — with full context on every decision.",
   },
   {
-    title: "GraphQL API",
+    title: "Post Analytics",
     description:
-      "Type-safe GraphQL API with automatic TypeScript code generation. Query and mutate your data with full type safety.",
+      "Track impressions, likes, comments, shares, and reposts per channel. See what's working across every platform in one view.",
   },
 ]
 
@@ -135,10 +73,9 @@ const FeaturesPreview = () => (
         <Badge variant="secondary" className="mb-4">
           Features
         </Badge>
-        <h2 className="text-3xl font-bold md:text-4xl">Everything you need, out of the box</h2>
+        <h2 className="text-3xl font-bold md:text-4xl">Built for the way AI teams work</h2>
         <p className="mt-4 text-muted-foreground">
-          Stop configuring. Start building. This template includes all the essential features that
-          modern applications need.
+          The AI drafts the content. You approve it. AllSpark Social handles everything in between.
         </p>
       </div>
       <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -166,10 +103,10 @@ const CTASection = () => (
   <section className="bg-primary py-20 text-primary-foreground">
     <div className="container">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold md:text-4xl">Ready to ship faster?</h2>
+        <h2 className="text-3xl font-bold md:text-4xl">Ready to publish smarter?</h2>
         <p className="mt-4 text-primary-foreground/80">
-          Join hundreds of developers who are building amazing products with this template. Start
-          your project today.
+          Connect your channels, let the agent draft content, and approve with confidence. Your
+          social presence on autopilot.
         </p>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
           <LinkButton
@@ -177,7 +114,7 @@ const CTASection = () => (
             size="lg"
             className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
-            Start Building Now
+            Start Publishing Now
           </LinkButton>
           <LinkButton
             to={featuresPath({})}
@@ -188,9 +125,6 @@ const CTASection = () => (
             Learn More
           </LinkButton>
         </div>
-        <p className="mt-6 text-sm text-primary-foreground/60">
-          No credit card required &bull; Setup in 5 minutes &bull; Full source code included
-        </p>
       </div>
     </div>
   </section>
@@ -202,7 +136,6 @@ export const LandingPage = () => {
   return (
     <div data-testid="root-screen">
       <HeroSection />
-      <ProblemSolutionSection />
       <FeaturesPreview />
       <CTASection />
     </div>

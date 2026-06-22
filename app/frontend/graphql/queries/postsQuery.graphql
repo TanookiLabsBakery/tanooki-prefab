@@ -1,0 +1,25 @@
+query Posts($first: Int, $after: String, $status: PostStatus) {
+  posts(first: $first, after: $after, status: $status) {
+    edges {
+      node {
+        id
+        status
+        scheduledAt
+        createdAt
+        channelVariants {
+          id
+          body
+          channel {
+            id
+            name
+            provider
+          }
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}

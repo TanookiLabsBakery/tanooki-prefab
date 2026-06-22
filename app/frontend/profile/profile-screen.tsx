@@ -1,10 +1,13 @@
+import { format } from "date-fns"
 import { useViewer } from "~/auth/use-viewer"
 import { profileEditPath } from "~/common/paths"
+import { useDocumentTitle } from "~/common/use-document-title"
 import { TablePageLayout } from "~/layouts/table-page-layout"
 import { LinkButton } from "~/ui/link-button"
 import { UserAvatar } from "~/users/user-avatar"
 
 export const ProfileScreen = () => {
+  useDocumentTitle("Profile")
   const { viewer } = useViewer()
 
   return (
@@ -24,7 +27,9 @@ export const ProfileScreen = () => {
             <tbody>
               <tr>
                 <td className="pr-10 text-muted-foreground">Date Created</td>
-                <td>{viewer.createdAt}</td>
+                <td>
+                  {viewer.createdAt ? format(new Date(viewer.createdAt), "MMM d, yyyy") : "—"}
+                </td>
               </tr>
               <tr>
                 <td className="pr-10 text-muted-foreground">Email Address</td>

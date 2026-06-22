@@ -1,0 +1,30 @@
+<h1>Post Approval Request</h1>
+<p>Please review the post content below and approve or reject it.</p>
+
+<hr class="divider">
+
+<% if @post.post_channel_variants.any? %>
+  <h2>Post Content</h2>
+  <% @post.post_channel_variants.each do |variant| %>
+    <div class="variant">
+      <% if variant.channel %>
+        <div class="variant-channel"><%= variant.channel.name %> · <%= variant.channel.provider.capitalize %></div>
+      <% end %>
+      <div class="variant-body"><%= variant.body %></div>
+    </div>
+  <% end %>
+<% else %>
+  <p>No content preview available.</p>
+<% end %>
+
+<hr class="divider">
+
+<div class="actions">
+  <%= form_with url: approve_with_token_path(token: params[:token]), method: :post do %>
+    <button type="submit" class="btn-approve">Approve</button>
+  <% end %>
+
+  <%= form_with url: reject_with_token_path(token: params[:token]), method: :post do %>
+    <button type="submit" class="btn-reject">Reject</button>
+  <% end %>
+</div>

@@ -24,5 +24,21 @@ module Types
 
     field :user_role, Enums::UserRoleType, null: false, require_internal_admin: true
     field :user_status, Enums::UserStatusType, null: false, require_internal_admin: true
+
+    field :onboarding_completed_at, GraphQL::Types::ISO8601DateTime, null: true
+
+    field :organization, Types::Objects::OrganizationType, null: true
+
+    field :channels, [Types::Objects::ChannelType], null: false
+    def channels
+      return [] unless object.organization_id
+      ::Channel.where(organization_id: object.organization_id).order(:name)
+    end
+
+    field :media_assets, [Types::Objects::MediaAssetType], null: false
+    def media_assets
+      return [] unless object.organization_id
+      ::MediaAsset.where(organization_id: object.organization_id).order(created_at: :desc)
+    end
   end
 end

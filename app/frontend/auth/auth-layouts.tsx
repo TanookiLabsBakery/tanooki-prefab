@@ -1,6 +1,11 @@
 import { useEffect, useRef } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import { loginPath, rootPath } from "~/common/paths"
+import {
+  connectChannelFinishPath,
+  loginPath,
+  onboardingWelcomePath,
+  rootPath,
+} from "~/common/paths"
 import { useUiAccess } from "./use-ui-access"
 import { useViewerMaybe } from "./use-viewer"
 import { RETURN_TO_STORAGE_KEY } from "./utils"
@@ -27,11 +32,23 @@ export const RequireUserSignedIn = () => {
 
   useEffect(() => {
     if (redirectedRef.current) return
+    if (result.loading) return
+
     redirectedRef.current = true
 
-    if (!result.loading && !viewer) {
+    if (!viewer) {
       localStorage.setItem(RETURN_TO_STORAGE_KEY, window.location.pathname)
       navigate(loginPath({}))
+      return
+    }
+
+    if (!viewer.onboardingCompletedAt) {
+      const pathname = window.location.pathname
+      const isOnboarding = pathname.startsWith("/onboarding")
+      const isFinishingChannel = pathname === connectChannelFinishPath.pattern
+      if (!isOnboarding && !isFinishingChannel) {
+        navigate(onboardingWelcomePath({}))
+      }
     }
   }, [navigate, result.loading, viewer])
 

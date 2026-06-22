@@ -4,49 +4,49 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/ui/
 
 const features = [
   {
-    title: "Authentication & Authorization",
+    title: "Multi-Channel Publishing",
     description:
-      "Token-based authentication with role-based access control (RBAC). User management, email verification, and session handling all configured.",
+      "Publish to Bluesky, Threads, and Mastodon from a single composer. Write once, customize per channel.",
   },
   {
-    title: "Shadcn/ui Components",
+    title: "Content Calendar",
     description:
-      "Built with Shadcn/ui and Tailwind CSS. Responsive, accessible components including modals, forms, tables, and navigation.",
+      "Visual monthly calendar showing all scheduled and published posts. Navigate by month and click any post to view details.",
   },
   {
-    title: "GraphQL API",
+    title: "Approval Workflows",
     description:
-      "Type-safe GraphQL API with automatic TypeScript code generation. Query and mutate your data with full type safety on both ends.",
+      "Route posts through an approval process before publishing. Approve, reject, or request changes with full audit trail.",
   },
   {
-    title: "PostgreSQL Database",
+    title: "Post Analytics",
     description:
-      "Production-ready database setup with UUID primary keys, proper indexes, and migrations. Ready to scale from day one.",
+      "Track impressions, likes, comments, shares, and reposts per channel. Engagement charts break down performance by platform.",
   },
   {
-    title: "Email System",
+    title: "Brand Voice Linter",
     description:
-      "Action Mailer configured with beautiful email templates. Preview emails in development with Letter Opener.",
+      "AI-powered content analysis checks your posts against your organization's brand voice guidelines before publishing.",
   },
   {
-    title: "Background Jobs",
+    title: "Hashtag Research",
     description:
-      "Sidekiq for async processing with Redis. Handle long-running tasks, scheduled jobs, and email delivery efficiently.",
+      "Get AI-suggested hashtags based on your content. Add them with a single click to maximize reach.",
   },
   {
-    title: "Security Best Practices",
+    title: "Best Time Suggestions",
     description:
-      "CSRF protection, secure headers, environment-based configuration. Built with security in mind from the ground up.",
+      "Intelligent scheduling recommendations based on channel engagement patterns. Pick optimal times with one click.",
   },
   {
-    title: "Developer Experience",
+    title: "Media Library",
     description:
-      "Hot module replacement, TypeScript throughout, modern React patterns. Development tools that make you productive.",
+      "Upload and manage images and media assets. Attach media to posts across all channels simultaneously.",
   },
   {
-    title: "Testing Framework",
+    title: "Channel Variant Editor",
     description:
-      "RSpec configured with factories and helpers. Write tests that give you confidence in your code.",
+      "Customize post copy per channel with character count enforcement. Bluesky, Threads, and Mastodon each have their own limits and norms.",
   },
 ]
 
@@ -60,10 +60,10 @@ export const FeaturesPage = () => {
           <Badge variant="secondary" className="mb-4">
             Features
           </Badge>
-          <h1 className="text-3xl font-bold md:text-4xl">Everything you need, out of the box</h1>
+          <h1 className="text-3xl font-bold md:text-4xl">Everything you need to publish smarter</h1>
           <p className="mt-4 text-muted-foreground">
-            Stop configuring. Start building. This template includes all the essential features that
-            modern applications need.
+            AllSpark Social is built for agent-native teams. Schedule what the AI wrote, repurposed
+            for every channel, reviewed and approved by humans.
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

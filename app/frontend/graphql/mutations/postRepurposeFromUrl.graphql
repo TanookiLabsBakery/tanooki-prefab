@@ -1,0 +1,8 @@
+mutation PostRepurposeFromUrl($input: PostRepurposeFromUrlInput!) {
+  postRepurposeFromUrl(input: $input) {
+    variants {
+      channelId
+      body
+    }
+  }
+}

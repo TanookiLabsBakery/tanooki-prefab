@@ -36,10 +36,22 @@ const Navigation = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <Link to={rootPath({})} className="mr-6 flex items-center space-x-2">
-          <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-xl font-bold text-transparent">
-            Prefab
-          </span>
+        <Link to={rootPath({})} className="mr-6 flex items-center space-x-2 gap-2">
+          <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-4"
+              aria-hidden="true"
+            >
+              <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+          </div>
+          <span className="text-xl font-bold">AllSpark Social</span>
         </Link>
         <nav className="hidden flex-1 items-center space-x-6 text-sm font-medium md:flex">
           <NavLink to={featuresPath({})}>Features</NavLink>
@@ -83,8 +95,22 @@ const Footer = () => {
     <footer className="border-t bg-muted/40">
       <div className="container py-8">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Link to={rootPath({})} className="text-lg font-bold">
-            Prefab
+          <Link to={rootPath({})} className="flex items-center gap-2 text-lg font-bold">
+            <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-3.5"
+                aria-hidden="true"
+              >
+                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            AllSpark Social
           </Link>
           <nav className="flex gap-6">
             <NavLink to={featuresPath({})}>Features</NavLink>
@@ -92,8 +118,8 @@ const Footer = () => {
           </nav>
         </div>
         <div className="mt-6 border-t pt-6 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Prefab. All rights reserved.</p>
-          <p className="mt-1">Built with Rails, React, GraphQL, and shadcn/ui</p>
+          <p>&copy; {new Date().getFullYear()} AllSpark Social. All rights reserved.</p>
+          <p className="mt-1">Social publishing for agent-native organizations.</p>
         </div>
       </div>
     </footer>

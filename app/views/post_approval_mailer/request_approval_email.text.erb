@@ -1,0 +1,29 @@
+Post Approval Required — <%= AppConfig.app_name %>
+
+Hi <%= @approver.first_name %>,
+
+A post has been submitted for your approval in <%= AppConfig.app_name %>.
+Please review the content below and approve or reject it.
+
+--
+POST PREVIEW
+--
+<% if @post.post_channel_variants.any? %>
+<% @post.post_channel_variants.each do |variant| %>
+<% if variant.channel %>Channel: <%= variant.channel.name %><% end %>
+
+<%= variant.body %>
+
+<% end %>
+<% else %>
+No content preview available.
+<% end %>
+--
+
+To review and take action on this post, visit:
+<%= @approval_url %>
+
+This approval link will expire in 7 days.
+
+--
+You are receiving this email because you are an approver in your organization on <%= AppConfig.app_name %>.

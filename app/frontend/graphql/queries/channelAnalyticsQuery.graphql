@@ -1,0 +1,28 @@
+query ChannelAnalytics {
+  channelAnalytics {
+    channel {
+      id
+      name
+      provider
+    }
+    impressions
+    likes
+    engagementRate
+    topPosts {
+      id
+      scheduledAt
+      channelVariants {
+        id
+        body
+        channel {
+          id
+        }
+        postAnalytic {
+          id
+          impressions
+          likes
+        }
+      }
+    }
+  }
+}

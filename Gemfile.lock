@@ -95,7 +95,30 @@ GEM
     annotaterb (4.20.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
+    anthropic (1.49.0)
+      cgi
+      connection_pool
+      standardwebhooks
     ast (2.4.3)
+    aws-eventstream (1.4.0)
+    aws-partitions (1.1261.0)
+    aws-sdk-core (3.252.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      bigdecimal
+      jmespath (~> 1, >= 1.6.1)
+      logger
+    aws-sdk-kms (1.129.0)
+      aws-sdk-core (~> 3, >= 3.248.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.226.0)
+      aws-sdk-core (~> 3, >= 3.248.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.12.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.20)
     bigdecimal (3.3.1)
@@ -118,6 +141,7 @@ GEM
       capybara
       childprocess (>= 4.0)
       puma
+    cgi (0.5.1)
     childprocess (5.1.0)
       logger (~> 1.5)
     concurrent-ruby (1.3.6)
@@ -126,6 +150,7 @@ GEM
       activerecord (>= 6.0)
       activesupport (>= 6.0)
     crass (1.0.6)
+    csv (3.3.5)
     cuprite (0.17)
       capybara (~> 3.0)
       ferrum (~> 0.17.0)
@@ -180,6 +205,10 @@ GEM
       fiber-storage
       logger
     hashie (5.0.0)
+    httparty (0.24.2)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
@@ -190,6 +219,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    jmespath (1.6.2)
     json (2.18.1)
     jwt (3.1.2)
       base64
@@ -442,6 +472,7 @@ GEM
     standard-performance (1.8.0)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.25.0)
+    standardwebhooks (1.1.0)
     stringio (3.1.7)
     thor (1.4.0)
     thruster (0.1.16)
@@ -495,6 +526,8 @@ DEPENDENCIES
   action_policy
   action_policy-graphql
   annotaterb
+  anthropic
+  aws-sdk-s3
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
@@ -506,11 +539,13 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   graphql
+  httparty
   image_processing (~> 1.14)
   letter_opener
   letter_opener_web
   lograge
   mjml-rails
+  nokogiri
   pg (~> 1.6.2)
   postmark-rails (~> 0.22.1)
   puma (>= 7.1)

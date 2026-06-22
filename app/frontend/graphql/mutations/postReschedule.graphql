@@ -1,0 +1,8 @@
+mutation PostReschedule($input: PostRescheduleInput!) {
+  postReschedule(input: $input) {
+    post {
+      id
+      scheduledAt
+    }
+  }
+}

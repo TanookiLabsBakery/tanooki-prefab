@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Approval Required</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        background-color: #ffffff;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 { font-size: 24px; font-weight: bold; margin-bottom: 16px; }
+      h2 { font-size: 18px; font-weight: bold; margin: 16px 0 8px; }
+      p { line-height: 1.5; margin: 8px 0; }
+      .post-preview {
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        padding: 16px;
+        margin: 16px 0;
+      }
+      .variant {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px 0;
+      }
+      .variant:last-child { border-bottom: none; }
+      .variant-channel { font-weight: bold; margin-bottom: 4px; }
+      .button {
+        display: inline-block;
+        background-color: #333333;
+        color: #ffffff;
+        padding: 10px 25px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        margin: 16px 0;
+      }
+      .footer {
+        font-size: 12px;
+        color: #999999;
+        margin-top: 32px;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Post Approval Required</h1>
+
+    <p>Hi <%= @approver.first_name %>,</p>
+
+    <p>
+      A post has been submitted for your approval in <%= AppConfig.app_name %>.
+      Please review the content below and approve or reject it.
+    </p>
+
+    <div class="post-preview">
+      <h2>Post Preview</h2>
+      <% if @post.post_channel_variants.any? %>
+        <% @post.post_channel_variants.each do |variant| %>
+          <div class="variant">
+            <% if variant.channel %>
+              <div class="variant-channel"><%= variant.channel.name %></div>
+            <% end %>
+            <p><%= variant.body %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No content preview available.</p>
+      <% end %>
+    </div>
+
+    <p>Click the button below to review and take action on this post:</p>
+
+    <a href="<%= @approval_url %>" class="button">Review Post</a>
+
+    <p>This approval link will expire in 7 days.</p>
+
+    <div class="footer">
+      <p>
+        You are receiving this email because you are an approver in your organization on
+        <%= AppConfig.app_name %>.
+      </p>
+    </div>
+  </body>
+</html>

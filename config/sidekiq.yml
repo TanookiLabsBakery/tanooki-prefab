@@ -11,8 +11,11 @@ production:
 :queues:
   - critical
   - default
-  - low
+  - posting
   - mailers
+  - analytics
+  - ai
+  - low
 # https://github.com/sidekiq-scheduler/sidekiq-scheduler
 # :scheduler:
 #   :schedule:

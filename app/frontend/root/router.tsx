@@ -7,16 +7,26 @@ import {
 } from "~/auth/auth-layouts"
 import { LoginLayout } from "~/auth/login-layout"
 import {
+  allPostsPath,
+  analyticsPath,
+  calendarPath,
+  composerPath,
+  connectChannelFinishPath,
+  connectChannelPath,
   credentialsLoginPath,
   dashboardPath,
   emailAuthPath,
   featuresPath,
   internalAdminDashboardPath,
   loginPath,
+  onboardingWelcomePath,
+  postAnalyticsPath,
   profileEditPath,
   profilePath,
   rootPath,
+  settingsPath,
 } from "~/common/paths"
+import { ConnectChannelScreen } from "~/dashboard/connect-channel-screen"
 import { DashboardScreen } from "~/dashboard/dashboard-screen"
 import { FeaturesPage } from "~/landing/features-page"
 import { MarketingLayout } from "~/landing/marketing-layout"
@@ -27,6 +37,13 @@ import { EmailLoginScreen } from "~/login/email-login-screen"
 import { ProfileEditScreen } from "~/profile/profile-edit-screen"
 import { ProfileScreen } from "~/profile/profile-screen"
 import { NotFoundScreen } from "~/root/not-found-screen"
+import { BrandVoiceScreen } from "~/screens/Dashboard/BrandVoiceScreen"
+import { CalendarScreen } from "~/screens/Dashboard/CalendarScreen"
+import { ComposerScreen } from "~/screens/Dashboard/ComposerScreen"
+import { PostAnalyticsScreen } from "~/screens/Dashboard/PostAnalyticsScreen"
+import { PostsListScreen } from "~/screens/Dashboard/PostsListScreen"
+import { WelcomeScreen } from "~/screens/Onboarding/WelcomeScreen"
+import { AnalyticsScreen } from "~/screens/dashboard/analytics/analytics-screen"
 import { ErrorBoundary } from "../ui/error-boundary"
 import { RootLayout } from "./root-layout"
 import { RootScreen } from "./root-screen"
@@ -44,12 +61,44 @@ const authenticatedRoutes: Array<RouteObject> = [
     element: <DashboardScreen />,
   },
   {
+    path: connectChannelPath.pattern,
+    element: <ConnectChannelScreen />,
+  },
+  {
+    path: connectChannelFinishPath.pattern,
+    element: <ConnectChannelScreen />,
+  },
+  {
     path: profilePath.pattern,
     element: <ProfileScreen />,
   },
   {
     path: profileEditPath.pattern,
     element: <ProfileEditScreen />,
+  },
+  {
+    path: composerPath.pattern,
+    element: <ComposerScreen />,
+  },
+  {
+    path: calendarPath.pattern,
+    element: <CalendarScreen />,
+  },
+  {
+    path: postAnalyticsPath.pattern,
+    element: <PostAnalyticsScreen />,
+  },
+  {
+    path: allPostsPath.pattern,
+    element: <PostsListScreen />,
+  },
+  {
+    path: settingsPath.pattern,
+    element: <BrandVoiceScreen />,
+  },
+  {
+    path: analyticsPath.pattern,
+    element: <AnalyticsScreen />,
   },
 ]
 
@@ -84,6 +133,10 @@ export const router = createBrowserRouter([
                 children: [...authenticatedRoutes],
               },
             ],
+          },
+          {
+            path: onboardingWelcomePath.pattern,
+            element: <WelcomeScreen />,
           },
         ],
       },

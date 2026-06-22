@@ -35,6 +35,12 @@ class AppSchema < GraphQL::Schema
     case obj
     when User
       Types::Objects::UserType
+    when Post
+      Types::Objects::PostType
+    when PostChannelVariant
+      Types::Objects::PostChannelVariantType
+    when PostAnalytic
+      Types::Objects::PostAnalyticType
     else
       raise(GraphQL::RequiredImplementationMissingError, "Unexpected object: #{obj}")
     end

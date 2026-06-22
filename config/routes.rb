@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   end
 
   post("/graphql", to: "graphql#execute")
+
+  get "/auth/threads", to: "oauth_callbacks#threads_authorize", as: :threads_oauth_authorize
+  get "/auth/threads/callback", to: "oauth_callbacks#threads", as: :threads_oauth_callback
   get("up" => "rails/health#show", :as => :rails_health_check)
 
   # Render dynamic PWA files from app/views/pwa/*
@@ -27,6 +30,10 @@ Rails.application.routes.draw do
 
   # chrome dev tools seems to make requests to this route
   get "/.well-known/appspecific/com.chrome.devtools.json", to: ->(env) { [200, {"Content-Type" => "application/json"}, ["{}"]] }
+
+  get "/approve/:token", to: "approvals#show", as: :show_approval, constraints: {token: /[^\/]+/}
+  post "/approve/:token/approve", to: "approvals#approve", as: :approve_with_token, constraints: {token: /[^\/]+/}
+  post "/approve/:token/reject", to: "approvals#reject", as: :reject_with_token, constraints: {token: /[^\/]+/}
 
   root("spa#index")
   get("login", to: "spa#index", as: :login)

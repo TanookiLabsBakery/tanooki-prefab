@@ -1,6 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 
 export type UserColumns = {
   id: string
@@ -25,5 +26,9 @@ export const columns: ColumnDef<UserColumns | null | undefined>[] = [
   {
     accessorKey: "createdAt",
     header: "Created at",
+    cell: ({ row }) => {
+      const raw = row.getValue<string | null>("createdAt")
+      return raw ? format(new Date(raw), "MMM d, yyyy") : "—"
+    },
   },
 ]
