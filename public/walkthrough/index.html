@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AllSpark Social — Product Walkthrough</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f1117;
+      --surface:  #161b27;
+      --surface2: #1e2535;
+      --border:   #2a3045;
+      --amber:    #F3BC16;
+      --amber-dim: rgba(243,188,22,0.12);
+      --blueprint: #5E8CBA;
+      --text:     #e2e8f0;
+      --muted:    #8896aa;
+      --radius:   2px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Inter, -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .shell { display: flex; min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 28px 0 40px;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .sidebar-brand svg { width: 36px; height: 36px; flex-shrink: 0; }
+
+    .sidebar-wordmark .name {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 17px;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      line-height: 1;
+    }
+    .sidebar-wordmark .product {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .sidebar-section {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 20px 10px;
+    }
+
+    .sidebar-nav { list-style: none; margin-bottom: 28px; }
+    .sidebar-nav li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      transition: color 0.12s, background 0.12s;
+    }
+    .sidebar-nav li a:hover,
+    .sidebar-nav li a.active { color: var(--text); background: var(--surface2); }
+    .sidebar-nav li a .num {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      color: var(--amber);
+      min-width: 20px;
+    }
+    .sidebar-persona {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 0 20px 4px;
+      font-style: italic;
+    }
+
+    /* ── MAIN ── */
+    .main { margin-left: 240px; flex: 1; min-width: 0; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 64px 56px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--amber-dim);
+      border: 1px solid rgba(243,188,22,0.25);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text);
+      max-width: 680px;
+      margin-bottom: 18px;
+    }
+    .hero-intro {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-value {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--amber);
+      line-height: 1;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
+    /* ── CONTEXT BOX ── */
+    .context-box {
+      background: var(--surface);
+      border-left: 3px solid var(--amber);
+      padding: 24px 32px;
+      margin: 48px 64px;
+      border-radius: var(--radius);
+    }
+    .context-box h3 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+    .context-box p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .context-box p + p { margin-top: 8px; }
+
+    /* ── JOURNEY SECTIONS ── */
+    .journey {
+      padding: 56px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .journey:last-of-type { border-bottom: none; }
+
+    .journey-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .journey-num {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--amber);
+      background: var(--amber-dim);
+      border: 1px solid rgba(243,188,22,0.2);
+      border-radius: var(--radius);
+      padding: 3px 9px;
+      margin-top: 5px;
+      white-space: nowrap;
+    }
+    .journey-persona-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blueprint);
+      margin-bottom: 5px;
+    }
+    .journey h2 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .journey-intro {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 660px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    /* ── STEPS ── */
+    .steps { display: flex; flex-direction: column; gap: 52px; }
+    .step {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .step-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .step-tag::before {
+      content: '';
+      display: inline-block;
+      width: 3px; height: 3px;
+      background: var(--amber);
+      border-radius: 50%;
+    }
+    .step h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.35;
+    }
+    .step p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .step p:last-of-type { margin-bottom: 0; }
+
+    .callout {
+      background: var(--surface2);
+      border-left: 3px solid var(--amber);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    .metric-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .chip-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chip-value {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      color: var(--amber);
+    }
+
+    /* ── SCREENSHOT ── */
+    .screenshot {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .screenshot-chrome {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chrome-dots { display: flex; gap: 5px; }
+    .chrome-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+    .chrome-url {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 3px;
+      padding: 3px 10px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .screenshot img { display: block; width: 100%; height: auto; }
+    .screenshot figcaption {
+      padding: 9px 14px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── JOURNEYS EXERCISED ── */
+    .journeys-covered { margin-top: 28px; font-size: 11px; color: var(--muted); }
+    .journeys-covered strong { color: var(--text); font-weight: 500; }
+    .journey-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .journey-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── CLOSING ── */
+    .closing {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 72px 40px;
+    }
+    .closing h2 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      max-width: 600px;
+      margin: 0 auto 14px;
+    }
+    .closing p {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--amber);
+      color: #0f1117;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 11px 26px;
+      border-radius: var(--radius);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 860px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .hero, .journey { padding: 40px 28px; }
+      .context-box { margin: 32px 28px; }
+      .step { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+        <polygon points="252,120 404,196 252,272 100,196" stroke="#e2e8f0" stroke-width="21" stroke-linejoin="round" fill="none"/>
+        <polygon points="100,196 252,272 252,468 100,392" stroke="#e2e8f0" stroke-width="21" stroke-linejoin="round" fill="none"/>
+        <polygon points="404,196 252,272 252,468 404,392" stroke="#e2e8f0" stroke-width="21" stroke-linejoin="round" fill="none"/>
+        <path d="M372,46 C378,86 380,96 422,110 C380,124 378,134 372,174 C366,134 364,124 322,110 C364,96 366,86 372,46 Z" fill="#e2e8f0"/>
+        <path d="M372,68 C375,90 377,97 405,110 C377,123 375,130 372,152 C369,130 367,123 339,110 C367,97 369,90 372,68 Z" fill="#F3BC16"/>
+      </svg>
+      <div class="sidebar-wordmark">
+        <div class="name">AllSpark</div>
+        <div class="product">Social</div>
+      </div>
+    </div>
+
+    <span class="sidebar-section">Overview</span>
+    <ul class="sidebar-nav">
+      <li><a href="#overview"><span class="num">—</span> Company context</a></li>
+    </ul>
+
+    <span class="sidebar-section">Journeys</span>
+    <ul class="sidebar-nav">
+      <li><a href="#journey-1"><span class="num">01</span> Connect a channel</a></li>
+      <li class="sidebar-persona">Mike Chen · Lead Engineer</li>
+      <li><a href="#journey-2"><span class="num">02</span> Compose multi-channel</a></li>
+      <li class="sidebar-persona">Sarah Kim · VP Client Success</li>
+      <li><a href="#journey-3"><span class="num">03</span> Repurpose from URL</a></li>
+      <li class="sidebar-persona">Sarah Kim · VP Client Success</li>
+      <li><a href="#journey-4"><span class="num">04</span> Manage the calendar</a></li>
+      <li class="sidebar-persona">Sarah Kim · VP Client Success</li>
+      <li><a href="#journey-5"><span class="num">05</span> Review analytics</a></li>
+      <li class="sidebar-persona">Dave Renz · Founder & CEO</li>
+      <li><a href="#journey-6"><span class="num">06</span> Configure brand voice</a></li>
+      <li class="sidebar-persona">Dave Renz · Founder & CEO</li>
+      <li><a href="#journey-7"><span class="num">07</span> Approve via email</a></li>
+      <li class="sidebar-persona">Sarah Kim → Ben Okafor (Voxx)</li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main">
+
+    <!-- ── HERO ── -->
+    <section class="hero" id="overview">
+      <div class="hero-badge">Product Walkthrough</div>
+      <h1>Tanooki Labs posts on the open web. AllSpark Social makes sure it sounds like them.</h1>
+      <p class="hero-intro">A 15-person software consultancy can't afford a full-time social team. AllSpark Social follows Dave, Sarah, and Mike through a week of posts — client stories, hiring, thought leadership — across Bluesky and Threads, on brand, without anyone spending their mornings in a content tool.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">15</span>
+          <span class="stat-label">person consultancy</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">2</span>
+          <span class="stat-label">channels (Bluesky, Threads)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">7</span>
+          <span class="stat-label">user journeys</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">12</span>
+          <span class="stat-label">screenshots</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTEXT BOX ── -->
+    <div class="context-box" id="context">
+      <h3>The team: Tanooki Labs</h3>
+      <p>Tanooki Labs is a 15-person software consultancy in Manhattan's Flatiron District, founded in 2020 by Dave Renz. The team builds AI-powered custom software for growth-stage and enterprise clients in healthcare, fintech, and media. Current engagements include Meridian Health Partners (AI care coordination, Sprint 8), Ironclad Robotics in Pittsburgh (vision-based defect detection, Month 1), and Voxx Media Group (content intelligence across 12 podcasts and 8 newsletters).</p>
+      <p>Dave Renz (Founder & CEO) owns the brand voice and is the one who actually writes the posts — often from his phone on the way to a client. Sarah Kim (VP of Client Success) manages the scheduling queue and keeps the calendar full. Mike Chen (Lead Engineer & Technical Director) wired up the OAuth connections during onboarding. As of this walkthrough, they have 6 posts in the pipeline: 3 published, 1 scheduled, 1 needs approval, 1 draft.</p>
+      <p>The needs-approval post is an announcement about the Voxx Media engagement. Sarah drafted it. It needs sign-off from Ben Okafor — Voxx's Head of Content Operations — before Tanooki goes public about the work.</p>
+    </div>
+
+    <!-- ═══ JOURNEY 1 ═══ -->
+    <section class="journey" id="journey-1">
+      <div class="journey-header">
+        <span class="journey-num">01</span>
+        <div>
+          <p class="journey-persona-tag">Mike Chen · Lead Engineer & Technical Director · Monday, 9:05 AM</p>
+          <h2>Connect a social channel</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        Mike sets up AllSpark Social during the team's onboarding week. He connects Bluesky and Threads in under 10 minutes — no API credentials, no token management, just OAuth. After that he hands the keys to Sarah and never touches it again.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Sign in · Dashboard</p>
+            <h3>Mike logs in and sees the pipeline is empty</h3>
+            <p>The dashboard loads immediately. The four stat cards read zero — no posts, no activity, no engagement yet. The Needs Approval card and the Scheduled section are both blank. It's a clean slate.</p>
+            <p>Mike ignores the empty state and heads straight to Connect Channel. Getting the accounts wired is the only thing he actually needs to do.</p>
+            <div class="metric-chips">
+              <div class="chip"><span class="chip-label">Posts scheduled</span><span class="chip-value">0</span></div>
+              <div class="chip"><span class="chip-label">Channels connected</span><span class="chip-value">0</span></div>
+            </div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/dashboard</div>
+            </div>
+            <img src="02-dashboard.png" alt="AllSpark Social dashboard showing stats, scheduled posts, and recent activity" />
+            <figcaption>Dashboard — full content pipeline at a glance once posts start flowing</figcaption>
+          </figure>
+        </div>
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Connect Channel</p>
+            <h3>Bluesky and Threads connected in two OAuth clicks</h3>
+            <p>Three cards: Bluesky, Threads, Mastodon. Mike clicks Connect on Bluesky, authorises with the <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">@tanookilabs.bsky.social</code> account, and the card flips to Connected — handle confirmed, last-synced timestamp shown. He repeats it for <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">@tanookilabs</code> on Threads.</p>
+            <p>From this point both channels appear as tabs in every Compose screen Sarah opens. Mike's job is done. He sends Sarah a Slack message: "You're connected. Have fun."</p>
+            <div class="callout">No API credentials. No developer app registration. No token rotation. The OAuth tokens are stored encrypted server-side — Mike never sees them again after the initial authorisation.</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/connect-channel</div>
+            </div>
+            <img src="10-connect-channel.png" alt="Connect Channel screen with Bluesky, Threads, and Mastodon platform cards" />
+            <figcaption>Connect Channel — one OAuth flow per platform, credentials stored encrypted</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">Admin connects social account</span>
+          <span class="journey-pill">OAuth channel authorisation</span>
+          <span class="journey-pill">Dashboard first-load orientation</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JOURNEY 2 ═══ -->
+    <section class="journey" id="journey-2">
+      <div class="journey-header">
+        <span class="journey-num">02</span>
+        <div>
+          <p class="journey-persona-tag">Sarah Kim · VP of Client Success · Monday, 10:20 AM</p>
+          <h2>Compose a multi-channel post</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        Sarah manages Tanooki's social queue. Her goal this week: a hiring post, something about the Ironclad Robotics engagement, and a teaser for Thursday's announcement. She starts with the hiring post — Dave gave her the gist in Slack, and she'll let the AI handle the platform differences.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Compose · Empty state</p>
+            <h3>Sarah opens Compose and writes the core message</h3>
+            <p>She clicks New Post from the dashboard. The Compose screen opens: a large shared content field at the top, and below it two channel tabs — Bluesky and Threads — both empty.</p>
+            <p>The shared field is where Dave's Slack message lives — "we're hiring a senior Rails engineer, remote-first, real clients, no move fast culture." Sarah cleans it up into a sentence. She's not thinking about character counts or hashtags yet. That's the next step.</p>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/compose</div>
+            </div>
+            <img src="03-compose-empty.png" alt="Compose screen with empty shared content field and Bluesky/Threads channel tabs" />
+            <figcaption>Compose — write the idea once; the AI adapts it per platform</figcaption>
+          </figure>
+        </div>
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Compose · Content entered</p>
+            <h3>She fills in the shared message; Bluesky pre-populates at 187 chars</h3>
+            <p>With the shared content written, the Bluesky tab immediately shows the text verbatim — 187 of 300 characters. Room for a hashtag or two. The Threads tab has the same starting copy but a 500-character ceiling, so the AI will expand into a longer version when it generates. Sarah clicks Generate Variants.</p>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/compose</div>
+            </div>
+            <img src="04-compose-with-content.png" alt="Compose with content in the shared field and Bluesky tab showing pre-populated variant" />
+            <figcaption>Content entered — both channel tabs pre-populated, ready for AI variant generation</figcaption>
+          </figure>
+        </div>
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Compose · After generating variants</p>
+            <h3>The AI writes per platform; Sarah adds one line and schedules</h3>
+            <p>Generate Variants fires. Three seconds later: Bluesky has a tighter 241-character version with <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#RubyOnRails</code> and <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#Hiring</code> from Tanooki's approved hashtag set. Threads has a longer version — two paragraphs, the second adding context about the team size and their client mix.</p>
+            <p>Sarah adds one sentence to the Threads variant: "We're 15 people and plan to stay that way for a while." That's the detail that makes it land. She sets the post for Tuesday at 9:00 AM — the best-time suggestion based on past engagement — and schedules it.</p>
+            <div class="callout">The hiring post ends up being Tanooki's best-performing post of the month: 9,804 Bluesky impressions, 15,230 on Threads. The sentence Sarah added about team size got 147 comments on Bluesky alone.</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/compose</div>
+            </div>
+            <img src="05-compose-with-variants.png" alt="Compose showing AI-generated Bluesky and Threads variants with different character counts" />
+            <figcaption>After Generate Variants — platform-specific copy, fully editable before scheduling</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">Write shared post content</span>
+          <span class="journey-pill">Generate AI channel variants</span>
+          <span class="journey-pill">Edit generated variant</span>
+          <span class="journey-pill">Schedule at optimal time</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JOURNEY 3 ═══ -->
+    <section class="journey" id="journey-3">
+      <div class="journey-header">
+        <span class="journey-num">03</span>
+        <div>
+          <p class="journey-persona-tag">Sarah Kim · VP of Client Success · Monday, 11:45 AM</p>
+          <h2>Repurpose a blog post for social</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        Dave published a write-up last week about Month 1 with Ironclad Robotics — 900 words on what AI vision inspection actually looks like on a factory floor. Sarah wants to turn it into two or three posts without reading the whole thing or extracting quotes manually. She uses the Repurpose from URL flow.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Compose · Repurpose from URL</p>
+            <h3>Sarah pastes the blog URL; three post drafts land in the queue</h3>
+            <p>At the top of the Compose screen is the Repurpose from URL field. She pastes in the Tanooki Labs blog URL for the Ironclad piece and clicks Repurpose. AllSpark Social fetches the page, parses the body, and extracts three shareable angles from the content.</p>
+            <p>The AI reads Tanooki's brand voice configuration before it writes anything — no naming clients without permission, professional but approachable, no jargon. The three drafts it surfaces are: a process observation post about what real-world AI deployment looks like, a hiring signal (we're doing interesting robotics work), and a question hook for engagement. Each arrives in the Compose review queue for Sarah to edit and schedule independently.</p>
+            <div class="callout">One 900-word write-up becomes three posts across two platforms. The AI finds angles the author wouldn't have thought to post about — the hiring signal angle wasn't in Dave's brief at all.</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/compose</div>
+            </div>
+            <img src="12-repurpose-url.png" alt="Compose with the Tanooki Labs blog URL entered in the Repurpose from URL field" />
+            <figcaption>Repurpose from URL — paste any public link, get platform-ready drafts in seconds</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">Repurpose long-form content</span>
+          <span class="journey-pill">AI multi-angle extraction</span>
+          <span class="journey-pill">Brand voice applied to generated content</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JOURNEY 4 ═══ -->
+    <section class="journey" id="journey-4">
+      <div class="journey-header">
+        <span class="journey-num">04</span>
+        <div>
+          <p class="journey-persona-tag">Sarah Kim · VP of Client Success · Monday, 2:00 PM</p>
+          <h2>Manage the content calendar</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        Sarah's afternoon ritual is the calendar. She wants to confirm the week is balanced — the hiring post is Tuesday, the Ironclad process piece is Wednesday, the Thursday teaser is already set. But the second Ironclad draft landed on Thursday too, which is a conflict.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Calendar · Week view</p>
+            <h3>Thursday has a collision; Sarah drags one post to Friday</h3>
+            <p>The calendar shows the week laid out: Tuesday 9:00 AM (hiring post, scheduled), Wednesday 9:00 AM (Ironclad process piece, scheduled), Thursday 8:00 AM (Thursday teaser, scheduled), Thursday 11:00 AM (second Ironclad draft). Two posts in one day when Thursday is already the teaser day.</p>
+            <p>She drags the Thursday 11:00 AM Ironclad draft to Friday 9:00 AM. The card snaps into place, the scheduled time updates immediately. No dialog, no re-enter — drag, drop, done. The week now has one post per day Tuesday through Friday, with Monday empty.</p>
+            <div class="callout">Click any post card to open it in the Compose editor for last-minute edits. Changes to scheduled time from the calendar or from Compose stay in sync.</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/calendar</div>
+            </div>
+            <img src="06-calendar.png" alt="Content calendar showing posts distributed across the week in time slots" />
+            <figcaption>Calendar — gaps and collisions are immediately visible; drag posts to fix them</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">View week content cadence</span>
+          <span class="journey-pill">Reschedule via drag and drop</span>
+          <span class="journey-pill">Identify and resolve scheduling conflicts</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JOURNEY 5 ═══ -->
+    <section class="journey" id="journey-5">
+      <div class="journey-header">
+        <span class="journey-num">05</span>
+        <div>
+          <p class="journey-persona-tag">Dave Renz · Founder & CEO · Thursday, 4:30 PM</p>
+          <h2>Review post performance and analytics</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        It's Thursday afternoon. The hiring post went out Tuesday and has had 48 hours to settle. Dave checks the numbers before he heads to dinner with a prospect. He's curious whether the Threads version — where Sarah added the team size sentence — outperformed Bluesky.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Analytics · Overview</p>
+            <h3>Dave opens Analytics and finds the hiring post spike immediately</h3>
+            <p>The Analytics screen shows 30-day aggregates across both channels: 21,346 impressions, 2,168 likes, 390 comments, 8.1% engagement rate. The impressions chart has a sharp spike on Tuesday — the hiring post.</p>
+            <p>The post list below it sorts by impressions. The Threads version of the hiring post is at the top: 15,230 impressions. The Bluesky version is second: 9,804. Threads outperformed Bluesky 1.55× despite Tanooki having more Bluesky followers. The second paragraph Sarah added made the difference.</p>
+            <div class="metric-chips">
+              <div class="chip"><span class="chip-label">30-day impressions</span><span class="chip-value">21,346</span></div>
+              <div class="chip"><span class="chip-label">Engagement rate</span><span class="chip-value">8.1%</span></div>
+              <div class="chip"><span class="chip-label">Comments</span><span class="chip-value">390</span></div>
+              <div class="chip"><span class="chip-label">Best post</span><span class="chip-value">Hiring</span></div>
+            </div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/analytics</div>
+            </div>
+            <img src="07-analytics.png" alt="Analytics screen showing 30-day impression chart and top posts list" />
+            <figcaption>Analytics — 30-day aggregate with per-channel breakdowns and top performers</figcaption>
+          </figure>
+        </div>
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Analytics · Post detail</p>
+            <h3>He drills into the hiring post; the engagement timeline explains the spike</h3>
+            <p>Dave clicks the hiring post from the analytics list. The detail screen shows the Bluesky and Threads variants side by side with their respective numbers. Below: an engagement timeline. Threads peaked at 10:30 AM Tuesday — 90 minutes after posting — then again at 3:00 PM when a well-followed engineering recruiter quoted it.</p>
+            <p>The comments section on Bluesky had 147 replies, most asking about stack and client type. Dave screenshots the timeline for Sarah. He also notes that <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#RubyOnRails</code> drove most of the Bluesky reach. He'll tell Sarah to keep it in the approved hashtag set.</p>
+            <div class="callout">The engagement timeline makes it clear that the Threads spike came from a single high-reach quote at 3:00 PM — not the initial post time. Dave files this away: for posts where the audience is on Threads, the real window is the first 4 hours after publishing.</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/analytics/post_7n0l54csurel</div>
+            </div>
+            <img src="08-post-analytics.png" alt="Post detail analytics showing per-channel impressions, likes, comments, and engagement timeline" />
+            <figcaption>Post analytics — per-channel breakdown and engagement timeline for a single post</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">View aggregate channel performance</span>
+          <span class="journey-pill">Compare per-platform impressions</span>
+          <span class="journey-pill">Drill into post engagement timeline</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JOURNEY 6 ═══ -->
+    <section class="journey" id="journey-6">
+      <div class="journey-header">
+        <span class="journey-num">06</span>
+        <div>
+          <p class="journey-persona-tag">Dave Renz · Founder & CEO · Tuesday, 8:15 AM</p>
+          <h2>Configure the brand voice</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        Dave sets the brand voice during the first week. He's particular about how Tanooki sounds — not corporate, not too casual, never naming clients without approval. He spends 20 minutes in Brand Voice settings. Every AI variant after that sounds like it came from him, even when Sarah is the one generating them at 2 PM on a Wednesday.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Settings · Brand Voice</p>
+            <h3>Dave sets tone, pillars, forbidden phrases, and approved hashtags</h3>
+            <p>He opens Settings → Brand Voice. Tone: Professional — not formal enough to sound like a law firm, not casual enough to sound like a startup trying too hard. Messaging pillars: four lines he's been writing in his head for years — software craftsmanship, client outcomes, team culture, honest takes on AI.</p>
+            <p>Words to avoid: "leverage", "synergy", "cutting-edge", "game-changing", "innovative". The kind of words that make engineers cringe. Any AI variant containing them is rewritten automatically before Sarah sees the draft.</p>
+            <p>He adds two hashtag sets: engineering posts (<code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#RubyOnRails</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#Hiring</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#SoftwareCraft</code>) and thought leadership (<code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#AIinHealthcare</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#ContentOps</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">#BuildingWithAI</code>). He saves.</p>
+            <div class="callout">The first AI-generated draft after Dave configured brand voice reads like he wrote it — down to the dry tone and the lack of exclamation points. He sent Sarah a message: "ok this is actually good."</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/settings/brand-voice</div>
+            </div>
+            <img src="09-brand-voice.png" alt="Brand Voice settings showing tone selector, messaging pillars, words to avoid, and hashtag sets" />
+            <figcaption>Brand Voice settings — passed as context to every AI variant generation request</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">Set brand tone</span>
+          <span class="journey-pill">Define messaging pillars</span>
+          <span class="journey-pill">Configure words to avoid</span>
+          <span class="journey-pill">Approve hashtag sets</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JOURNEY 7 ═══ -->
+    <section class="journey" id="journey-7">
+      <div class="journey-header">
+        <span class="journey-num">07</span>
+        <div>
+          <p class="journey-persona-tag">Sarah Kim + Ben Okafor (Voxx Media) · Wednesday, 11:00 AM</p>
+          <h2>Get a client to approve a post via email</h2>
+        </div>
+      </div>
+      <p class="journey-intro">
+        Tanooki wants to announce the Voxx Media engagement publicly — 12 podcasts, 8 newsletters, AI content intelligence layer. It's good work and they're proud of it. But the post needs Ben Okafor's sign-off before it goes live. Ben is Voxx's Head of Content Operations and the person who owns the partnership from their side. He doesn't have an AllSpark Social account. He doesn't need one.
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Dashboard · Needs approval</p>
+            <h3>Sarah triggers the approval request from the dashboard</h3>
+            <p>The Voxx announcement post has been sitting under Needs Approval since Tuesday afternoon. Sarah drafted both channel variants — Bluesky at 278 characters, Threads at two full paragraphs. Dave reviewed them on his phone and said they were good. The only thing missing is Ben's sign-off.</p>
+            <p>She opens the post, clicks Send Approval Request, enters <code style="font-family:'IBM Plex Mono',monospace;font-size:12px;">ben.okafor@voxxmedia.com</code>, and hits Send. AllSpark Social fires the email immediately. The post status updates to Pending External Approval in the queue. The link expires in 72 hours.</p>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/dashboard</div>
+            </div>
+            <img src="02-dashboard.png" alt="Dashboard showing the Voxx Media announcement in the Needs Approval section" />
+            <figcaption>Dashboard — the Needs Approval section is always front and centre, never buried in a tab</figcaption>
+          </figure>
+        </div>
+
+        <div class="step">
+          <div class="step-text">
+            <p class="step-tag">Email · Client approves</p>
+            <h3>Ben reads both variants on his phone and taps Approve</h3>
+            <p>Ben gets the email at 11:14 AM. It shows the Bluesky and Threads variants clearly labelled side by side, with character counts and context about which platform each is for. Two buttons at the bottom: Approve and Request Changes.</p>
+            <p>The link is cryptographically signed — no login, no account, no app to install. Ben reads both versions, thinks the Threads one is particularly good (it credits his team's editorial taxonomy work specifically), and taps Approve from his phone. Sarah gets a notification at 11:17 AM: "Voxx Media announcement approved by Ben Okafor." The post moves to Scheduled for Thursday 8:00 AM.</p>
+            <div class="callout">If Ben had tapped Request Changes, the post would return to Sarah's drafts with his note attached directly to the variant he wanted revised — no email thread, no screenshot, no version confusion. The feedback lives on the post itself.</div>
+          </div>
+          <figure class="screenshot">
+            <div class="screenshot-chrome">
+              <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+              <div class="chrome-url">localhost:3000/profile</div>
+            </div>
+            <img src="11-profile.png" alt="User profile screen showing account details and notification settings" />
+            <figcaption>After approval — post moves to Scheduled; Sarah is notified within seconds</figcaption>
+          </figure>
+        </div>
+
+      </div>
+      <div class="journeys-covered">
+        <strong>Journeys exercised:</strong>
+        <div class="journey-pills">
+          <span class="journey-pill">Submit post for external approval</span>
+          <span class="journey-pill">Client approves via signed email link</span>
+          <span class="journey-pill">Post status updates in real time on approval</span>
+          <span class="journey-pill">No-account external reviewer flow</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CLOSING ═══ -->
+    <footer class="closing">
+      <h2>Dave writes it. Sarah schedules it. The AI makes it sound right on every platform.</h2>
+      <p>AllSpark Social is part of the AllSpark platform — the same Tanooki Labs team, the same data, across CRM, Company OS, Finance, and Social.</p>
+      <a class="btn" href="http://localhost:3000/dashboard">Open AllSpark Social →</a>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]')
+  const sections = document.querySelectorAll('section[id], div[id]')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id)
+        })
+      }
+    })
+  }, { rootMargin: '-20% 0px -70% 0px' })
+  sections.forEach(el => observer.observe(el))
+</script>
+</body>
+</html>
